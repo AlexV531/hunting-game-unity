@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    private PlayerInputs playerInputs; // Reference to central input hub
+    private PlayerInputs _input; // Reference to central input hub
 
     [Header("Weapon Settings")]
     public Transform model;            // assign your model in Inspector
@@ -11,10 +11,14 @@ public class Weapon : MonoBehaviour
 
     public float aimSpeed = 10f;       // speed to move weapon between positions
 
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletSpeed = 60f;
+
     void Awake()
     {
         // Finds PlayerInputs on parent
-        playerInputs = GetComponentInParent<PlayerInputs>();
+        _input = GetComponentInParent<PlayerInputs>();
     }
 
     void Update()
@@ -27,14 +31,14 @@ public class Weapon : MonoBehaviour
     {
         if (!model || !aimPosition || !hipPosition) return;
 
-        Transform targetPos = playerInputs.aim ? aimPosition : hipPosition;
+        Transform targetPos = _input.aim ? aimPosition : hipPosition;
         model.localPosition = Vector3.Lerp(model.localPosition, targetPos.localPosition, aimSpeed * Time.deltaTime);
         model.localRotation = Quaternion.Slerp(model.localRotation, targetPos.localRotation, aimSpeed * Time.deltaTime);
     }
 
     void HandleFire()
     {
-        if (playerInputs.fire)
+        if (_input.fire)
         {
             Shoot();
         }
@@ -42,7 +46,9 @@ public class Weapon : MonoBehaviour
 
     void Shoot()
     {
-        // Implement firing logic here: raycast, projectile, sound, recoil, etc.
-        Debug.Log("Bang!");
+        _input.fire = false;
+        GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.speed = bulletSpeed;
     }
 }
