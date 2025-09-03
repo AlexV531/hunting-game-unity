@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 50f;           // Bullet speed
+    public float speed = 320f;           // Bullet speed
     public float lifetime = 5f;         // How long the bullet exists
     public float gravity = 9.81f;       // Gravity strength
-    public int damage = 25;             // Damage to deal
+    public float power_factor = 1.0f;
+    public float bleed_factor = 1.0f;
+    public float heal_prevention = 1.0f;
 
     private Vector3 velocity;
 
@@ -28,12 +30,25 @@ public class Bullet : MonoBehaviour
         // Raycast to detect collision
         if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude))
         {
-            // Check for animal
-            // Animal animal = hit.collider.GetComponent<Animal>();
-            // if (animal != null)
-            // {
-            //     animal.TakeDamage(damage);
-            // }
+            // Check if we hit an organ
+            Internal internalHit = hit.collider.GetComponent<Internal>();
+            if (internalHit != null)
+            {
+                Animal animal = internalHit.animal;
+                if (animal != null)
+                {
+                    // Call the ProjectileHit method
+                    animal.ProjectileHit(
+                        globalHitPos: hit.point,
+                        direction: velocity.normalized,
+                        internalHit: internalHit,
+                        power: 6.0f,
+                        bulletStrength: power_factor,
+                        bulletBleed: bleed_factor,
+                        bulletHeal: heal_prevention
+                    );
+                }
+            }
 
             // Destroy bullet on impact
             Debug.Log("Bullet hit: " + transform.position);
