@@ -10,6 +10,7 @@ public class Animal : MonoBehaviour
     public Transform markerPrefab; // optional, for PlaceMarker visualization
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
+    public AnimalStateManager fsm;
 
     LayerMask layerMask;
 
@@ -18,11 +19,24 @@ public class Animal : MonoBehaviour
         layerMask = LayerMask.GetMask("Internal");
     }
 
+    void Start()
+    {
+        fsm = GetComponent<AnimalStateManager>();
+    }
+
     private void Update()
     {
         // Dead check
         if (IsDead())
             return;
+
+        if (GlobalVariables.debugTarget != Vector3.zero)
+        {
+            fsm.MovingState.ClearTargets();
+            fsm.MovingState.AddTarget(GlobalVariables.debugTarget);
+            fsm.ChangeState(fsm.MovingState);
+            GlobalVariables.debugTarget = Vector3.zero;
+        }
 
         // Bleed section
         foreach (var hit in hits)
@@ -204,7 +218,7 @@ public class Animal : MonoBehaviour
     private void PlaceMarker(Vector3 position)
     {
         if (markerPrefab != null)
-            Instantiate(markerPrefab, position, Quaternion.identity);
+            Instantiate(markerPrefab, position, Quaternion.identity, transform);
     }
 
     private void KillAnimal()
