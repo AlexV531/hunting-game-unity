@@ -41,6 +41,8 @@ public class Weapon : MonoBehaviour
         if (_input.fire)
         {
             Shoot();
+            NoiseEvent noise = new NoiseEvent(transform.position, 20f, "gunshot");
+            NoiseManager.EmitNoise(noise);
         }
     }
 

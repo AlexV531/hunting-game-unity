@@ -7,21 +7,17 @@ public class Animal : MonoBehaviour
     public float maxHealth = 100f;
     public List<HitData> hits = new List<HitData>();
     public float distDamageFactor = 0.5f; // How much the distance the bullet travels through the internal affects the damage
-    public Transform markerPrefab; // optional, for PlaceMarker visualization
+    public Transform markerPrefab; // optional visualization
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
-    public AnimalStateManager fsm;
+    public AnimalAI animalAI;
 
     LayerMask layerMask;
 
     void Awake()
     {
         layerMask = LayerMask.GetMask("Internal");
-    }
-
-    void Start()
-    {
-        fsm = GetComponent<AnimalStateManager>();
+        animalAI = GetComponent<AnimalAI>();
     }
 
     private void Update()
@@ -29,14 +25,6 @@ public class Animal : MonoBehaviour
         // Dead check
         if (IsDead())
             return;
-
-        if (GlobalVariables.debugTarget != Vector3.zero)
-        {
-            fsm.MovingState.ClearTargets();
-            fsm.MovingState.AddTarget(GlobalVariables.debugTarget);
-            fsm.ChangeState(fsm.MovingState);
-            GlobalVariables.debugTarget = Vector3.zero;
-        }
 
         // Bleed section
         foreach (var hit in hits)
@@ -182,7 +170,7 @@ public class Animal : MonoBehaviour
             Debug.Log("Projectile exited internals with power: " + power);
             AddHit(hitData);
         }
-    }
+    }    
 
     private void AddHit(HitData hitData)
     {
@@ -226,8 +214,8 @@ public class Animal : MonoBehaviour
         Debug.Log($"{name} has died.");
         // Add death logic here
     }
-    
-    private bool IsDead()
+
+    public bool IsDead()
     {
         return health <= 0f;
     }

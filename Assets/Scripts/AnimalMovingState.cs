@@ -5,13 +5,17 @@ using System.Collections.Generic;
 public class AnimalMovingState : AnimalBaseState
 {
     public float navmeshSearchRadius = 2.0f;
+    public float movingSpeed = 4.5f;
     public NavMeshAgent agent;
+    private AnimalBaseState nextState;
     private Queue<Vector3> targetQueue = new Queue<Vector3>();
     private bool hasTarget = false;
 
     public override void EnterState(AnimalStateManager animal)
     {
         Debug.Log("Moving state entered.");
+        agent = animal.GetComponent<NavMeshAgent>();
+        agent.speed = movingSpeed;
     }
 
     public override void UpdateState(AnimalStateManager animal)
@@ -56,6 +60,11 @@ public class AnimalMovingState : AnimalBaseState
         agent.SetDestination(agent.transform.position);
     }
 
+    public void SetNextState(AnimalBaseState nextState)
+    {
+        this.nextState = nextState;
+    }
+
     private void SetNextTarget()
     {
         if (targetQueue.Count == 0) return;
@@ -66,29 +75,19 @@ public class AnimalMovingState : AnimalBaseState
     }
 
     private void CheckIfReachedTarget(AnimalStateManager animal)
+{
+    if (!agent.pathPending && agent.remainingDistance <= 0.1f)
     {
-        if (!agent.pathPending)
+        hasTarget = false;
+
+        if (targetQueue.Count > 0)
         {
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                {
-                    Debug.Log("Target reached.");
-
-                    hasTarget = false;
-
-                    // Automatically move to next target if queue is not empty
-                    if (targetQueue.Count > 0)
-                    {
-                        SetNextTarget();
-                    }
-                    // No more targets in queue
-                    else
-                    {
-                        animal.ChangeState(animal.GrazingState);
-                    }
-                }
-            }
+            SetNextTarget();
+        }
+        else // Final target reached
+        {
+            animal.ChangeState(nextState);
         }
     }
+}
 }
