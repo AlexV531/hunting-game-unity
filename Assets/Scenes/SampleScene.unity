@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &70922006 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6805021877742488793, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-  m_PrefabInstance: {fileID: 1888148140710717905}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &72063749
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,60 +294,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &403420505
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 403420506}
-  - component: {fileID: 403420507}
-  m_Layer: 11
-  m_Name: Corpse
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &403420506
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 403420505}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0.5779867, z: 0}
-  m_LocalScale: {x: 400, y: 400, z: 400}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 70922006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &403420507
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 403420505}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5495902117074765545, guid: e12aac095ca8a6844880bbddfa484853, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,54 +996,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2192462265659396237, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2192462265659396237, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
       propertyPath: m_Name
       value: Deer
       objectReference: {fileID: 0}
-    - target: {fileID: 4577037575033551809, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5216222710232790833, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_Speed
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5216222710232790833, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_AutoBraking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5216222710232790833, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_Acceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5216222710232790833, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_AngularSpeed
-      value: 240
-      objectReference: {fileID: 0}
-    - target: {fileID: 6805021877742488793, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6805021877742488793, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6805021877742488793, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6845581437615129266, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 6834382181995577058, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
+      propertyPath: terrain
+      value: 
+      objectReference: {fileID: 402335526}
     - target: {fileID: 7618662643523489297, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
       propertyPath: playerInputs
       value: 
@@ -1149,46 +1050,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6805021877742488793, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 403420506}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1888148140710717909}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
---- !u!1 &1888148140710717906 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-  m_PrefabInstance: {fileID: 1888148140710717905}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1888148140710717909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1888148140710717906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa60981a2265ad1419f60e868ea6b726, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimalAI
-  animal: {fileID: 0}
-  fsm: {fileID: 0}
-  fleeAngleSpread: 45
-  fleeDistance: 10
-  terrain: {fileID: 402335526}
-  herd: {fileID: 0}
-  MostRecentSoundPosition: {x: 0, y: 0, z: 0}
-  soundHeard: 0
-  alertTolerance: 3
-  panicTolerance: 10
-  soundForgetRate: 0.1
-  sightRange: 20
-  sightAngle: 160
-  panicCooldown: 3
 --- !u!1 &2564876805693307778
 GameObject:
   m_ObjectHideFlags: 0

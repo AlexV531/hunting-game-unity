@@ -24,11 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47556156525332122}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1059202717489226326}
   - {fileID: 8701913126838784748}
   - {fileID: 1070523737235602079}
   - {fileID: 8496269354671735289}
@@ -38,7 +39,7 @@ Transform:
   - {fileID: 1209248694130645533}
   - {fileID: 4438581164326582040}
   m_Father: {fileID: 8237469793533726296}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &2192462265659396237
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,9 +591,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8237469793533726296}
   - component: {fileID: 3651933989365759357}
+  - component: {fileID: 6834382181995577058}
   - component: {fileID: 5216222710232790833}
   - component: {fileID: 5362441662527959308}
   - component: {fileID: 214653214422884135}
+  - component: {fileID: 8603156186996530940}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Untagged
@@ -635,7 +638,34 @@ MonoBehaviour:
   markerPrefab: {fileID: 6385790940347494461, guid: 129d3fa744d044c439ad61ff6860436c, type: 3}
   animalBleedFactor: 0.1
   animalHealFactor: 0.1
+  animalAI: {fileID: 0}
+  internalContainer: {fileID: 47556156525332122}
+--- !u!114 &6834382181995577058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406503103205657411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa60981a2265ad1419f60e868ea6b726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalAI
+  animal: {fileID: 0}
   fsm: {fileID: 0}
+  fleeAngleSpread: 45
+  fleeDistance: 10
+  terrain: {fileID: 0}
+  herd: {fileID: 0}
+  MostRecentSoundPosition: {x: 0, y: 0, z: 0}
+  soundHeard: 0
+  alertTolerance: 3
+  panicTolerance: 10
+  soundForgetRate: 0.1
+  sightRange: 20
+  sightAngle: 160
+  panicCooldown: 3
 --- !u!195 &5216222710232790833
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -646,13 +676,13 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 4.5
+  m_Acceleration: 50
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 240
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.4
@@ -690,6 +720,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d55c9ee4a0dd845991e3703cedf84c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalStateManager
+--- !u!95 &8603156186996530940
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406503103205657411}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1f810367a3b4e9f46b6df2c221426f13, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4837697612702868702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,6 +1135,74 @@ MonoBehaviour:
   lethality: 40
   bleedFactor: 1
   internalStrength: 1
+--- !u!1 &7183329574319771466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1059202717489226326}
+  - component: {fileID: 1747973436771961289}
+  - component: {fileID: 5324222755641310043}
+  m_Layer: 11
+  m_Name: Corpse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1059202717489226326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183329574319771466}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0.5779867, z: 0}
+  m_LocalScale: {x: 400, y: 400, z: 400}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6805021877742488793}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &1747973436771961289
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183329574319771466}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: e12aac095ca8a6844880bbddfa484853, type: 3}
+--- !u!114 &5324222755641310043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183329574319771466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285ee04887d352248aa550824eec6c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Corpse
+  interactionEnabled: 1
 --- !u!1 &9017630797139198235
 GameObject:
   m_ObjectHideFlags: 0

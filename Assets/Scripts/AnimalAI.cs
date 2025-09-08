@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class AnimalAI : MonoBehaviour, INoiseListener
 {
     public Animal animal;
     public AnimalStateManager fsm;
+    public Animator animator;
+    public NavMeshAgent agent;
     public float HearingThreshold => 0.5f;
     public float fleeAngleSpread = 45f; // degrees
     public float fleeDistance = 50f;
@@ -24,6 +27,8 @@ public class AnimalAI : MonoBehaviour, INoiseListener
     {
         animal = GetComponent<Animal>();
         fsm = GetComponent<AnimalStateManager>();
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Start()
@@ -41,6 +46,8 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         // Dead check
         if (animal.IsDead())
             return;
+
+        animator.SetFloat("speed", GetCurrentVelocity());
 
         if (soundHeard > 0f)
         {
@@ -233,6 +240,11 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         }
 
         return visiblePlayers;
+    }
+
+    public float GetCurrentVelocity()
+    {
+        return agent.velocity.magnitude;
     }
 
     private void OnDestroy()

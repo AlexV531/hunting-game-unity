@@ -11,6 +11,7 @@ public class Animal : MonoBehaviour
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
     public AnimalAI animalAI;
+    [SerializeField] GameObject internalContainer;
 
     LayerMask layerMask;
 
@@ -206,7 +207,7 @@ public class Animal : MonoBehaviour
     private void PlaceMarker(Vector3 position)
     {
         if (markerPrefab != null)
-            Instantiate(markerPrefab, position, Quaternion.identity, transform);
+            Instantiate(markerPrefab, position, Quaternion.identity, internalContainer.transform);
     }
 
     private void KillAnimal()
