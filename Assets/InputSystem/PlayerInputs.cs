@@ -12,6 +12,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool sprint;
 	public bool aim;
 	public bool fire;
+	public bool interact;
 	public bool toggleShader;
 
 	[Header("Movement Settings")]
@@ -55,6 +56,11 @@ public class PlayerInputs : MonoBehaviour
 		FireInput(value.isPressed);
 	}
 
+	public void OnInteract(InputValue value)
+	{
+		InteractInput(value.isPressed);
+	}
+
 	public void OnToggleShader(InputValue value)
 	{
 		ToggleShaderInput(value.isPressed);
@@ -90,6 +96,11 @@ public class PlayerInputs : MonoBehaviour
 	public void FireInput(bool newFireState)
 	{
 		fire = newFireState;
+	}
+
+	public void InteractInput(bool newInteractState)
+	{
+		interact = newInteractState;
 	}
 
 	public void ToggleShaderInput(bool newToggleShaderState)

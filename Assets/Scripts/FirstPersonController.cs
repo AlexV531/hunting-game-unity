@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using TMPro;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -49,6 +51,13 @@ public class FirstPersonController : MonoBehaviour
 	public float TopClamp = 90.0f;
 	[Tooltip("How far in degrees can you move the camera down")]
 	public float BottomClamp = -90.0f;
+
+	[Header("Interact")]
+	[SerializeField] private float interactRange = 3f;
+    [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private TextMeshProUGUI interactText; // Reference to a UI Text element
+
+    private InteractableBase currentInteractable;
 
 	// cinemachine
 	private float _cinemachineTargetPitch;
@@ -114,6 +123,13 @@ public class FirstPersonController : MonoBehaviour
 		JumpAndGravity();
 		GroundedCheck();
 		Move();
+		DetectInteractable();
+
+		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && _input.interact)
+		{
+			currentInteractable.Interact(this);
+		}
+		_input.interact = false;
 	}
 
 	private void LateUpdate()
@@ -149,6 +165,31 @@ public class FirstPersonController : MonoBehaviour
 			transform.Rotate(Vector3.up * _rotationVelocity);
 		}
 	}
+
+	void DetectInteractable()
+    {
+        Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
+        {
+            InteractableBase interactable = hit.collider.GetComponent<InteractableBase>();
+
+            if (interactable != null && interactable.IsInteractionEnabled())
+            {
+                if (interactable != currentInteractable)
+                {
+                    currentInteractable = interactable;
+                    interactText.text = interactable.GetPrompt();
+                    interactText.gameObject.SetActive(true);
+                }
+                return;
+            }
+        }
+
+        // No interactable found
+        currentInteractable = null;
+        interactText.gameObject.SetActive(false);
+    }
 
 	private void Move()
 	{

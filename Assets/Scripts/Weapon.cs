@@ -3,6 +3,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private PlayerInputs _input; // Reference to central input hub
+    private CameraRecoil _recoil;
 
     [Header("Weapon Settings")]
     public Transform model;            // assign your model in Inspector
@@ -19,6 +20,7 @@ public class Weapon : MonoBehaviour
     {
         // Finds PlayerInputs on parent
         _input = GetComponentInParent<PlayerInputs>();
+        _recoil = GetComponentInParent<CameraRecoil>();
     }
 
     void Update()
@@ -43,6 +45,7 @@ public class Weapon : MonoBehaviour
             Shoot();
             NoiseEvent noise = new NoiseEvent(transform.position, 20f, "gunshot");
             NoiseManager.EmitNoise(noise);
+            _recoil.AddRecoil(50f, 1f);
         }
     }
 
