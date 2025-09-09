@@ -53,7 +53,7 @@
                 },
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "9807fda1-6e1e-4b0f-9112-d4e0c7b0b909",
                     "expectedControlType": "",
                     "processors": "",
@@ -82,6 +82,15 @@
                     "name": "Crouch",
                     "type": "PassThrough",
                     "id": "eb20e95f-92c0-4c09-96f0-dac6746943b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "e48d0b09-f4c5-472e-819e-2a5b727c8ffb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -372,6 +381,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57c1a232-8f79-41d9-a704-831dd543fb4a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f05f3300-1616-4031-a3c6-d42d5ea0aba6",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

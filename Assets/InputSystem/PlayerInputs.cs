@@ -13,6 +13,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool crouch;
 	public bool aim;
 	public bool fire;
+	public bool reload;
 	public bool interact;
 	public bool toggleShader;
 
@@ -66,6 +67,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnFire(InputValue value)
 	{
 		FireInput(value.isPressed);
+	}
+
+	public void OnReload(InputValue value)
+	{
+		ReloadInput(value.isPressed);
 	}
 
 	public void OnInteract(InputValue value)
@@ -127,6 +133,11 @@ public class PlayerInputs : MonoBehaviour
 	public void FireInput(bool newFireState)
 	{
 		fire = newFireState;
+	}
+
+	public void ReloadInput(bool newReloadState)
+	{
+		reload = newReloadState;
 	}
 
 	public void InteractInput(bool newInteractState)
