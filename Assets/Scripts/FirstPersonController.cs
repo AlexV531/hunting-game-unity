@@ -53,9 +53,22 @@ public class FirstPersonController : MonoBehaviour
 	public float BottomClamp = -90.0f;
 
 	[Header("Interact")]
-	[SerializeField] private float interactRange = 3f;
-    [SerializeField] private LayerMask interactableLayer;
-    [SerializeField] private TextMeshProUGUI interactText; // Reference to a UI Text element
+	public float interactRange = 3f;
+    public LayerMask interactableLayer;
+    public TextMeshProUGUI interactText; // Reference to a UI Text element
+
+	[Header("Crouch")]
+	[Tooltip("Normal standing height of the character controller")]
+	public float StandHeight = 2.0f;
+
+	[Tooltip("Crouched height of the character controller")]
+	public float CrouchHeight = 1.0f;
+
+	[Tooltip("How much the camera lowers when crouching")]
+	public float CameraCrouchOffset = 0.5f;
+
+	[Tooltip("Movement speed while crouching")]
+	public float CrouchSpeed = 2.0f;
 
     private InteractableBase currentInteractable;
 
@@ -67,6 +80,10 @@ public class FirstPersonController : MonoBehaviour
 	private float _rotationVelocity;
 	private float _verticalVelocity;
 	private float _terminalVelocity = 53.0f;
+
+	// crouch
+	private bool _isCrouching = false;
+	private Vector3 _cameraStandPos;
 
 	// timeout deltatime
 	private float _jumpTimeoutDelta;
@@ -113,6 +130,9 @@ public class FirstPersonController : MonoBehaviour
 		Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
+		// crouch setup
+		_cameraStandPos = CinemachineCameraTarget.transform.localPosition;
+
 		// reset our timeouts on start
 		_jumpTimeoutDelta = JumpTimeout;
 		_fallTimeoutDelta = FallTimeout;
@@ -122,6 +142,7 @@ public class FirstPersonController : MonoBehaviour
 	{
 		JumpAndGravity();
 		GroundedCheck();
+		HandleCrouch();
 		Move();
 		DetectInteractable();
 
@@ -194,7 +215,7 @@ public class FirstPersonController : MonoBehaviour
 	private void Move()
 	{
 		// set target speed based on move speed, sprint speed and if sprint is pressed
-		float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+		float targetSpeed = _isCrouching ? CrouchSpeed : (_input.sprint ? SprintSpeed : MoveSpeed);
 
 		// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -285,6 +306,34 @@ public class FirstPersonController : MonoBehaviour
 			_verticalVelocity += Gravity * Time.deltaTime;
 		}
 	}
+
+	private void HandleCrouch()
+{
+    if (_input.crouch)
+    {
+        if (!_isCrouching)
+        {
+            _isCrouching = true;
+            _controller.height = CrouchHeight;
+            _controller.center = new Vector3(0, CrouchHeight / 2f, 0);
+
+            Vector3 camPos = _cameraStandPos;
+            camPos.y -= CameraCrouchOffset;
+            CinemachineCameraTarget.transform.localPosition = camPos;
+        }
+    }
+    else
+    {
+        if (_isCrouching)
+        {
+            _isCrouching = false;
+            _controller.height = StandHeight;
+            _controller.center = new Vector3(0, StandHeight / 2f, 0);
+
+            CinemachineCameraTarget.transform.localPosition = _cameraStandPos;
+        }
+    }
+}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{

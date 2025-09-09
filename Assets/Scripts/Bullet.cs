@@ -10,10 +10,12 @@ public class Bullet : MonoBehaviour
     public float heal_prevention = 1.0f;
 
     private Vector3 velocity;
+    private int layerMask;
 
     private void Start()
     {
         velocity = transform.forward * speed;
+        layerMask = ~LayerMask.GetMask("Interactable");
         Destroy(gameObject, lifetime);
     }
 
@@ -28,7 +30,7 @@ public class Bullet : MonoBehaviour
         Vector3 move = velocity * delta;
 
         // Raycast to detect collision
-        if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude))
+        if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude, layerMask))
         {
             // Check if we hit an organ
             Internal internalHit = hit.collider.GetComponent<Internal>();

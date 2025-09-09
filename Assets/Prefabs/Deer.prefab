@@ -639,6 +639,7 @@ MonoBehaviour:
   animalBleedFactor: 0.1
   animalHealFactor: 0.1
   animalAI: {fileID: 0}
+  corpse: {fileID: 0}
   internalContainer: {fileID: 47556156525332122}
 --- !u!114 &6834382181995577058
 MonoBehaviour:
@@ -654,6 +655,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimalAI
   animal: {fileID: 0}
   fsm: {fileID: 0}
+  animator: {fileID: 0}
+  agent: {fileID: 0}
   fleeAngleSpread: 45
   fleeDistance: 10
   terrain: {fileID: 0}
@@ -1202,7 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 285ee04887d352248aa550824eec6c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Corpse
-  interactionEnabled: 1
+  interactionEnabled: 0
 --- !u!1 &9017630797139198235
 GameObject:
   m_ObjectHideFlags: 0

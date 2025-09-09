@@ -22,6 +22,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
     public float sightAngle = 160f; // degrees
     public float panicCooldown = 3f; // seconds
     private float lastPanicTime = -Mathf.Infinity;
+    private int sightLayerMask;
 
     void Awake()
     {
@@ -39,6 +40,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         {
             herd.RegisterHerdAnimal(this);
         }
+        sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
     }
 
     private void Update()
@@ -214,9 +216,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
                 continue;
 
             // Line-of-sight check
-            int layerMask = ~LayerMask.GetMask("Internal");
-
-            if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit, sightRange, layerMask))
+            if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit, sightRange, sightLayerMask))
 {
                 // Walk up parents until we find something tagged "Player"
                 Transform hitTransform = hit.collider.transform;

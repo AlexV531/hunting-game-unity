@@ -11,7 +11,9 @@ public class Animal : MonoBehaviour
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
     public AnimalAI animalAI;
+    public Corpse corpse;
     [SerializeField] GameObject internalContainer;
+    private bool isDead = false;
 
     LayerMask layerMask;
 
@@ -212,12 +214,19 @@ public class Animal : MonoBehaviour
 
     private void KillAnimal()
     {
+        if (IsDead())
+            return;
+        isDead = true;
         Debug.Log($"{name} has died.");
-        // Add death logic here
+        corpse.SetInteractionEnabled(true);
+        if (animalAI != null)
+        {
+            animalAI.animator.SetTrigger("dead");
+        }
     }
 
     public bool IsDead()
     {
-        return health <= 0f;
+        return isDead;
     }
 }

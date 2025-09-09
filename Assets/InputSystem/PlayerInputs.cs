@@ -10,10 +10,15 @@ public class PlayerInputs : MonoBehaviour
 	public Vector2 look;
 	public bool jump;
 	public bool sprint;
+	public bool crouch;
 	public bool aim;
 	public bool fire;
 	public bool interact;
 	public bool toggleShader;
+
+	[Header("Crouch Settings")]
+	[Tooltip("If true, crouch is toggled on/off. If false, crouch is hold-to-crouch.")]
+	public bool crouchToggleMode = false;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -21,6 +26,8 @@ public class PlayerInputs : MonoBehaviour
 	[Header("Mouse Cursor Settings")]
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
+
+	private bool crouchHeld;
 
 #if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)
@@ -44,6 +51,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnSprint(InputValue value)
 	{
 		SprintInput(value.isPressed);
+	}
+
+	public void OnCrouch(InputValue value)
+	{
+		CrouchInput(value.isPressed);
 	}
 
 	public void OnAim(InputValue value)
@@ -86,6 +98,25 @@ public class PlayerInputs : MonoBehaviour
 	public void SprintInput(bool newSprintState)
 	{
 		sprint = newSprintState;
+	}
+
+	public void CrouchInput(bool pressed)
+	{
+		if (crouchToggleMode)
+		{
+			// toggle crouch on button down only
+			if (pressed && !crouchHeld)
+			{
+				crouch = !crouch;
+			}
+			// remember button state
+			crouchHeld = pressed;
+		}
+		else
+		{
+			// hold-to-crouch mode
+			crouch = pressed;
+		}
 	}
 
 	public void AimInput(bool newAimState)

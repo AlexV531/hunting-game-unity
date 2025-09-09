@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8576430987061034303}
   - component: {fileID: 2904912856067709644}
   - component: {fileID: 5938981959600511703}
+  - component: {fileID: 6845258343571453405}
   m_Layer: 8
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -92,6 +93,11 @@ MonoBehaviour:
   CinemachineCameraTarget: {fileID: 7466219558142940900}
   TopClamp: 89
   BottomClamp: -89
+  interactRange: 3
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  interactText: {fileID: 0}
 --- !u!114 &8576430987061034303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +133,7 @@ MonoBehaviour:
   sprint: 0
   aim: 0
   fire: 0
+  interact: 0
   toggleShader: 0
   analogMovement: 0
   cursorLocked: 1
@@ -229,6 +236,21 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6845258343571453405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630682804690856842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99b3eabf7b2fcc458df055eb8a9136b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraRecoil
+  recoilOffset: {fileID: 3725729556228326175}
+  recoilSpeed: 20
+  recoilRecoverySpeed: 5
 --- !u!1 &2932887363429763855
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,7 +358,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 7840754311862545517}
+  m_Follow: {fileID: 3725729556228326175}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
