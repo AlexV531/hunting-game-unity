@@ -639,7 +639,7 @@ MonoBehaviour:
   animalBleedFactor: 0.1
   animalHealFactor: 0.1
   animalAI: {fileID: 0}
-  corpse: {fileID: 0}
+  corpse: {fileID: 5324222755641310043}
   internalContainer: {fileID: 47556156525332122}
 --- !u!114 &6834382181995577058
 MonoBehaviour:
@@ -1206,6 +1206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Corpse
   interactionEnabled: 0
+  animal: {fileID: 3651933989365759357}
 --- !u!1 &9017630797139198235
 GameObject:
   m_ObjectHideFlags: 0

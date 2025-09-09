@@ -9,6 +9,7 @@ public class AnimalStateManager : MonoBehaviour
     public AnimalMovingState MovingState = new AnimalMovingState();
     public AnimalFleeingState FleeingState = new AnimalFleeingState();
     public AnimalListeningState ListeningState = new AnimalListeningState();
+    public AnimalDeadState DeadState = new AnimalDeadState();
 
     void Start()
     {

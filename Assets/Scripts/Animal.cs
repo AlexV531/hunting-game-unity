@@ -173,7 +173,22 @@ public class Animal : MonoBehaviour
             Debug.Log("Projectile exited internals with power: " + power);
             AddHit(hitData);
         }
-    }    
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
+    public void EnableCorpse()
+    {
+        corpse.SetInteractionEnabled(true);
+    }
+
+    public void DisableCorpse()
+    {
+        corpse.SetInteractionEnabled(false);
+    }
 
     private void AddHit(HitData hitData)
     {
@@ -218,15 +233,12 @@ public class Animal : MonoBehaviour
             return;
         isDead = true;
         Debug.Log($"{name} has died.");
-        corpse.SetInteractionEnabled(true);
+        EnableCorpse();
         if (animalAI != null)
         {
             animalAI.animator.SetTrigger("dead");
+            animalAI.fsm.ChangeState(animalAI.fsm.DeadState);
+            animalAI.agent.enabled = false;
         }
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
     }
 }

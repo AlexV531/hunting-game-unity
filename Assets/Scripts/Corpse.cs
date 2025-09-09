@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Corpse : InteractableBase
 {
+    public Animal animal;
+
     public override void Interact(FirstPersonController player)
     {
-        Debug.Log("Interacted with corpse");
+        player.PickUpAnimal(animal);
     }
 }

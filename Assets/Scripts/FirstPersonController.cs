@@ -70,7 +70,14 @@ public class FirstPersonController : MonoBehaviour
 	[Tooltip("Movement speed while crouching")]
 	public float CrouchSpeed = 2.0f;
 
+	[Header("Shoulder Carry")]
+	public Transform shoulderCarryPoint;
+
+	// interactables
     private InteractableBase currentInteractable;
+
+	// shoulder carry
+	private Animal carriedAnimal;
 
 	// cinemachine
 	private float _cinemachineTargetPitch;
@@ -149,6 +156,10 @@ public class FirstPersonController : MonoBehaviour
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && _input.interact)
 		{
 			currentInteractable.Interact(this);
+		}
+		else if (carriedAnimal != null && _input.interact)
+		{
+			DropAnimal();
 		}
 		_input.interact = false;
 	}
@@ -308,32 +319,77 @@ public class FirstPersonController : MonoBehaviour
 	}
 
 	private void HandleCrouch()
-{
-    if (_input.crouch)
-    {
-        if (!_isCrouching)
-        {
-            _isCrouching = true;
-            _controller.height = CrouchHeight;
-            _controller.center = new Vector3(0, CrouchHeight / 2f, 0);
+	{
+		if (_input.crouch)
+		{
+			if (!_isCrouching)
+			{
+				_isCrouching = true;
+				_controller.height = CrouchHeight;
+				_controller.center = new Vector3(0, CrouchHeight / 2f, 0);
 
-            Vector3 camPos = _cameraStandPos;
-            camPos.y -= CameraCrouchOffset;
-            CinemachineCameraTarget.transform.localPosition = camPos;
-        }
-    }
-    else
-    {
-        if (_isCrouching)
-        {
-            _isCrouching = false;
-            _controller.height = StandHeight;
-            _controller.center = new Vector3(0, StandHeight / 2f, 0);
+				Vector3 camPos = _cameraStandPos;
+				camPos.y -= CameraCrouchOffset;
+				CinemachineCameraTarget.transform.localPosition = camPos;
+			}
+		}
+		else
+		{
+			if (_isCrouching)
+			{
+				_isCrouching = false;
+				_controller.height = StandHeight;
+				_controller.center = new Vector3(0, StandHeight / 2f, 0);
 
-            CinemachineCameraTarget.transform.localPosition = _cameraStandPos;
-        }
-    }
-}
+				CinemachineCameraTarget.transform.localPosition = _cameraStandPos;
+			}
+		}
+	}
+
+	public void PickUpAnimal(Animal animal)
+	{
+		if (carriedAnimal != null)
+			return;
+
+		carriedAnimal = animal;
+
+		// disable interactable component
+		animal.DisableCorpse();
+
+		// parent to shoulder point and reset position/rotation
+		carriedAnimal.transform.position = shoulderCarryPoint.position;
+		carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
+		carriedAnimal.transform.SetParent(shoulderCarryPoint);
+
+		// pose animal correctly
+		if (carriedAnimal.animalAI != null)
+		{
+			carriedAnimal.animalAI.animator.SetTrigger("carry");
+		}
+
+		Debug.Log(carriedAnimal.transform.position);
+	}
+
+	public void DropAnimal()
+	{
+		if (carriedAnimal == null)
+			return;
+
+		// unparent
+		carriedAnimal.transform.SetParent(null);
+		carriedAnimal.transform.position -= new Vector3(0f, 0.75f, 0f);
+
+		// drop animal animation
+		if (carriedAnimal.animalAI != null)
+		{
+			carriedAnimal.animalAI.animator.SetTrigger("drop");
+		}
+
+		// enable interactable component
+		carriedAnimal.EnableCorpse();
+
+		carriedAnimal = null;
+	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{
