@@ -88,8 +88,9 @@ public class Animal : MonoBehaviour
         hitData.AddInternalHitData(internalHitData);
 
         // Place marker at hit
-        PlaceMarker(globalHitPos);
-        hitData.AddIntersectionPoint(transform.InverseTransformPoint(globalHitPos));
+        Vector3 localHitPos = transform.InverseTransformPoint(globalHitPos);
+        PlaceMarker(localHitPos);
+        hitData.AddIntersectionPoint(localHitPos);
 
         // Start raycast simulation
         float rayCastDist = 100f; // adjust as needed
@@ -131,7 +132,7 @@ public class Animal : MonoBehaviour
                     }
 
                     power = remainingPower;
-                    PlaceMarker(transform.TransformPoint(nextHitPos));
+                    PlaceMarker(nextHitPos);
                     hitData.AddIntersectionPoint(nextHitPos);
 
                     if (internalStack.Contains(newInternal))
@@ -221,10 +222,10 @@ public class Animal : MonoBehaviour
             KillAnimal();
     }
 
-    private void PlaceMarker(Vector3 position)
+    private void PlaceMarker(Vector3 localPosition)
     {
         if (markerPrefab != null)
-            Instantiate(markerPrefab, position, Quaternion.identity, internalContainer.transform);
+            Instantiate(markerPrefab, transform.TransformPoint(localPosition), Quaternion.identity, internalContainer.transform);
     }
 
     private void KillAnimal()
