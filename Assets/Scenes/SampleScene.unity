@@ -93,8 +93,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 50861aa817d335a44bf654afde3cd148, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 82e35c3fd5af3a34ca7b682d0c354955, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -313,8 +313,8 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_Bias: 3.06
+    m_NormalBias: 5.64
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
@@ -342,7 +342,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -688,6 +688,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1025041433 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 161342307495805109, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
+  m_PrefabInstance: {fileID: 4358664959881046518}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1027473784 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6297096713701710868, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
@@ -836,6 +841,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1734920789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7959618502543918538, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
+  m_PrefabInstance: {fileID: 4358664959881046518}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &380024326111051936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,10 +1053,6 @@ PrefabInstance:
       propertyPath: shoulderHoldPoint
       value: 
       objectReference: {fileID: 1027473784}
-    - target: {fileID: 4291222584742823249, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
-      propertyPath: shoulderCarryPoint
-      value: 
-      objectReference: {fileID: 1027473784}
     - target: {fileID: 4893943606364106517, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 79.80736
@@ -1080,18 +1092,6 @@ PrefabInstance:
     - target: {fileID: 4893943606364106517, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297096713701710868, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.709
-      objectReference: {fileID: 0}
-    - target: {fileID: 6297096713701710868, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.466
-      objectReference: {fileID: 0}
-    - target: {fileID: 7537338123521754566, guid: 0bb77ea050d12764690e2cb8435fdf9b, type: 3}
-      propertyPath: m_Name
-      value: Capsule
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1350,6 +1350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree001
       objectReference: {fileID: 0}
+    - target: {fileID: 7236359729391689873, guid: 7b85042d5a60635478d466ba7d1b0a42, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1408,6 +1412,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponRoot_Base
       objectReference: {fileID: 0}
+    - target: {fileID: 3153832525905315254, guid: c057193311e8be749b24ed949125d9be, type: 3}
+      propertyPath: vCam
+      value: 
+      objectReference: {fileID: 1734920789}
+    - target: {fileID: 3153832525905315254, guid: c057193311e8be749b24ed949125d9be, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1025041433}
     - target: {fileID: 9114293896906776717, guid: c057193311e8be749b24ed949125d9be, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

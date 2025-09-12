@@ -92,6 +92,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   CinemachineCameraTarget: {fileID: 7466219558142940900}
+  vCam: {fileID: 7959618502543918538}
   TopClamp: 89
   BottomClamp: -89
   interactRange: 3
@@ -103,7 +104,7 @@ MonoBehaviour:
   CrouchHeight: 1
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
-  shoulderHoldPoint: {fileID: 0}
+  shoulderCarryPoint: {fileID: 6297096713701710868}
 --- !u!114 &8576430987061034303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 1733570979246189000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.98, y: 1.843, z: 0}
+  m_LocalPosition: {x: -0.709, y: 1.466, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -571,7 +572,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 32.96973
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25

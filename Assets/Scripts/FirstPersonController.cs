@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Cinemachine;
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -47,6 +48,7 @@ public class FirstPersonController : MonoBehaviour
 	[Header("Cinemachine")]
 	[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
 	public GameObject CinemachineCameraTarget;
+	public CinemachineVirtualCamera vCam;
 	[Tooltip("How far in degrees can you move the camera up")]
 	public float TopClamp = 90.0f;
 	[Tooltip("How far in degrees can you move the camera down")]
@@ -124,6 +126,10 @@ public class FirstPersonController : MonoBehaviour
 		if (_mainCamera == null)
 		{
 			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+		}
+		if (vCam != null)
+		{
+			vCam.m_Lens.FieldOfView = GlobalVariables.cameraFOV;
 		}
 	}
 

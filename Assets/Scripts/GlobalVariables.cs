@@ -7,6 +7,8 @@ public class GlobalVariables : MonoBehaviour
     public static Vector3 mapMin = new Vector3(0f, -100f, 0f);
     public static Vector3 mapMax = new Vector3(1000f, 500f, 1000f);
 
+    public static float cameraFOV = 60f;
+
     public static float GetTerrainHeightAtWorldPos(Vector3 worldPos, TerrainData tData, Vector3 terrainPos)
     {
         // Convert world pos → terrain local pos (0–1)
