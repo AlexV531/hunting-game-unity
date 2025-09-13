@@ -4,24 +4,37 @@ public class GlobalVariables : MonoBehaviour
 {
     public static Vector3 debugTarget = Vector3.zero;
 
+    public static Terrain terrain { get; private set; }
     public static Vector3 mapMin = new Vector3(0f, -100f, 0f);
     public static Vector3 mapMax = new Vector3(1000f, 500f, 1000f);
 
+    public static PlayerInputs playerInputs { get; private set; }
+
     public static float cameraFOV = 60f;
 
-    public static float GetTerrainHeightAtWorldPos(Vector3 worldPos, TerrainData tData, Vector3 terrainPos)
+    public static float GetTerrainHeightAtWorldPos(Vector3 worldPos)
     {
         // Convert world pos → terrain local pos (0–1)
-        float relativeX = (worldPos.x - terrainPos.x) / tData.size.x;
-        float relativeZ = (worldPos.z - terrainPos.z) / tData.size.z;
+        float relativeX = (worldPos.x - terrain.transform.position.x) / terrain.terrainData.size.x;
+        float relativeZ = (worldPos.z - terrain.transform.position.z) / terrain.terrainData.size.z;
 
         // Convert → heightmap pixel coords
-        int x = Mathf.RoundToInt(relativeX * tData.heightmapResolution);
-        int z = Mathf.RoundToInt(relativeZ * tData.heightmapResolution);
+        int x = Mathf.RoundToInt(relativeX * terrain.terrainData.heightmapResolution);
+        int z = Mathf.RoundToInt(relativeZ * terrain.terrainData.heightmapResolution);
 
-        x = Mathf.Clamp(x, 0, tData.heightmapResolution - 1);
-        z = Mathf.Clamp(z, 0, tData.heightmapResolution - 1);
+        x = Mathf.Clamp(x, 0, terrain.terrainData.heightmapResolution - 1);
+        z = Mathf.Clamp(z, 0, terrain.terrainData.heightmapResolution - 1);
 
-        return tData.GetHeight(x, z) + terrainPos.y;
+        return terrain.terrainData.GetHeight(x, z) + terrain.transform.position.y;
+    }
+
+    public static void RegisterTerrain(Terrain t)
+    {
+        terrain = t;
+    }
+
+    public static void RegisterPlayerInputs(PlayerInputs inputs)
+    {
+        playerInputs = inputs;
     }
 }

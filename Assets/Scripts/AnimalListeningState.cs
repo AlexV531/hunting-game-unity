@@ -4,6 +4,7 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
 {
     public float turnSpeed = 180f;
     private AnimalBaseState nextState;
+    public override AlertnessLevel Alertness => AlertnessLevel.Alert;
 
 
     public override void EnterState(AnimalStateManager animal)

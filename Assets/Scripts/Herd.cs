@@ -5,7 +5,6 @@ public class Herd : MonoBehaviour
 {
     public readonly List<AnimalAI> animalsInHerd = new List<AnimalAI>();
     public float radius = 10f;
-    public Terrain terrain;
 
     public void RegisterHerdAnimal(AnimalAI animalAI)
     {
@@ -31,8 +30,6 @@ public class Herd : MonoBehaviour
     public List<Vector3> GetRandomPointsInRadiusForArray(List<Vector3> positions)
     {
         List<Vector3> newPositions = new List<Vector3>();
-        TerrainData tData = terrain.terrainData;
-        Vector3 terrainPos = terrain.transform.position;
 
         foreach (Vector3 basePos in positions)
         {
@@ -43,7 +40,7 @@ public class Herd : MonoBehaviour
             Vector3 point = Vector3.zero;
             point.x = basePos.x + r * Mathf.Cos(theta);
             point.z = basePos.z + r * Mathf.Sin(theta);
-            point.y = GlobalVariables.GetTerrainHeightAtWorldPos(point, tData, terrainPos);
+            point.y = GlobalVariables.GetTerrainHeightAtWorldPos(point);
 
             newPositions.Add(point);
         }

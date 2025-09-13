@@ -11,7 +11,6 @@ public class AnimalAI : MonoBehaviour, INoiseListener
     public float HearingThreshold => 0.5f;
     public float fleeAngleSpread = 45f; // degrees
     public float fleeDistance = 50f;
-    public Terrain terrain;
     public Herd herd;
     public Vector3 MostRecentSoundPosition;
     public float soundHeard = 0f;
@@ -84,6 +83,8 @@ public class AnimalAI : MonoBehaviour, INoiseListener
 
     public void BecomeAlert()
     {
+        if (fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked)
+            return;
         fsm.ChangeState(fsm.ListeningState);
     }
 
@@ -122,9 +123,6 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         Vector3 deerPos = transform.position;
         List<Vector3> targetQueue = new List<Vector3>();
 
-        TerrainData tData = terrain.terrainData;
-        Vector3 terrainPos = terrain.transform.position;
-
         for (int j = 0; j < numTargets; j++)
         {
             Vector3 escapeDir = (deerPos - panicSource).normalized;
@@ -140,7 +138,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
                 if (target.x >= GlobalVariables.mapMin.x && target.x <= GlobalVariables.mapMax.x &&
                     target.z >= GlobalVariables.mapMin.z && target.z <= GlobalVariables.mapMax.z)
                 {
-                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target, tData, terrainPos);
+                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target);
                     // Debug.Log("within spread");
                     targetQueue.Add(target);
 
@@ -164,7 +162,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
                 if (target.x >= GlobalVariables.mapMin.x && target.x <= GlobalVariables.mapMax.x &&
                     target.z >= GlobalVariables.mapMin.z && target.z <= GlobalVariables.mapMax.z)
                 {
-                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target, tData, terrainPos);
+                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target);
                     // Debug.Log("outside spread");
                     targetQueue.Add(target);
 
@@ -181,7 +179,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
             // Fallback: clamp deer position inside map
             Vector3 clampedTarget = new Vector3(
                 Mathf.Clamp(deerPos.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x),
-                GlobalVariables.GetTerrainHeightAtWorldPos(deerPos, tData, terrainPos),
+                GlobalVariables.GetTerrainHeightAtWorldPos(deerPos),
                 Mathf.Clamp(deerPos.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z)
             );
             // Debug.Log("nowhere");

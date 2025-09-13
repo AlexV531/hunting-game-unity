@@ -10,6 +10,7 @@ public class AnimalMovingState : AnimalBaseState
     private AnimalBaseState nextState;
     private Queue<Vector3> targetQueue = new Queue<Vector3>();
     private bool hasTarget = false;
+    public override AlertnessLevel Alertness => AlertnessLevel.Calm;
 
     public override void EnterState(AnimalStateManager animal)
     {

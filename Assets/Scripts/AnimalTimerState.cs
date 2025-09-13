@@ -5,6 +5,7 @@ public class AnimalTimerState : AnimalBaseState
     private float waitTime = 10f;
     private float elapsedTime = 0f;
     private AnimalBaseState nextState;
+    public override AlertnessLevel Alertness => AlertnessLevel.Calm;
 
     public AnimalTimerState(float defaultWaitTime = 10f)
     {
