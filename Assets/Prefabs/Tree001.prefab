@@ -52,7 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -100,6 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207860680639860177}
   - component: {fileID: 2121433192006938913}
+  - component: {fileID: 4209541699627756317}
   m_Layer: 0
   m_Name: Tree001
   m_TagString: Untagged
@@ -150,3 +151,26 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7236359729391689873}
   m_Enabled: 1
+--- !u!136 &4209541699627756317
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6873370389940641293}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 11
+  m_Direction: 1
+  m_Center: {x: -2.3, y: 3, z: -0.5}

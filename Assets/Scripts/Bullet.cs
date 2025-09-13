@@ -54,8 +54,8 @@ public class Bullet : MonoBehaviour
             // If not an animal hit
             else
             {
-                // Debug.Log("Setting debug target to " + hit.point);
-                GlobalVariables.debugTarget = hit.point;
+                Debug.Log("Hit point: " + hit.point);
+                // GlobalVariables.debugTarget = hit.point;
             }
 
             // Destroy bullet on impact
