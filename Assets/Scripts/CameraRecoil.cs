@@ -5,6 +5,7 @@ public class CameraRecoil : MonoBehaviour
     public Transform recoilOffset; // assign RecoilOffsetTransform in Inspector
     public float recoilSpeed = 20f;
     public float recoilRecoverySpeed = 5f;
+    public bool recoilEnabled = true;
 
     private Vector2 currentRecoil;
     private Vector2 targetRecoil;
@@ -24,6 +25,9 @@ public class CameraRecoil : MonoBehaviour
 
     public void AddRecoil(float pitch, float yaw)
     {
-        targetRecoil += new Vector2(pitch, yaw);
+        if (recoilEnabled)
+        {
+            targetRecoil += new Vector2(pitch, yaw);
+        }
     }
 }
