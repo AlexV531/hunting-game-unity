@@ -6,6 +6,8 @@ public class Weapon : MonoBehaviour
 {
     private PlayerInputs _input; // Reference to central input hub
     private CameraRecoil _recoil;
+    private CinemachineVirtualCamera _vCam;
+
 
     [Header("Weapon Settings")]
     public Transform model;            // assign your model in Inspector
@@ -19,16 +21,16 @@ public class Weapon : MonoBehaviour
     public float bulletSpeed = 60f;
 
     [Header("Zoom Settings")]
-    public CinemachineVirtualCamera vCam;
+    // public CinemachineVirtualCamera vCam;
     public float scopedFOV = 20f;          // FOV when scoped
     public float zoomSpeed = 10f;          // FOV transition speed
 
-    [Header("Shadow & LOD Settings")]
-    public UniversalRenderPipelineAsset urpAsset;   // Assigned URP Asset
-    public float scopedShadowDistance = 500f;       // Shadow distance when scoped
-    public float normalShadowDistance = 100f;       // Default shadow distance
-    public float scopedLODBias = 2f;                // LOD bias when scoped
-    public float normalLODBias = 1f;      
+    // [Header("Shadow & LOD Settings")]
+    // public UniversalRenderPipelineAsset urpAsset;   // Assigned URP Asset
+    // public float scopedShadowDistance = 500f;       // Shadow distance when scoped
+    // public float normalShadowDistance = 100f;       // Default shadow distance
+    // public float scopedLODBias = 2f;                // LOD bias when scoped
+    // public float normalLODBias = 1f;      
 
     [Tooltip("Time in seconds between shots")]
     public float fireRate = 0.2f;
@@ -48,6 +50,11 @@ public class Weapon : MonoBehaviour
         // Finds PlayerInputs on parent
         _input = GetComponentInParent<PlayerInputs>();
         _recoil = GetComponentInParent<CameraRecoil>();
+    }
+
+    void Start()
+    {
+        _vCam = GetComponentInParent<FirstPersonController>().vCam;
     }
 
     void Update()
@@ -82,10 +89,10 @@ public class Weapon : MonoBehaviour
 
     void HandleZoom()
     {
-        if (vCam != null)
+        if (_vCam != null)
         {
             float targetFOV = _input.aim ? scopedFOV : GlobalVariables.cameraFOV;
-            vCam.m_Lens.FieldOfView = Mathf.Lerp(vCam.m_Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+            _vCam.m_Lens.FieldOfView = Mathf.Lerp(_vCam.m_Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
         }
     }
 
