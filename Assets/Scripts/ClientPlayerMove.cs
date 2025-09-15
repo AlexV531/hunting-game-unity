@@ -23,6 +23,7 @@ public class ClientPlayerMove : NetworkBehaviour
 
         if (IsOwner)
         {
+            Debug.Log("Enabling inputs");
             m_PlayerInputs.enabled = true;
             m_PlayerInput.enabled = true;
             m_FirstPersonController.enabled = true;

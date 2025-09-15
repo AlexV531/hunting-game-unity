@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Internal : MonoBehaviour
 {
+    public int internalId; // unique per animal
+
     [Header("Organ Stats")]
     [Tooltip("How much damage this organ can take")]
     public float strength = 10f;

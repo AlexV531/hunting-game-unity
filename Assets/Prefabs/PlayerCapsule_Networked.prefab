@@ -465,7 +465,6 @@ GameObject:
   - component: {fileID: -2013538287658000580}
   - component: {fileID: 3860327484710091276}
   - component: {fileID: 4547363607548388873}
-  - component: {fileID: 8891292422967416130}
   m_Layer: 8
   m_Name: PlayerCapsule_Networked
   m_TagString: Player
@@ -552,7 +551,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   interactText: {fileID: 6683554256476213790}
-  StandHeight: 2
+  StandHeight: -11.16
   CrouchHeight: 1
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
@@ -729,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3599887054
+  GlobalObjectIdHash: 3182954585
   InScenePlacedSourceGlobalObjectIdHash: 3182954585
   DeferredDespawnTick: 0
   Ownership: 1
@@ -805,21 +804,6 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &8891292422967416130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8435097450268482601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58d802d37e2a1bc4da21f3da954bda40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ClientNetworkAnimator
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 0}
 --- !u!1 &8519950718463265629
 GameObject:
   m_ObjectHideFlags: 0

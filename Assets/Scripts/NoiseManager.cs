@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class NoiseEvent
 {
@@ -39,18 +40,18 @@ public class NoiseManager : MonoBehaviour
 
     public static void EmitNoise(NoiseEvent noiseEvent)
     {
+        // only the server should process noises
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+
         foreach (var listener in listeners)
         {
-            // Assuming listener is also a MonoBehaviour with a transform
             var listenerTransform = (listener as MonoBehaviour)?.transform;
             if (listenerTransform == null)
                 continue;
 
             float distance = Vector3.Distance(listenerTransform.position, noiseEvent.position);
             float perceivedVolume = noiseEvent.loudness / (distance + 1f);
-
-            // Optional: Raycast check for occlusion
-            // if (Physics.Raycast(noiseEvent.position, (listenerTransform.position - noiseEvent.position).normalized, out RaycastHit hit, distance)) { ... }
 
             if (perceivedVolume > listener.HearingThreshold)
             {

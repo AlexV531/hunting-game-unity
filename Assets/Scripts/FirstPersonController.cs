@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
 using Cinemachine;
+using Unity.Netcode;
+
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -76,8 +78,11 @@ public class FirstPersonController : MonoBehaviour
 	[Header("Shoulder Carry")]
 	public Transform shoulderCarryPoint;
 
+	// [Header("Network")]
+	// public NetworkObject networkObject;
+
 	// interactables
-    private InteractableBase currentInteractable;
+	private InteractableBase currentInteractable;
 
 	// shoulder carry
 	private Animal carriedAnimal;
@@ -160,6 +165,12 @@ public class FirstPersonController : MonoBehaviour
 		HandleCrouch();
 		Move();
 		DetectInteractable();
+
+		if (carriedAnimal != null)
+		{
+			carriedAnimal.transform.position = shoulderCarryPoint.position;
+			carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
+		}
 
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && _input.interact)
 		{
@@ -363,11 +374,13 @@ public class FirstPersonController : MonoBehaviour
 
 		// disable interactable component
 		animal.DisableCorpse();
+		animal.NetworkObject.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
+		animal.DisableInternalColliders();
 
 		// parent to shoulder point and reset position/rotation
-		carriedAnimal.transform.position = shoulderCarryPoint.position;
-		carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
-		carriedAnimal.transform.SetParent(shoulderCarryPoint);
+		// carriedAnimal.transform.position = shoulderCarryPoint.position;
+		// carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
+		// carriedAnimal.transform.SetParent(shoulderCarryPoint);
 
 		// pose animal correctly
 		if (carriedAnimal.animalAI != null)
@@ -384,7 +397,10 @@ public class FirstPersonController : MonoBehaviour
 			return;
 
 		// unparent
-		carriedAnimal.transform.SetParent(null);
+		// carriedAnimal.transform.SetParent(null);
+		carriedAnimal.NetworkObject.RemoveOwnership();
+		carriedAnimal.EnableInternalColliders();
+
 		carriedAnimal.transform.position -= new Vector3(0f, 0.75f, 0f);
 
 		// drop animal animation

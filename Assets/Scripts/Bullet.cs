@@ -40,10 +40,10 @@ public class Bullet : MonoBehaviour
                 if (animal != null)
                 {
                     // Call the ProjectileHit method
-                    animal.ProjectileHit(
+                    animal.ApplyProjectileHitServerRpc(
                         globalHitPos: hit.point,
                         direction: velocity.normalized,
-                        internalHit: internalHit,
+                        internalId: internalHit.internalId,
                         power: 6.0f,
                         bulletStrength: power_factor,
                         bulletBleed: bleed_factor,

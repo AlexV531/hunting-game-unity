@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Cinemachine;
+using Unity.Netcode;
 
 public class Weapon : MonoBehaviour
 {
@@ -133,8 +134,7 @@ public class Weapon : MonoBehaviour
                 return;
             }
             Shoot();
-            NoiseEvent noise = new NoiseEvent(transform.position, 20f, "gunshot");
-            NoiseManager.EmitNoise(noise);
+            EmitNoiseServerRpc(transform.position, 20f, "gunshot");
             _recoil.AddRecoil(50f, 1f);
             currentAmmo--;
             _fireCooldown = fireRate;
@@ -142,6 +142,13 @@ public class Weapon : MonoBehaviour
             if (!automaticFire)
                 _input.fire = false;
         }
+    }
+
+    [ServerRpc]
+    void EmitNoiseServerRpc(Vector3 position, float loudness, string name)
+    {
+        var noiseEvent = new NoiseEvent(position, loudness, name);
+        NoiseManager.EmitNoise(noiseEvent);
     }
 
     void HandleReload()

@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using Unity.Netcode;
 
-public class AnimalAI : MonoBehaviour, INoiseListener
+public class AnimalAI : NetworkBehaviour, INoiseListener
 {
     public Animal animal;
     public AnimalStateManager fsm;
@@ -22,6 +23,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
     public float panicCooldown = 3f; // seconds
     private float lastPanicTime = -Mathf.Infinity;
     private int sightLayerMask;
+    private bool initialized = false;
 
     void Awake()
     {
@@ -31,19 +33,34 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         agent = GetComponent<NavMeshAgent>();
     }
 
-    void Start()
-    {
-        fsm = GetComponent<AnimalStateManager>();
-        NoiseManager.RegisterListener(this);
-        if (herd != null)
-        {
-            herd.RegisterHerdAnimal(this);
-        }
-        sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
-    }
+    // void Start()
+    // {
+    //     if (!IsServer)
+    //     {
+    //         Debug.Log("This is not a server");
+    //         return;
+    //     }
+    //     Debug.Log("This is a server");
+
+    //     fsm = GetComponent<AnimalStateManager>();
+    //     NoiseManager.RegisterListener(this);
+    //     if (herd != null)
+    //     {
+    //         herd.RegisterHerdAnimal(this);
+    //     }
+    //     sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
+    // }
 
     private void Update()
     {
+        if (!IsServer)
+            return;
+
+        if (!initialized)
+        {
+            InitializeAnimalAI();
+        }
+
         // Dead check
         if (animal.IsDead())
             return;
@@ -62,8 +79,22 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         }
     }
 
+    public void InitializeAnimalAI()
+    {
+        fsm = GetComponent<AnimalStateManager>();
+        NoiseManager.RegisterListener(this);
+        if (herd != null)
+        {
+            herd.RegisterHerdAnimal(this);
+        }
+        sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
+    }
+
     public void OnNoiseHeard(NoiseEvent noiseEvent, float perceivedVolume)
     {
+        if (!IsServer)
+            return;
+
         if (animal.IsDead())
             return;
 
@@ -197,6 +228,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
 
         // Find all players (using tag instead of group)
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        // Debug.Log(players);
 
         foreach (GameObject player in players)
         {
@@ -215,7 +247,7 @@ public class AnimalAI : MonoBehaviour, INoiseListener
 
             // Line-of-sight check
             if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit, sightRange, sightLayerMask))
-{
+            {
                 // Walk up parents until we find something tagged "Player"
                 Transform hitTransform = hit.collider.transform;
                 bool isPlayer = false;
@@ -245,8 +277,13 @@ public class AnimalAI : MonoBehaviour, INoiseListener
         return agent.velocity.magnitude;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
-        NoiseManager.UnregisterListener(this);
+        if (IsServer)
+        {
+            NoiseManager.UnregisterListener(this);
+        }
+
+        base.OnDestroy();
     }
 }

@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
 
-public class Animal : MonoBehaviour
+public class Animal : NetworkBehaviour
 {
     public float health = 100f;
     public float maxHealth = 100f;
@@ -14,6 +15,8 @@ public class Animal : MonoBehaviour
     public Corpse corpse;
     [SerializeField] GameObject internalContainer;
     private bool isDead = false;
+    public Internal[] internals; // assign all organs in inspector
+    private Dictionary<int, Internal> internalLookup;
 
     LayerMask layerMask;
 
@@ -21,10 +24,18 @@ public class Animal : MonoBehaviour
     {
         layerMask = LayerMask.GetMask("Internal");
         animalAI = GetComponent<AnimalAI>();
+        internalLookup = new Dictionary<int, Internal>();
+        foreach (var internalOrg in internals)
+        {
+            internalLookup[internalOrg.internalId] = internalOrg;
+        }
     }
 
     private void Update()
     {
+        if (!IsServer)
+            return;
+
         // Dead check
         if (IsDead())
             return;
@@ -54,6 +65,13 @@ public class Animal : MonoBehaviour
 
         if (health <= 0f)
             KillAnimal();
+    }
+
+    [ServerRpc]
+    public void ApplyProjectileHitServerRpc(Vector3 globalHitPos, Vector3 direction, int internalId,
+        float power = 6f, float bulletStrength = 1f, float bulletBleed = 1f, float bulletHeal = 1f)
+    {
+        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), power, bulletStrength, bulletBleed, bulletHeal);
     }
 
     public void ProjectileHit(Vector3 globalHitPos, Vector3 direction, Internal internalHit,
@@ -184,11 +202,43 @@ public class Animal : MonoBehaviour
     public void EnableCorpse()
     {
         corpse.SetInteractionEnabled(true);
+        Collider col = corpse.GetComponent<Collider>();
+        if (col != null)
+            col.enabled = true;
     }
 
     public void DisableCorpse()
     {
         corpse.SetInteractionEnabled(false);
+        Collider col = corpse.GetComponent<Collider>();
+        if (col != null)
+            col.enabled = false;
+    }
+
+    public Internal GetInternalById(int id)
+    {
+        internalLookup.TryGetValue(id, out var internalOrg);
+        return internalOrg;
+    }
+
+    public void DisableInternalColliders()
+    {
+        foreach (var internalPart in internals)
+        {
+            Collider col = internalPart.GetComponent<Collider>();
+            if (col != null)
+                col.enabled = false;
+        }
+    }
+
+    public void EnableInternalColliders()
+    {
+        foreach (var internalPart in internals)
+        {
+            Collider col = internalPart.GetComponent<Collider>();
+            if (col != null)
+                col.enabled = true;
+        }
     }
 
     private void AddHit(HitData hitData)
@@ -230,7 +280,7 @@ public class Animal : MonoBehaviour
 
     private void KillAnimal()
     {
-        if (IsDead())
+        if (!IsServer || IsDead())
             return;
         isDead = true;
         Debug.Log($"{name} has died.");
