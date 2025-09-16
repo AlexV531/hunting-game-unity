@@ -360,8 +360,10 @@ public class FirstPersonController : MonoBehaviour
 			if (_isCrouching)
 			{
 				_isCrouching = false;
+				// _controller.enabled = false;
 				_controller.height = StandHeight;
 				_controller.center = new Vector3(0, StandHeight / 2f, 0);
+				// _controller.enabled = true;
 
 				CinemachineCameraTarget.transform.localPosition = _cameraStandPos;
 			}

@@ -48960,7 +48960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0929b21eae36c429a136859db65005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BootstrapHost
-  startHost: 0
+  startHost: 1
 --- !u!1 &744735901
 GameObject:
   m_ObjectHideFlags: 0

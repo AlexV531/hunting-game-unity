@@ -567,7 +567,7 @@ CharacterController:
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.93, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &676235648614991900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,7 +603,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   interactText: {fileID: 6683554256476213790}
-  StandHeight: -11.16
+  StandHeight: 2
   CrouchHeight: 1
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
