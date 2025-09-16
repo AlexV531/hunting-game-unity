@@ -78,6 +78,9 @@ public class FirstPersonController : MonoBehaviour
 	[Header("Shoulder Carry")]
 	public Transform shoulderCarryPoint;
 
+	[Header("Weapon")]
+	public Weapon equippedWeapon;
+
 	// [Header("Network")]
 	// public NetworkObject networkObject;
 

@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SteadyAim",
+                    "type": "PassThrough",
+                    "id": "9cd5dcc1-a4b9-46c5-9008-652c796d35c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -403,6 +412,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "451f3c81-6c81-427c-9ae5-bd31caed6a23",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SteadyAim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9a439ef-c029-45b8-bd07-6078b9d0d11b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SteadyAim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

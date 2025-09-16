@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2298631370890896561}
+  - {fileID: 8803281642352398912}
   m_Father: {fileID: 5087568743913183604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2532892138791937943
@@ -190,13 +190,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4256366922425650313}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1678939170201699571}
-  m_Father: {fileID: 569294695800174897}
+  m_Father: {fileID: 8803281642352398912}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4704617158035600367
 GameObject:
@@ -447,6 +447,58 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6558715861769834181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8803281642352398912}
+  - component: {fileID: 8643586720480587309}
+  m_Layer: 0
+  m_Name: ScopeSway
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8803281642352398912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6558715861769834181}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2298631370890896561}
+  m_Father: {fileID: 569294695800174897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8643586720480587309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6558715861769834181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a080c0f1d14f62458640715f30e754a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScopeSway
+  swayAmount: 0.5
+  swaySpeed: 1.5
+  returnSpeed: 2
+  steadyMultiplier: 0.2
+  steadyTransitionSpeed: 5
+  _player: {fileID: 676235648614991900}
+  _inputs: {fileID: 8791639418517175756}
 --- !u!1 &8435097450268482601
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +608,7 @@ MonoBehaviour:
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
   shoulderCarryPoint: {fileID: 3114307596873294267}
+  equippedWeapon: {fileID: 5633532456063836386}
 --- !u!114 &8791639418517175756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,11 +627,13 @@ MonoBehaviour:
   sprint: 0
   crouch: 0
   aim: 0
+  steadyAim: 0
   fire: 0
   reload: 0
   interact: 0
   toggleShader: 0
   crouchToggleMode: 0
+  steadyAimToggleMode: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -892,6 +947,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c057193311e8be749b24ed949125d9be, type: 3}
+--- !u!114 &5633532456063836386 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1116240691095239203, guid: c057193311e8be749b24ed949125d9be, type: 3}
+  m_PrefabInstance: {fileID: 4707384303758138049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fbc3cdf21454d4c911cc9a474a7094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!4 &7821912195946867149 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3305359167358087948, guid: c057193311e8be749b24ed949125d9be, type: 3}

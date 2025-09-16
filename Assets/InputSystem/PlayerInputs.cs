@@ -12,6 +12,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool sprint;
 	public bool crouch;
 	public bool aim;
+	public bool steadyAim;
 	public bool fire;
 	public bool reload;
 	public bool interact;
@@ -21,6 +22,10 @@ public class PlayerInputs : MonoBehaviour
 	[Tooltip("If true, crouch is toggled on/off. If false, crouch is hold-to-crouch.")]
 	public bool crouchToggleMode = false;
 
+	[Header("Steady Aim Settings")]
+	[Tooltip("If true, steady aim is toggled on/off. If false, steady aim is hold-to-steady.")]
+	public bool steadyAimToggleMode = false;
+
 	[Header("Movement Settings")]
 	public bool analogMovement;
 
@@ -29,6 +34,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool cursorInputForLook = true;
 
 	private bool crouchHeld;
+	private bool steadyAimHeld;
 
 #if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)
@@ -62,6 +68,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnAim(InputValue value)
 	{
 		AimInput(value.isPressed);
+	}
+
+	public void OnSteadyAim(InputValue value)
+	{
+		SteadyAimInput(value.isPressed);
 	}
 
 	public void OnFire(InputValue value)
@@ -128,6 +139,25 @@ public class PlayerInputs : MonoBehaviour
 	public void AimInput(bool newAimState)
 	{
 		aim = newAimState;
+	}
+
+	public void SteadyAimInput(bool pressed)
+	{
+		if (steadyAimToggleMode)
+		{
+			// toggle crouch on button down only
+			if (pressed && !steadyAimHeld)
+			{
+				steadyAim = !steadyAim;
+			}
+			// remember button state
+			steadyAimHeld = pressed;
+		}
+		else
+		{
+			// hold-to-crouch mode
+			steadyAim = pressed;
+		}
 	}
 
 	public void FireInput(bool newFireState)

@@ -1,37 +1,63 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Weapon))]
 public class ScopeSway : MonoBehaviour
 {
     [Header("Sway Settings")]
-    public float swayAmount = 0.002f;       // How far it sways
-    public float swaySpeed = 1.5f;         // How fast it sways
-    public float returnSpeed = 2f;         // How fast it recenters
+    public float swayAmount = 0.5f;      // Max sway in degrees
+    public float swaySpeed = 1.5f;       // Sway cycle speed
+    public float returnSpeed = 2f;       // How fast it recenters
 
-    private Vector3 initialPos;
-    private Weapon weapon;
+    [Header("Steady Aim")]
+    [Range(0f, 1f)] public float steadyMultiplier = 0.2f;  // Sway scale when steady
+    public float steadyTransitionSpeed = 5f;               // Smooth blend speed
+
+    [SerializeField] private FirstPersonController _player;
+    [SerializeField] private PlayerInputs _inputs;
+
+    private Quaternion initialRotation;
+    private float currentMultiplier = 1f; // Smoothly transitions between normal and steady
 
     void Start()
     {
-        initialPos = transform.localPosition;
-        weapon = GetComponent<Weapon>();
+        initialRotation = transform.localRotation;
     }
 
     void Update()
     {
-        if (weapon.IsAiming())
+        if (_player.equippedWeapon.IsAiming())
         {
-            // Calculate sway with sine waves
-            float swayX = Mathf.Sin(Time.time * swaySpeed) * swayAmount;
-            float swayY = Mathf.Cos(Time.time * swaySpeed * 0.8f) * swayAmount;
+            // Check if player is holding steady aim
+            float targetMultiplier = _inputs.steadyAim ? steadyMultiplier : 1f;
 
-            Vector3 targetPos = initialPos + new Vector3(swayX, swayY, 0);
-            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, Time.deltaTime * returnSpeed);
+            // Smooth transition between multipliers
+            currentMultiplier = Mathf.Lerp(
+                currentMultiplier,
+                targetMultiplier,
+                Time.deltaTime * steadyTransitionSpeed
+            );
+
+            // Breathing sway
+            float swayX = Mathf.Sin(Time.time * swaySpeed) * swayAmount * currentMultiplier;
+            float swayY = Mathf.Cos(Time.time * swaySpeed * 0.8f) * swayAmount * currentMultiplier;
+
+            Quaternion targetRot = initialRotation * Quaternion.Euler(swayY, swayX, 0);
+            transform.localRotation = Quaternion.Slerp(
+                transform.localRotation,
+                targetRot,
+                Time.deltaTime * returnSpeed
+            );
         }
         else
         {
-            // Snap back when not aiming
-            transform.localPosition = Vector3.Lerp(transform.localPosition, initialPos, Time.deltaTime * returnSpeed);
+            // Reset to neutral
+            transform.localRotation = Quaternion.Slerp(
+                transform.localRotation,
+                initialRotation,
+                Time.deltaTime * returnSpeed
+            );
+
+            // Reset multiplier when not aiming
+            currentMultiplier = 1f;
         }
     }
 }

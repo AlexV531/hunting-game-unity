@@ -307,7 +307,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3305359167358087948}
-  - component: {fileID: 100239181207997269}
   - component: {fileID: 1116240691095239203}
   m_Layer: 0
   m_Name: WeaponRoot_Base
@@ -334,22 +333,6 @@ Transform:
   - {fileID: 7128737959558662897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &100239181207997269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631708624346822267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a080c0f1d14f62458640715f30e754a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  swayAmount: 0.02
-  swaySpeed: 1.5
-  returnSpeed: 2
-  aiming: 0
 --- !u!114 &1116240691095239203
 MonoBehaviour:
   m_ObjectHideFlags: 0
