@@ -1,23 +1,25 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Weapon))]
 public class ScopeSway : MonoBehaviour
 {
     [Header("Sway Settings")]
-    public float swayAmount = 0.02f;       // How far it sways
+    public float swayAmount = 0.002f;       // How far it sways
     public float swaySpeed = 1.5f;         // How fast it sways
     public float returnSpeed = 2f;         // How fast it recenters
-    public bool aiming = false;            // Toggle this when aiming
 
     private Vector3 initialPos;
+    private Weapon weapon;
 
     void Start()
     {
         initialPos = transform.localPosition;
+        weapon = GetComponent<Weapon>();
     }
 
     void Update()
     {
-        if (aiming)
+        if (weapon.IsAiming())
         {
             // Calculate sway with sine waves
             float swayX = Mathf.Sin(Time.time * swaySpeed) * swayAmount;

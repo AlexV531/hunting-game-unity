@@ -67,7 +67,7 @@ public class Animal : NetworkBehaviour
             KillAnimal();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void ApplyProjectileHitServerRpc(Vector3 globalHitPos, Vector3 direction, int internalId,
         float power = 6f, float bulletStrength = 1f, float bulletBleed = 1f, float bulletHeal = 1f)
     {

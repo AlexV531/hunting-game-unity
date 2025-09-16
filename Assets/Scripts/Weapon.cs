@@ -70,6 +70,11 @@ public class Weapon : MonoBehaviour
         HandleZoom();
     }
 
+    public bool IsAiming()
+    {
+        return aiming;
+    }
+
     void HandleAim()
     {
         if (!model || !aimPosition || !hipPosition) return;
