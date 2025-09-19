@@ -24,21 +24,34 @@ public interface INoiseListener
 
 public class NoiseManager : MonoBehaviour
 {
-    private static readonly List<INoiseListener> listeners = new List<INoiseListener>();
+    public static NoiseManager Instance { get; private set; }
 
-    public static void RegisterListener(INoiseListener listener)
+    private readonly List<INoiseListener> listeners = new List<INoiseListener>();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // enforce singleton
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject); // optional, if you want it across scenes
+    }
+
+    public void RegisterListener(INoiseListener listener)
     {
         if (!listeners.Contains(listener))
             listeners.Add(listener);
     }
 
-    public static void UnregisterListener(INoiseListener listener)
+    public void UnregisterListener(INoiseListener listener)
     {
         if (listeners.Contains(listener))
             listeners.Remove(listener);
     }
 
-    public static void EmitNoise(NoiseEvent noiseEvent)
+    public void EmitNoise(NoiseEvent noiseEvent)
     {
         // only the server should process noises
         if (!NetworkManager.Singleton.IsServer)

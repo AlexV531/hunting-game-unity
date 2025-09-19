@@ -82,7 +82,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public void InitializeAnimalAI()
     {
         fsm = GetComponent<AnimalStateManager>();
-        NoiseManager.RegisterListener(this);
+        NoiseManager.Instance.RegisterListener(this);
         if (herd != null)
         {
             herd.RegisterHerdAnimal(this);
@@ -281,7 +281,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     {
         if (IsServer)
         {
-            NoiseManager.UnregisterListener(this);
+            NoiseManager.Instance.UnregisterListener(this);
         }
 
         base.OnDestroy();

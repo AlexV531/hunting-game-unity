@@ -153,7 +153,7 @@ public class Weapon : MonoBehaviour
     void EmitNoiseServerRpc(Vector3 position, float loudness, string name)
     {
         var noiseEvent = new NoiseEvent(position, loudness, name);
-        NoiseManager.EmitNoise(noiseEvent);
+        NoiseManager.Instance.EmitNoise(noiseEvent);
     }
 
     void HandleReload()
