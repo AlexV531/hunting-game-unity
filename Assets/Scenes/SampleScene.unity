@@ -4439,28 +4439,15 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -2.3, y: 3, z: -0.5}
   m_TimeToStationary: 0.5
---- !u!1 &72063749
+--- !u!1 &72063749 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2655777286395704238, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+  m_PrefabInstance: {fileID: 225834525915860178}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 72063751}
-  - component: {fileID: 72063750}
-  m_Layer: 0
-  m_Name: Herd
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &72063750
+--- !u!114 &72063750 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5412072354824582703, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+  m_PrefabInstance: {fileID: 225834525915860178}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72063749}
   m_Enabled: 1
@@ -4468,22 +4455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2e5caf262d9af4fa24cce1029dfebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  radius: 10
---- !u!4 &72063751
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72063749}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 82.08532, y: 5.82007, z: 148.85335}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &72721185
 GameObject:
   m_ObjectHideFlags: 0
@@ -17008,6 +16979,54 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -2.3, y: 3, z: -0.5}
   m_TimeToStationary: 0.5
+--- !u!1 &269943456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 269943458}
+  - component: {fileID: 269943457}
+  m_Layer: 0
+  m_Name: HerdManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &269943457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269943456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc47253706c4a34b8425ff820c8ba9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HerdManager
+  herdPrefab: {fileID: 72063749}
+  maxHerds: 10
+  herdSeparation: 200
+  spawnAreaRadius: 1000
+--- !u!4 &269943458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269943456}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 82.65568, y: 5.8211, z: 142.99701}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &270889401
 GameObject:
   m_ObjectHideFlags: 0
@@ -54564,6 +54583,50 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -2.3, y: 3, z: -0.5}
   m_TimeToStationary: 0.5
+--- !u!1 &827603035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827603037}
+  - component: {fileID: 827603036}
+  m_Layer: 0
+  m_Name: TerrainManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &827603036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827603035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89165db9e32f84544ba1be8a3f97a479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainManager
+--- !u!4 &827603037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827603035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 82.65568, y: 5.8211, z: 142.99701}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &828478396
 GameObject:
   m_ObjectHideFlags: 0
@@ -144972,6 +145035,63 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -2.3, y: 3, z: -0.5}
   m_TimeToStationary: 0.5
+--- !u!1001 &225834525915860178
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2655777286395704238, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_Name
+      value: Herd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 82.08532
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.82007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 148.85335
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999297865111780200, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b5856d8d11ca44649b6a2fdb44c2a825, type: 3}
 --- !u!1 &236631831075111108
 GameObject:
   m_ObjectHideFlags: 3
@@ -145850,8 +145970,13 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 744544168}
+  - {fileID: 827603037}
   - {fileID: 131845065}
+  - {fileID: 269943458}
   - {fileID: 402335527}
+  - {fileID: 292273226}
+  - {fileID: 499864356}
+  - {fileID: 626807658}
   - {fileID: 7886717233373258407}
   - {fileID: 3539404045300410026}
   - {fileID: 5417584411751837202}
@@ -145865,9 +145990,6 @@ SceneRoots:
   - {fileID: 1776875687}
   - {fileID: 1926479575}
   - {fileID: 1626355016}
-  - {fileID: 72063751}
+  - {fileID: 225834525915860178}
   - {fileID: 1459181488}
   - {fileID: 981346347}
-  - {fileID: 292273226}
-  - {fileID: 499864356}
-  - {fileID: 626807658}

@@ -11,7 +11,6 @@ public class HerdManager : MonoBehaviour
     public GameObject herdPrefab;
     public int maxHerds = 10;
     public float herdSeparation = 200f; // minimum distance between herds
-    public float spawnAreaRadius = 1000f; // world radius (centered at origin, or set dynamically)
     private bool initialized = false;
 
     private readonly List<Herd> activeHerds = new List<Herd>();
@@ -40,11 +39,11 @@ public class HerdManager : MonoBehaviour
     public void InitializeHerds()
     {
         // Initial population
-        // for (int i = 0; i < maxHerds; i++)
-        // {
-        //     TrySpawnHerd();
-        // }
-        Debug.Log("Active herds: " + activeHerds);
+        for (int i = 0; i < maxHerds; i++)
+        {
+            TrySpawnHerd();
+        }
+        // Debug.Log("Active herds: " + activeHerds);
 
         initialized = true;
     }
