@@ -40,7 +40,7 @@ public class Herd : MonoBehaviour
             Vector3 point = Vector3.zero;
             point.x = basePos.x + r * Mathf.Cos(theta);
             point.z = basePos.z + r * Mathf.Sin(theta);
-            point.y = GlobalVariables.GetTerrainHeightAtWorldPos(point);
+            point.y = TerrainManager.Instance.GetTerrainHeight(point);
 
             newPositions.Add(point);
         }

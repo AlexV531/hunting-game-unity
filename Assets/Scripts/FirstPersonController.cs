@@ -146,7 +146,7 @@ public class FirstPersonController : MonoBehaviour
 	{
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
-		GlobalVariables.RegisterPlayerInputs(_input);
+		// GlobalVariables.RegisterPlayerInputs(_input);
 #if ENABLE_INPUT_SYSTEM
 		_playerInput = GetComponent<PlayerInput>();
 #else

@@ -33,24 +33,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         agent = GetComponent<NavMeshAgent>();
     }
 
-    // void Start()
-    // {
-    //     if (!IsServer)
-    //     {
-    //         Debug.Log("This is not a server");
-    //         return;
-    //     }
-    //     Debug.Log("This is a server");
-
-    //     fsm = GetComponent<AnimalStateManager>();
-    //     NoiseManager.RegisterListener(this);
-    //     if (herd != null)
-    //     {
-    //         herd.RegisterHerdAnimal(this);
-    //     }
-    //     sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
-    // }
-
     private void Update()
     {
         if (!IsServer)
@@ -88,6 +70,8 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
             herd.RegisterHerdAnimal(this);
         }
         sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
+
+        initialized = true;
     }
 
     public void OnNoiseHeard(NoiseEvent noiseEvent, float perceivedVolume)
@@ -169,7 +153,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
                 if (target.x >= GlobalVariables.mapMin.x && target.x <= GlobalVariables.mapMax.x &&
                     target.z >= GlobalVariables.mapMin.z && target.z <= GlobalVariables.mapMax.z)
                 {
-                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target);
+                    target.y = TerrainManager.Instance.GetTerrainHeight(target);
                     // Debug.Log("within spread");
                     targetQueue.Add(target);
 
@@ -193,7 +177,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
                 if (target.x >= GlobalVariables.mapMin.x && target.x <= GlobalVariables.mapMax.x &&
                     target.z >= GlobalVariables.mapMin.z && target.z <= GlobalVariables.mapMax.z)
                 {
-                    target.y = GlobalVariables.GetTerrainHeightAtWorldPos(target);
+                    target.y = TerrainManager.Instance.GetTerrainHeight(target);
                     // Debug.Log("outside spread");
                     targetQueue.Add(target);
 
@@ -210,7 +194,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
             // Fallback: clamp deer position inside map
             Vector3 clampedTarget = new Vector3(
                 Mathf.Clamp(deerPos.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x),
-                GlobalVariables.GetTerrainHeightAtWorldPos(deerPos),
+                TerrainManager.Instance.GetTerrainHeight(deerPos),
                 Mathf.Clamp(deerPos.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z)
             );
             // Debug.Log("nowhere");
