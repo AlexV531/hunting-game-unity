@@ -199,7 +199,8 @@ public class Animal : NetworkBehaviour
         return isDead;
     }
 
-    public void EnableCorpse()
+    [ClientRpc]
+    public void EnableCorpseClientRpc()
     {
         corpse.SetInteractionEnabled(true);
         Collider col = corpse.GetComponent<Collider>();
@@ -207,7 +208,8 @@ public class Animal : NetworkBehaviour
             col.enabled = true;
     }
 
-    public void DisableCorpse()
+    [ClientRpc]
+    public void DisableCorpseClientRpc()
     {
         corpse.SetInteractionEnabled(false);
         Collider col = corpse.GetComponent<Collider>();
@@ -221,7 +223,8 @@ public class Animal : NetworkBehaviour
         return internalOrg;
     }
 
-    public void DisableInternalColliders()
+    [ClientRpc]
+    public void DisableInternalCollidersClientRpc()
     {
         foreach (var internalPart in internals)
         {
@@ -231,7 +234,8 @@ public class Animal : NetworkBehaviour
         }
     }
 
-    public void EnableInternalColliders()
+    [ClientRpc]
+    public void EnableInternalCollidersClientRpc()
     {
         foreach (var internalPart in internals)
         {
@@ -284,7 +288,7 @@ public class Animal : NetworkBehaviour
             return;
         isDead = true;
         Debug.Log($"{name} has died.");
-        EnableCorpse();
+        EnableCorpseClientRpc();
         if (animalAI != null)
         {
             animalAI.animator.SetTrigger("dead");

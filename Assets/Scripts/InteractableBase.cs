@@ -1,8 +1,9 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class InteractableBase : MonoBehaviour
+public abstract class InteractableBase : NetworkBehaviour
 {
-    [SerializeField] private bool interactionEnabled = true; // controls if this object can be interacted with
+    public NetworkVariable<bool> interactionEnabled = new NetworkVariable<bool>(true);
 
     // Actual behavior when interacted with
     public abstract void Interact(FirstPersonController player);
@@ -14,14 +15,12 @@ public abstract class InteractableBase : MonoBehaviour
     }
 
     // Check if interaction is currently allowed
-    public virtual bool IsInteractionEnabled()
-    {
-        return interactionEnabled;
-    }
+    public virtual bool IsInteractionEnabled() => interactionEnabled.Value;
 
     // Allow external scripts to enable/disable interaction
     public void SetInteractionEnabled(bool enabled)
     {
-        interactionEnabled = enabled;
+        if (IsServer)
+            interactionEnabled.Value = enabled;
     }
 }

@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 #endif
 
 
-public class FirstPersonController : MonoBehaviour
+public class FirstPersonController : NetworkBehaviour
 {
 	[Header("Player")]
 	[Tooltip("Move speed of the character in m/s")]
@@ -60,7 +60,7 @@ public class FirstPersonController : MonoBehaviour
 	[Header("Interact")]
 	public float interactRange = 3f;
     public LayerMask interactableLayer;
-    public TextMeshProUGUI interactText; // Reference to a UI Text element
+    // public TextMeshProUGUI interactText; // Reference to a UI Text element
 
 	[Header("Crouch")]
 	[Tooltip("Normal standing height of the character controller")]
@@ -89,6 +89,9 @@ public class FirstPersonController : MonoBehaviour
 
 	// shoulder carry
 	private Animal carriedAnimal;
+	public NetworkVariable<bool> IsCarryingAnimal = new NetworkVariable<bool>(false, 
+        NetworkVariableReadPermission.Everyone, 
+        NetworkVariableWritePermission.Server);
 
 	// cinemachine
 	private float _cinemachineTargetPitch;
@@ -114,6 +117,7 @@ public class FirstPersonController : MonoBehaviour
 	private CharacterController _controller;
 	private PlayerInputs _input;
 	private GameObject _mainCamera;
+	private TextMeshProUGUI _interactText;
 
 	private const float _threshold = 0f;
 
@@ -140,10 +144,15 @@ public class FirstPersonController : MonoBehaviour
 		{
 			vCam.m_Lens.FieldOfView = GlobalVariables.cameraFOV;
 		}
+		if (_interactText == null)
+		{
+			_interactText = GameObject.FindGameObjectWithTag("InteractText").GetComponent<TextMeshProUGUI>();
+		}
 	}
 
 	private void Start()
 	{
+		Debug.Log("hello");
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
 		// GlobalVariables.RegisterPlayerInputs(_input);
@@ -163,6 +172,8 @@ public class FirstPersonController : MonoBehaviour
 
 	private void Update()
 	{
+		if (!IsOwner) return;
+
 		JumpAndGravity();
 		GroundedCheck();
 		HandleCrouch();
@@ -179,9 +190,9 @@ public class FirstPersonController : MonoBehaviour
 		{
 			currentInteractable.Interact(this);
 		}
-		else if (carriedAnimal != null && _input.interact)
+		else if (IsCarryingAnimal.Value && _input.interact)
 		{
-			DropAnimal();
+			DropAnimalServerRpc(carriedAnimal.NetworkObject);
 		}
 		_input.interact = false;
 	}
@@ -232,9 +243,10 @@ public class FirstPersonController : MonoBehaviour
             {
                 if (interactable != currentInteractable)
                 {
+					Debug.Log("Changing current interactable");
                     currentInteractable = interactable;
-                    interactText.text = interactable.GetPrompt();
-                    interactText.gameObject.SetActive(true);
+                    _interactText.text = interactable.GetPrompt();
+                    _interactText.gameObject.SetActive(true);
                 }
                 return;
             }
@@ -242,7 +254,7 @@ public class FirstPersonController : MonoBehaviour
 
         // No interactable found
         currentInteractable = null;
-        interactText.gameObject.SetActive(false);
+        _interactText.gameObject.SetActive(false);
     }
 
 	private void Move()
@@ -370,55 +382,117 @@ public class FirstPersonController : MonoBehaviour
 		}
 	}
 
-	public void PickUpAnimal(Animal animal)
+	// public void PickUpAnimal(Animal animal)
+	// {
+	// 	if (carriedAnimal != null)
+	// 		return;
+
+	// 	carriedAnimal = animal;
+
+	// 	// disable interactable component
+	// 	animal.DisableCorpse();
+	// 	animal.NetworkObject.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
+	// 	animal.DisableInternalColliders();
+
+	// 	// parent to shoulder point and reset position/rotation
+	// 	// carriedAnimal.transform.position = shoulderCarryPoint.position;
+	// 	// carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
+	// 	// carriedAnimal.transform.SetParent(shoulderCarryPoint);
+
+	// 	// pose animal correctly
+	// 	if (carriedAnimal.animalAI != null)
+	// 	{
+	// 		carriedAnimal.animalAI.animator.SetTrigger("carry");
+	// 	}
+
+	// 	// Debug.Log(carriedAnimal.transform.position);
+	// }
+
+	[ServerRpc(RequireOwnership = false)]
+	public void PickUpAnimalServerRpc(NetworkObjectReference animalRef)
 	{
-		if (carriedAnimal != null)
-			return;
+		if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
-		carriedAnimal = animal;
+		// Pickup logic
+		animal.DisableCorpseClientRpc();
+		
+		animal.DisableInternalCollidersClientRpc();
 
-		// disable interactable component
-		animal.DisableCorpse();
-		animal.NetworkObject.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
-		animal.DisableInternalColliders();
+		animal.NetworkObject.ChangeOwnership(OwnerClientId);
 
-		// parent to shoulder point and reset position/rotation
-		// carriedAnimal.transform.position = shoulderCarryPoint.position;
-		// carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
-		// carriedAnimal.transform.SetParent(shoulderCarryPoint);
+		if (animal.animalAI != null)
+			animal.animalAI.animator.SetTrigger("carry");
+		
+		IsCarryingAnimal.Value = true;
 
-		// pose animal correctly
-		if (carriedAnimal.animalAI != null)
-		{
-			carriedAnimal.animalAI.animator.SetTrigger("carry");
-		}
-
-		Debug.Log(carriedAnimal.transform.position);
+		OnPickupAnimalClientRpc(animalRef);
 	}
 
-	public void DropAnimal()
+	[ClientRpc]
+	private void OnPickupAnimalClientRpc(NetworkObjectReference animalRef)
 	{
-		if (carriedAnimal == null)
-			return;
+		if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
-		// unparent
-		// carriedAnimal.transform.SetParent(null);
-		carriedAnimal.NetworkObject.RemoveOwnership();
-		carriedAnimal.EnableInternalColliders();
+		if (animal.animalAI != null)
+        	animal.animalAI.animator.SetTrigger("carry");
 
-		carriedAnimal.transform.position -= new Vector3(0f, 0.75f, 0f);
+		carriedAnimal = animal; // client stores the local reference
+	}
 
-		// drop animal animation
-		if (carriedAnimal.animalAI != null)
-		{
-			carriedAnimal.animalAI.animator.SetTrigger("drop");
-		}
+	// public void DropAnimal()
+	// {
+	// 	if (carriedAnimal == null)
+	// 		return;
 
-		// enable interactable component
-		carriedAnimal.EnableCorpse();
+	// 	// unparent
+	// 	// carriedAnimal.transform.SetParent(null);
+	// 	carriedAnimal.NetworkObject.RemoveOwnership();
+	// 	carriedAnimal.EnableInternalColliders();
 
+	// 	carriedAnimal.transform.position -= new Vector3(0f, 0.75f, 0f);
+
+	// 	// drop animal animation
+	// 	if (carriedAnimal.animalAI != null)
+	// 	{
+	// 		carriedAnimal.animalAI.animator.SetTrigger("drop");
+	// 	}
+
+	// 	// enable interactable component
+	// 	carriedAnimal.EnableCorpse();
+
+	// 	carriedAnimal = null;
+	// }
+
+	[ServerRpc(RequireOwnership = false)]
+	public void DropAnimalServerRpc(NetworkObjectReference animalRef)
+	{
+		if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
+
+		animal.NetworkObject.RemoveOwnership();
+
+		// animal.transform.SetParent(null);
+		animal.EnableInternalCollidersClientRpc();
+		animal.transform.position -= new Vector3(0f, 0.75f, 0f);
+		animal.EnableCorpseClientRpc();
+		// animal.transform.position += animal.transform.forward * 0.5f;
+		
+		if (animal.animalAI != null)
+			animal.animalAI.animator.SetTrigger("drop");
+
+		IsCarryingAnimal.Value = false;
+
+		OnDropAnimalClientRpc(animalRef);
+	}
+
+	[ClientRpc]
+	private void OnDropAnimalClientRpc(NetworkObjectReference animalRef)
+	{
 		carriedAnimal = null;
 	}
+
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{
