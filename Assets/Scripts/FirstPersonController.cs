@@ -417,7 +417,7 @@ public class FirstPersonController : NetworkBehaviour
 		// Pickup logic
 		animal.DisableCorpseClientRpc();
 		
-		animal.DisableInternalCollidersClientRpc();
+		animal.DisableInternalCollidersClientRpc(); // CHANGE THIS SO PLAYER DOESN'T COLLIDE WITH INTERNALS, THIS ONLY AFFECTS MAIN ANIMAL COLLIDER FOR PLAYERS
 
 		animal.NetworkObject.ChangeOwnership(OwnerClientId);
 

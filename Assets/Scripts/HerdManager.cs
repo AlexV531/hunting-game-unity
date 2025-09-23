@@ -30,10 +30,10 @@ public class HerdManager : MonoBehaviour
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        if (!initialized)
-        {
-            InitializeHerds();
-        }
+        // if (!initialized)
+        // {
+        //     InitializeHerds();
+        // }
     }
 
     public void InitializeHerds()

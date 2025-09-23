@@ -6,6 +6,9 @@ public class Herd : MonoBehaviour
 {
     public readonly List<AnimalAI> animalsInHerd = new List<AnimalAI>();
     public float radius = 10f;
+    private float activationDistance = 200f;
+    private float deactivationOffset = 100f;
+    private bool herdIsActive = false;
 
     void Update()
     {
@@ -84,25 +87,77 @@ public class Herd : MonoBehaviour
 
     public void ActivateAnimals()
     {
+        Debug.Log("Activating herd");
+
         foreach (var animal in animalsInHerd)
         {
-            animal.gameObject.SetActive(true);
+            animal.SetAIEnabled(true);
             animal.transform.position = GetRandomPointInRadius();
         }
+
+        SetAnimalStateClientRpc(true);
+        herdIsActive = true;
     }
 
     public void DeactivateAnimals()
     {
+        Debug.Log("Deactivating herd");
+
         foreach (var animal in animalsInHerd)
         {
-            animal.gameObject.SetActive(false);
+            animal.SetAIEnabled(false);
         }
+
+        SetAnimalStateClientRpc(false);
+        herdIsActive = false;
+    }
+
+    [ClientRpc]
+    public void SetAnimalStateClientRpc(bool visualsEnabled)
+    {
+        foreach (var animal in animalsInHerd)
+        {
+            animal.animal.SetVisualsEnabled(visualsEnabled);
+        }
+    }
+
+    public bool isActive()
+    {
+        return herdIsActive;
     }
 
     private void HandleActivateDeactivate()
     {
-        // IF ACTIVE: Check to see if all animals in herd are too far from player, if so deactivate.  
+        if (animalsInHerd.Count == 0)
+            return;
 
-        // IF NOT ACTIVE: Check to see if herd position is close to player, if so activate.
+        // Find nearest player distance
+        float closestPlayerDist = float.MaxValue;
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            GameObject playerObj = client.PlayerObject?.gameObject;
+            if (playerObj == null) continue;
+
+            float dist = Vector3.Distance(transform.position, playerObj.transform.position);
+            if (dist < closestPlayerDist)
+                closestPlayerDist = dist;
+        }
+
+        if (isActive())
+        {
+            // Deactivate if all players are too far
+            if (closestPlayerDist > activationDistance + deactivationOffset)
+            {
+                DeactivateAnimals();
+            }
+        }
+        else
+        {
+            // Activate if at least one player is close
+            if (closestPlayerDist <= activationDistance)
+            {
+                ActivateAnimals();
+            }
+        }
     }
 }

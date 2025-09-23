@@ -245,6 +245,15 @@ public class Animal : NetworkBehaviour
         }
     }
 
+    public void SetVisualsEnabled(bool enable)
+    {
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+            renderer.enabled = enable;
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+            collider.enabled = enable;
+    }
+
     private void AddHit(HitData hitData)
     {
         hits.Add(hitData);

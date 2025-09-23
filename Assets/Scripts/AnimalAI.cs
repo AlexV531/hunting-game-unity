@@ -24,6 +24,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     private float lastPanicTime = -Mathf.Infinity;
     private int sightLayerMask;
     private bool initialized = false;
+    private bool aiEnabled = true;
 
     void Awake()
     {
@@ -42,6 +43,9 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         {
             InitializeAnimalAI();
         }
+
+        if (!aiEnabled)
+            return;
 
         // Dead check
         if (animal.IsDead())
@@ -259,6 +263,11 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float GetCurrentVelocity()
     {
         return agent.velocity.magnitude;
+    }
+
+    public void SetAIEnabled(bool enable)
+    {
+        aiEnabled = enable;
     }
 
     public override void OnDestroy()
