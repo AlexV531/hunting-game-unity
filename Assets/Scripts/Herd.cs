@@ -27,6 +27,7 @@ public class Herd : MonoBehaviour
     public void UnregisterHerdAnimal(AnimalAI animalAI)
     {
         if (animalsInHerd.Contains(animalAI))
+            animalAI.herd = null;
             animalsInHerd.Remove(animalAI);
     }
 
