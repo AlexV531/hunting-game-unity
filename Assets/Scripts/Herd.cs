@@ -6,7 +6,7 @@ public class Herd : MonoBehaviour
 {
     public readonly List<AnimalAI> animalsInHerd = new List<AnimalAI>();
     public float radius = 10f;
-    private float activationDistance = 200f;
+    private float activationDistance = 400f;
     private float deactivationOffset = 100f;
     private bool herdIsActive = false;
 
@@ -21,6 +21,7 @@ public class Herd : MonoBehaviour
     public void RegisterHerdAnimal(AnimalAI animalAI)
     {
         if (!animalsInHerd.Contains(animalAI))
+            animalAI.herd = this;
             animalsInHerd.Add(animalAI);
     }
 
@@ -35,8 +36,30 @@ public class Herd : MonoBehaviour
     {
         for (int i = 0; i < numAnimals; i++)
         {
+            // Instantiate prefab locally
             GameObject animal = Instantiate(animalPrefab);
-            RegisterHerdAnimal(animal.GetComponent<AnimalAI>());
+
+            // Get NetworkObject component
+            NetworkObject netObj = animal.GetComponent<NetworkObject>();
+            if (netObj == null)
+            {
+                Debug.LogError("Animal prefab must have a NetworkObject component!");
+                Destroy(animal);
+                continue;
+            }
+
+            // Spawn it on the server so it exists on all clients
+            if (!netObj.IsSpawned)
+                netObj.Spawn();
+
+            // Set herd reference
+            AnimalAI animalAI = animal.GetComponent<AnimalAI>();
+            animalAI.herd = this;
+
+            // Add to herd list
+            RegisterHerdAnimal(animalAI);
+
+            Debug.Log("Adding animal to herd");
         }
 
         ActivateAnimals();
@@ -93,7 +116,9 @@ public class Herd : MonoBehaviour
         foreach (var animal in animalsInHerd)
         {
             animal.SetAIEnabled(true);
-            animal.transform.position = GetRandomPointInRadius();
+            Vector3 radiusPos = GetRandomPointInRadius();
+            Debug.Log("Activating at position " + radiusPos);
+            animal.transform.position = radiusPos;
         }
 
         SetAnimalStateClientRpc(true);

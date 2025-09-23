@@ -9,7 +9,8 @@ public class HerdManager : MonoBehaviour
 
     [Header("Herd Settings")]
     public GameObject herdPrefab;
-    public int maxHerds = 10;
+    public GameObject animalPrefab;
+    public int maxHerds = 1;
     public float herdSeparation = 200f; // minimum distance between herds
     private bool initialized = false;
 
@@ -30,10 +31,10 @@ public class HerdManager : MonoBehaviour
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        // if (!initialized)
-        // {
-        //     InitializeHerds();
-        // }
+        if (!initialized)
+        {
+            InitializeHerds();
+        }
     }
 
     public void InitializeHerds()
@@ -63,6 +64,7 @@ public class HerdManager : MonoBehaviour
             {
                 activeHerds.Add(herd);
                 herd.transform.position = pos.Value; // set position
+                herd.InitializeAnimals(3, animalPrefab);
             }
         }
     }
@@ -72,8 +74,10 @@ public class HerdManager : MonoBehaviour
         for (int attempt = 0; attempt < 30; attempt++)
         {
             // Pick a random point within rectangular bounds from GlobalVariables
-            float x = Random.Range(GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
-            float z = Random.Range(GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+            // float x = Random.Range(GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+            // float z = Random.Range(GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+            float x = Random.Range(0, 100);
+            float z = Random.Range(0, 100);
             Vector3 candidate = new Vector3(x, 0, z);
 
             // Check NavMesh validity

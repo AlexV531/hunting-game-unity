@@ -152,7 +152,6 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void Start()
 	{
-		Debug.Log("hello");
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
 		// GlobalVariables.RegisterPlayerInputs(_input);
