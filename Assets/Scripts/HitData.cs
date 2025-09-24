@@ -16,6 +16,10 @@ public class HitData
     public float bleedRate = 0.0f;
     public float healRate = 1.0f;
 
+    // Player who made the shot
+    public FirstPersonController player;
+
+
     // --- Nested class for per-organ hits ---
     [System.Serializable]
     public class InternalHitData

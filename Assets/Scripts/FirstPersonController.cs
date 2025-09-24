@@ -2,6 +2,10 @@
 using TMPro;
 using Cinemachine;
 using Unity.Netcode;
+using System;
+using Unity.Collections;
+
+
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -81,8 +85,16 @@ public class FirstPersonController : NetworkBehaviour
 	[Header("Weapon")]
 	public Weapon equippedWeapon;
 
-	// [Header("Network")]
-	// public NetworkObject networkObject;
+	[Header("Multiplayer")]
+	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(
+        "Player",
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
+	
+	public NetworkVariable<int> KillCount = new NetworkVariable<int>(
+        0,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
 
 	// interactables
 	private InteractableBase currentInteractable;
@@ -492,6 +504,27 @@ public class FirstPersonController : NetworkBehaviour
 		carriedAnimal = null;
 	}
 
+	public override void OnNetworkSpawn()
+    {
+        if (IsOwner && IsClient)
+        {
+            string savedName = PlayerPrefs.GetString("PlayerName", "Player");
+            SubmitNameServerRpc(savedName);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SubmitNameServerRpc(string newName)
+    {
+		PlayerName.Value = newName;
+    }
+
+	[ServerRpc(RequireOwnership = false)]
+    public void AddKillServerRpc()
+    {
+        // Only the server can update authoritative stats
+        KillCount.Value += 1;
+    }
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{

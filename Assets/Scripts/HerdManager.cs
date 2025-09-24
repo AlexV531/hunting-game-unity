@@ -10,9 +10,10 @@ public class HerdManager : MonoBehaviour
     [Header("Herd Settings")]
     public GameObject herdPrefab;
     public GameObject animalPrefab;
-    public int maxHerds = 1;
+    public int maxHerds = 15;
     public float herdSeparation = 200f; // minimum distance between herds
     private bool initialized = false;
+    private int maxAttempts = 30;
 
     private readonly List<Herd> activeHerds = new List<Herd>();
 
@@ -71,13 +72,13 @@ public class HerdManager : MonoBehaviour
 
     private Vector3? GetValidSpawnPosition()
     {
-        for (int attempt = 0; attempt < 30; attempt++)
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
             // Pick a random point within rectangular bounds from GlobalVariables
-            // float x = Random.Range(GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
-            // float z = Random.Range(GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
-            float x = Random.Range(0, 100);
-            float z = Random.Range(0, 100);
+            float x = Random.Range(GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+            float z = Random.Range(GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+            // float x = Random.Range(0, 100);
+            // float z = Random.Range(0, 100);
             Vector3 candidate = new Vector3(x, 0, z);
 
             // Check NavMesh validity

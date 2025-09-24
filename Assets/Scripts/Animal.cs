@@ -68,13 +68,30 @@ public class Animal : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ApplyProjectileHitServerRpc(Vector3 globalHitPos, Vector3 direction, int internalId,
-        float power = 6f, float bulletStrength = 1f, float bulletBleed = 1f, float bulletHeal = 1f)
+    public void ApplyProjectileHitServerRpc(
+        Vector3 globalHitPos,
+        Vector3 direction,
+        int internalId,
+        float power = 6f,
+        float bulletStrength = 1f,
+        float bulletBleed = 1f,
+        float bulletHeal = 1f,
+        ServerRpcParams rpcParams = default)
     {
-        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), power, bulletStrength, bulletBleed, bulletHeal);
+        // Get the ClientId of the caller
+        ulong senderClientId = rpcParams.Receive.SenderClientId;
+
+        // Get the player's NetworkObject
+        NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[senderClientId].PlayerObject;
+
+        // If you have a Player script on that object
+        var shotOwner = playerObject.GetComponent<FirstPersonController>();
+
+        // Now you can use 'player' as the source of the projectile
+        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), shotOwner, power, bulletStrength, bulletBleed, bulletHeal);
     }
 
-    public void ProjectileHit(Vector3 globalHitPos, Vector3 direction, Internal internalHit,
+    public void ProjectileHit(Vector3 globalHitPos, Vector3 direction, Internal internalHit, FirstPersonController shotOwner,
         float power = 6f, float bulletStrength = 1f, float bulletBleed = 1f, float bulletHeal = 1f)
     {
         Debug.Log("Projectile hit!");
@@ -89,6 +106,7 @@ public class Animal : NetworkBehaviour
         // Create new HitData
         HitData hitData = new HitData
         {
+            player = shotOwner,
             bulletStrength = bulletStrength,
             bulletBleed = bulletBleed,
             healRate = bulletHeal
@@ -305,5 +323,52 @@ public class Animal : NetworkBehaviour
             animalAI.agent.enabled = false;
             animalAI.herd.UnregisterHerdAnimal(animalAI);
         }
+
+        FirstPersonController killCredit = DetermineKillCredit(hits);
+        if (killCredit != null)
+        {
+            killCredit.AddKillServerRpc();
+        }
+    }
+
+    private static FirstPersonController DetermineKillCredit(List<HitData> hits)
+    {
+        if (hits == null || hits.Count == 0)
+            return null;
+
+        // Dictionary to accumulate total damage per player
+        Dictionary<FirstPersonController, float> playerDamage = new Dictionary<FirstPersonController, float>();
+
+        foreach (HitData hit in hits)
+        {
+            if (hit == null || hit.player == null)
+                continue;
+
+            float totalDamage = 0f;
+            foreach (var internalHit in hit.internalsHit)
+            {
+                totalDamage += internalHit.hitWithPower;
+            }
+
+            if (playerDamage.ContainsKey(hit.player))
+                playerDamage[hit.player] += totalDamage;
+            else
+                playerDamage[hit.player] = totalDamage;
+        }
+
+        // Find the player with the highest total damage
+        FirstPersonController topPlayer = null;
+        float maxDamage = 0f;
+
+        foreach (var kvp in playerDamage)
+        {
+            if (kvp.Value > maxDamage)
+            {
+                topPlayer = kvp.Key;
+                maxDamage = kvp.Value;
+            }
+        }
+
+        return topPlayer;
     }
 }
