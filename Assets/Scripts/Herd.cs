@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 
 public class Herd : MonoBehaviour
 {
@@ -34,12 +35,18 @@ public class Herd : MonoBehaviour
 
     public void InitializeAnimals(int numAnimals, GameObject animalPrefab)
     {
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogWarning("InitializeAnimals should only be called on the server.");
+            return;
+        }
+
         for (int i = 0; i < numAnimals; i++)
         {
-            // Instantiate prefab locally
-            GameObject animal = Instantiate(animalPrefab);
+            Vector3 spawnPos = GetRandomPointInRadius();
 
-            // Get NetworkObject component
+            GameObject animal = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
+
             NetworkObject netObj = animal.GetComponent<NetworkObject>();
             if (netObj == null)
             {
@@ -48,18 +55,18 @@ public class Herd : MonoBehaviour
                 continue;
             }
 
-            // Spawn it on the server so it exists on all clients
-            if (!netObj.IsSpawned)
-                netObj.Spawn();
+            // Spawn on the server to sync with clients
+            netObj.Spawn();
 
-            // Set herd reference
             AnimalAI animalAI = animal.GetComponent<AnimalAI>();
-            animalAI.herd = this;
+            if (animalAI == null)
+            {
+                Debug.LogError("Animal prefab must have an AnimalAI component!");
+                Destroy(animal);
+                continue;
+            }
 
-            // Add to herd list
             RegisterHerdAnimal(animalAI);
-
-            Debug.Log("Adding animal to herd");
         }
 
         ActivateAnimals();
@@ -111,23 +118,33 @@ public class Herd : MonoBehaviour
 
     public void ActivateAnimals()
     {
-        Debug.Log("Activating herd");
+        if (!NetworkManager.Singleton.IsServer) return;
+
+        herdIsActive = true;
 
         foreach (var animal in animalsInHerd)
-        {
+{
             animal.SetAIEnabled(true);
-            Vector3 radiusPos = GetRandomPointInRadius();
-            Debug.Log("Activating at position " + radiusPos);
-            animal.transform.position = radiusPos;
+
+            Vector3 pos = GetRandomPointInRadius();
+            animal.transform.position = pos;
+
+            Vector3 currentScale = animal.transform.localScale;
+
+            var netTransform = animal.GetComponent<NetworkTransform>();
+            if (netTransform != null)
+                netTransform.Teleport(pos, animal.transform.rotation, currentScale);
         }
 
+        // Enable visuals on clients
         SetAnimalStateClientRpc(true);
-        herdIsActive = true;
     }
 
     public void DeactivateAnimals()
     {
-        Debug.Log("Deactivating herd");
+        if (!NetworkManager.Singleton.IsServer) return;
+
+        herdIsActive = false;
 
         foreach (var animal in animalsInHerd)
         {
@@ -135,11 +152,10 @@ public class Herd : MonoBehaviour
         }
 
         SetAnimalStateClientRpc(false);
-        herdIsActive = false;
     }
 
     [ClientRpc]
-    public void SetAnimalStateClientRpc(bool visualsEnabled)
+    private void SetAnimalStateClientRpc(bool visualsEnabled)
     {
         foreach (var animal in animalsInHerd)
         {

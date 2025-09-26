@@ -69418,8 +69418,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HerdManager
   herdPrefab: {fileID: 72063749}
   animalPrefab: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-  maxHerds: 15
-  herdSeparation: 200
+  maxHerds: 25
+  herdSeparation: 100
 --- !u!4 &269943458
 Transform:
   m_ObjectHideFlags: 0
