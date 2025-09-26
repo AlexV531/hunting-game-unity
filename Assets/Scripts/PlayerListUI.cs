@@ -12,9 +12,16 @@ public class PlayerListUI : MonoBehaviour
 
     private IEnumerator WaitForNetworkManager()
     {
-        while (NetworkManager.Singleton == null)
+        while (!NetworkManager.Singleton.IsClient || !NetworkManager.Singleton.IsConnectedClient)
             yield return null;
 
+        // Populate all current clients
+        foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
+        {
+            HandleClientConnected(kvp.Key);
+        }
+
+        // Optionally subscribe to future server updates if needed
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
     }
@@ -34,10 +41,12 @@ public class PlayerListUI : MonoBehaviour
     private void HandleClientConnected(ulong clientId)
     {
         var playerObject = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-        if (playerObject == null) return;
+        if (playerObject == null)
+            return;
 
         var player = playerObject.GetComponent<FirstPersonController>();
-        if (player == null) return;
+        if (player == null)
+            return;
 
         // Create entry
         Debug.Log("client connected");
