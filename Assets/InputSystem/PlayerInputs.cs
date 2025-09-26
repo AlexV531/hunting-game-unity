@@ -15,6 +15,9 @@ public class PlayerInputs : MonoBehaviour
 	public bool steadyAim;
 	public bool fire;
 	public bool reload;
+	public bool equip1;
+	public bool equip2;
+	public bool equip3;
 	public bool interact;
 	public bool toggleShader;
 
@@ -83,6 +86,21 @@ public class PlayerInputs : MonoBehaviour
 	public void OnReload(InputValue value)
 	{
 		ReloadInput(value.isPressed);
+	}
+
+	public void OnEquip1(InputValue value)
+	{
+		Equip1Input(value.isPressed);
+	}
+
+	public void OnEquip2(InputValue value)
+	{
+		Equip2Input(value.isPressed);
+	}
+
+	public void OnEquip3(InputValue value)
+	{
+		Equip3Input(value.isPressed);
 	}
 
 	public void OnInteract(InputValue value)
@@ -168,6 +186,21 @@ public class PlayerInputs : MonoBehaviour
 	public void ReloadInput(bool newReloadState)
 	{
 		reload = newReloadState;
+	}
+
+	public void Equip1Input(bool newEquip1State)
+	{
+		equip1 = newEquip1State;
+	}
+
+	public void Equip2Input(bool newEquip2State)
+	{
+		equip2 = newEquip2State;
+	}
+
+	public void Equip3Input(bool newEquip3State)
+	{
+		equip3 = newEquip3State;
 	}
 
 	public void InteractInput(bool newInteractState)

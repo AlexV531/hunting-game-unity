@@ -11,7 +11,7 @@ public class ScopeSway : MonoBehaviour
     [Range(0f, 1f)] public float steadyMultiplier = 0.2f;  // Sway scale when steady
     public float steadyTransitionSpeed = 5f;               // Smooth blend speed
 
-    [SerializeField] private FirstPersonController _player;
+    [SerializeField] private WeaponManager _weaponManager;
     [SerializeField] private PlayerInputs _inputs;
 
     private Quaternion initialRotation;
@@ -24,40 +24,43 @@ public class ScopeSway : MonoBehaviour
 
     void Update()
     {
-        if (_player.equippedWeapon.IsAiming())
-        {
-            // Check if player is holding steady aim
-            float targetMultiplier = _inputs.steadyAim ? steadyMultiplier : 1f;
+        if (_weaponManager.GetCurrentWeapon() == null)
+            return;
 
-            // Smooth transition between multipliers
-            currentMultiplier = Mathf.Lerp(
-                currentMultiplier,
-                targetMultiplier,
-                Time.deltaTime * steadyTransitionSpeed
-            );
+        if (_weaponManager.GetCurrentWeapon().IsAiming())
+            {
+                // Check if player is holding steady aim
+                float targetMultiplier = _inputs.steadyAim ? steadyMultiplier : 1f;
 
-            // Breathing sway
-            float swayX = Mathf.Sin(Time.time * swaySpeed) * swayAmount * currentMultiplier;
-            float swayY = Mathf.Cos(Time.time * swaySpeed * 0.8f) * swayAmount * currentMultiplier;
+                // Smooth transition between multipliers
+                currentMultiplier = Mathf.Lerp(
+                    currentMultiplier,
+                    targetMultiplier,
+                    Time.deltaTime * steadyTransitionSpeed
+                );
 
-            Quaternion targetRot = initialRotation * Quaternion.Euler(swayY, swayX, 0);
-            transform.localRotation = Quaternion.Slerp(
-                transform.localRotation,
-                targetRot,
-                Time.deltaTime * returnSpeed
-            );
-        }
-        else
-        {
-            // Reset to neutral
-            transform.localRotation = Quaternion.Slerp(
-                transform.localRotation,
-                initialRotation,
-                Time.deltaTime * returnSpeed
-            );
+                // Breathing sway
+                float swayX = Mathf.Sin(Time.time * swaySpeed) * swayAmount * currentMultiplier;
+                float swayY = Mathf.Cos(Time.time * swaySpeed * 0.8f) * swayAmount * currentMultiplier;
 
-            // Reset multiplier when not aiming
-            currentMultiplier = 1f;
-        }
+                Quaternion targetRot = initialRotation * Quaternion.Euler(swayY, swayX, 0);
+                transform.localRotation = Quaternion.Slerp(
+                    transform.localRotation,
+                    targetRot,
+                    Time.deltaTime * returnSpeed
+                );
+            }
+            else
+            {
+                // Reset to neutral
+                transform.localRotation = Quaternion.Slerp(
+                    transform.localRotation,
+                    initialRotation,
+                    Time.deltaTime * returnSpeed
+                );
+
+                // Reset multiplier when not aiming
+                currentMultiplier = 1f;
+            }
     }
 }

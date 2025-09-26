@@ -271916,7 +271916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerListUI
   contentPanel: {fileID: 1042475456}
-  playerEntryPrefab: {fileID: 0}
+  playerEntryPrefab: {fileID: 1454061373043423362, guid: 3a7e92dec9e5e3a43bbca5d12aec1c71, type: 3}
 --- !u!1 &1042530622
 GameObject:
   m_ObjectHideFlags: 0

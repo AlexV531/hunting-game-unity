@@ -21,6 +21,9 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public float bulletSpeed = 60f;
 
+    public int weaponKey;
+    public bool isEquipped;
+
     [Header("Zoom Settings")]
     // public CinemachineVirtualCamera vCam;
     public float scopedFOV = 20f;          // FOV when scoped
@@ -181,5 +184,23 @@ public class Weapon : MonoBehaviour
         currentAmmo = maxAmmo;
 
         // Play reload animation
+    }
+
+    public virtual void OnEquip()
+    {
+        isEquipped = true;
+        gameObject.SetActive(true);
+    }
+
+    public virtual void OnUnequip()
+    {
+        isEquipped = false;
+        gameObject.SetActive(false);
+    }
+
+
+    public void SetEquip()
+    {
+        Debug.Log("Equiping weapon");
     }
 }

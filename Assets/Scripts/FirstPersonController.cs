@@ -6,8 +6,6 @@ using System;
 using Unity.Collections;
 
 
-
-
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -64,7 +62,6 @@ public class FirstPersonController : NetworkBehaviour
 	[Header("Interact")]
 	public float interactRange = 3f;
     public LayerMask interactableLayer;
-    // public TextMeshProUGUI interactText; // Reference to a UI Text element
 
 	[Header("Crouch")]
 	[Tooltip("Normal standing height of the character controller")]
@@ -81,9 +78,6 @@ public class FirstPersonController : NetworkBehaviour
 
 	[Header("Shoulder Carry")]
 	public Transform shoulderCarryPoint;
-
-	[Header("Weapon")]
-	public Weapon equippedWeapon;
 
 	[Header("Multiplayer")]
 	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(
