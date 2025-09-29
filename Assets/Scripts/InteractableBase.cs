@@ -1,26 +1,93 @@
 using Unity.Netcode;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public abstract class InteractableBase : NetworkBehaviour
 {
+    [Header("Collider Sync Settings")]
+    [SerializeField]
+    private bool enableColliderSync = true; // Toggle to enable/disable collider syncing on start
+
     public NetworkVariable<bool> interactionEnabled = new NetworkVariable<bool>(true);
 
-    // Actual behavior when interacted with
+    private Collider interactCollider;
+
+    protected virtual void Awake()
+    {
+        interactCollider = GetComponent<Collider>();
+
+        // Only update collider if feature is enabled
+        if (enableColliderSync)
+        {
+            UpdateCollider(interactionEnabled.Value);
+        }
+    }
+
     public abstract void Interact(FirstPersonController player);
 
-    // UI prompt
-    public virtual string GetPrompt()
+    public virtual string GetPrompt(FirstPersonController player)
     {
         return "Press \"e\" to Interact";
     }
 
-    // Check if interaction is currently allowed
     public virtual bool IsInteractionEnabled() => interactionEnabled.Value;
 
-    // Allow external scripts to enable/disable interaction
     public void SetInteractionEnabled(bool enabled)
     {
-        if (IsServer)
+        if (!IsServer)
+            throw new System.InvalidOperationException("SetInteractionEnabled can only be called on the server.");
+
+        interactionEnabled.Value = enabled;
+        if (enableColliderSync)
+        {
+            UpdateCollider(enabled);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetInteractionEnabledServerRpc(bool enabled)
+    {
+        if (interactionEnabled.Value != enabled)
+        {
             interactionEnabled.Value = enabled;
+            if (enableColliderSync)
+            {
+                UpdateCollider(enabled);
+            }
+        }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (enableColliderSync)
+        {
+            interactionEnabled.OnValueChanged += OnInteractionChanged;
+            UpdateCollider(interactionEnabled.Value);
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (enableColliderSync)
+        {
+            interactionEnabled.OnValueChanged -= OnInteractionChanged;
+        }
+    }
+
+    private void OnInteractionChanged(bool oldValue, bool newValue)
+    {
+        UpdateCollider(newValue);
+    }
+
+    private void UpdateCollider(bool enabled)
+    {
+        if (interactCollider != null)
+        {
+            interactCollider.enabled = enabled;
+        }
     }
 }

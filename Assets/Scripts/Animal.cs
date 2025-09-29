@@ -217,24 +217,6 @@ public class Animal : NetworkBehaviour
         return isDead;
     }
 
-    [ClientRpc]
-    public void EnableCorpseClientRpc()
-    {
-        corpse.SetInteractionEnabled(true);
-        Collider col = corpse.GetComponent<Collider>();
-        if (col != null)
-            col.enabled = true;
-    }
-
-    [ClientRpc]
-    public void DisableCorpseClientRpc()
-    {
-        corpse.SetInteractionEnabled(false);
-        Collider col = corpse.GetComponent<Collider>();
-        if (col != null)
-            col.enabled = false;
-    }
-
     public Internal GetInternalById(int id)
     {
         internalLookup.TryGetValue(id, out var internalOrg);
@@ -315,7 +297,7 @@ public class Animal : NetworkBehaviour
             return;
         isDead = true;
         Debug.Log($"{name} has died.");
-        EnableCorpseClientRpc();
+        corpse.SetInteractionEnabledServerRpc(true);
         if (animalAI != null)
         {
             animalAI.animator.SetTrigger("dead");

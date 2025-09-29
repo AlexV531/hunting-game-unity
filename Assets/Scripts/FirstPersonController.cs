@@ -197,7 +197,7 @@ public class FirstPersonController : NetworkBehaviour
 		}
 		else if (IsCarryingAnimal.Value && _input.interact)
 		{
-			DropAnimalServerRpc(carriedAnimal.NetworkObject);
+			DropAnimalServerRpc();
 		}
 		_input.interact = false;
 	}
@@ -250,7 +250,7 @@ public class FirstPersonController : NetworkBehaviour
                 {
 					Debug.Log("Changing current interactable");
                     currentInteractable = interactable;
-                    _interactText.text = interactable.GetPrompt();
+                    _interactText.text = interactable.GetPrompt(this);
                     _interactText.gameObject.SetActive(true);
                 }
                 return;
@@ -420,7 +420,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
 		// Pickup logic
-		animal.DisableCorpseClientRpc();
+		animal.corpse.SetInteractionEnabled(false);
 		
 		animal.DisableInternalCollidersClientRpc(); // CHANGE THIS SO PLAYER DOESN'T COLLIDE WITH INTERNALS, THIS ONLY AFFECTS MAIN ANIMAL COLLIDER FOR PLAYERS
 
@@ -471,25 +471,33 @@ public class FirstPersonController : NetworkBehaviour
 	// }
 
 	[ServerRpc(RequireOwnership = false)]
-	public void DropAnimalServerRpc(NetworkObjectReference animalRef)
+	public void DropAnimalServerRpc()
 	{
-		if (!animalRef.TryGet(out NetworkObject netObj)) return;
-		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
+		// Make sure the player is carrying an animal
+		if (carriedAnimal == null) return;
 
+		var animal = carriedAnimal;
+
+		// Release ownership
 		animal.NetworkObject.RemoveOwnership();
 
-		// animal.transform.SetParent(null);
+		// Enable colliders and corpse state
 		animal.EnableInternalCollidersClientRpc();
+		animal.corpse.SetInteractionEnabled(true);
+
+		// Drop slightly below player
 		animal.transform.position -= new Vector3(0f, 0.75f, 0f);
-		animal.EnableCorpseClientRpc();
-		// animal.transform.position += animal.transform.forward * 0.5f;
-		
+
+		// Trigger drop animation if AI exists
 		if (animal.animalAI != null)
 			animal.animalAI.animator.SetTrigger("drop");
 
+		// Update player state
 		IsCarryingAnimal.Value = false;
+		carriedAnimal = null;
 
-		OnDropAnimalClientRpc(animalRef);
+		// Notify clients
+		OnDropAnimalClientRpc(animal.NetworkObject);
 	}
 
 	[ClientRpc]
@@ -497,15 +505,60 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		carriedAnimal = null;
 	}
+	
+	[ServerRpc(RequireOwnership = false)]
+	public void PlaceAnimalServerRpc(NetworkObjectReference tableRef)
+	{
+		// Make sure player is carrying an animal
+		if (carriedAnimal == null) return;
+
+		var animal = carriedAnimal;
+
+		if (!tableRef.TryGet(out NetworkObject tableObj)) return;
+		if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
+
+		// Release ownership from player
+		animal.NetworkObject.RemoveOwnership();
+
+		// Place animal (NetworkTransform handles syncing position/rotation)
+		animal.transform.SetPositionAndRotation(table.placementPoint.position, table.placementPoint.rotation);
+
+		// Track animal server-side
+		table.SetPlacedAnimal(animal);
+
+		if (animal.animalAI != null)
+			animal.animalAI.animator.SetTrigger("drop");
+
+		IsCarryingAnimal.Value = false;
+
+		// Clear carried animal state
+		carriedAnimal = null;
+
+		// Tell clients to update
+		OnPlaceAnimalClientRpc(animal.NetworkObject, tableRef);
+	}
+
+	[ClientRpc]
+	private void OnPlaceAnimalClientRpc(NetworkObjectReference animalRef, NetworkObjectReference tableRef)
+	{
+		if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
+
+		if (!tableRef.TryGet(out NetworkObject tableObj)) return;
+		if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
+
+		table.SetPlacedAnimal(animal);
+		carriedAnimal = null;
+	}
 
 	public override void OnNetworkSpawn()
-    {
-        if (IsOwner && IsClient)
-        {
-            string savedName = PlayerPrefs.GetString("PlayerName", "Player");
-            SubmitNameServerRpc(savedName);
-        }
-    }
+	{
+		if (IsOwner && IsClient)
+		{
+			string savedName = PlayerPrefs.GetString("PlayerName", "Player");
+			SubmitNameServerRpc(savedName);
+		}
+	}
 
     [ServerRpc(RequireOwnership = false)]
     private void SubmitNameServerRpc(string newName)

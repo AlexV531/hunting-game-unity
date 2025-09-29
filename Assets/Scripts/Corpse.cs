@@ -7,6 +7,6 @@ public class Corpse : InteractableBase
     public override void Interact(FirstPersonController player)
     {
         player.PickUpAnimalServerRpc(animal.NetworkObject);
-        SetInteractionEnabled(false);
+        SetInteractionEnabledServerRpc(false);
     }
 }
