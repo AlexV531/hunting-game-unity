@@ -87,4 +87,9 @@ public class PauseMenu : MonoBehaviour
     {
         return isPaused;
     }
+
+    private void OnApplicationQuit()
+    {
+        SaveGame(); // Auto-save when player closes the game
+    }
 }
