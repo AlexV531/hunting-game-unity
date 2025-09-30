@@ -4,6 +4,10 @@ using Cinemachine;
 using Unity.Netcode;
 using Unity.Collections;
 using System.Collections.Generic;
+using System;
+using System.Xml.Serialization;
+
+
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -61,7 +65,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	[Header("Interact")]
 	public float interactRange = 3f;
-    public LayerMask interactableLayer;
+	public LayerMask interactableLayer;
 
 	[Header("Crouch")]
 	[Tooltip("Normal standing height of the character controller")]
@@ -81,27 +85,44 @@ public class FirstPersonController : NetworkBehaviour
 
 	[Header("Multiplayer")]
 	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(
-        "Player",
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Server);
-	
+		"Player",
+		NetworkVariableReadPermission.Everyone,
+		NetworkVariableWritePermission.Server);
+
 	public NetworkVariable<int> KillCount = new NetworkVariable<int>(
-        0,
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Server);
+		0,
+		NetworkVariableReadPermission.Everyone,
+		NetworkVariableWritePermission.Server);
+
+	// Local player reference
+	public static FirstPersonController LocalPlayer { get; private set; }
+	public static event Action<FirstPersonController> OnLocalPlayerSpawned;
 
 	// Inventory
-	public int Money;
-    public List<string> Inventory;
+	private int money;
+    public int Money
+    {
+        get => money;
+        set
+        {
+            money = value;
+            if (IsLocalPlayer)
+                OnMoneyChanged?.Invoke(money); // Only local player triggers UI
+        }
+    }
+
+    public event Action<int> OnMoneyChanged;
+
+	public List<string> Inventory;
 
 	// interactables
 	private InteractableBase currentInteractable;
 
 	// shoulder carry
 	private Animal carriedAnimal;
-	public NetworkVariable<bool> IsCarryingAnimal = new NetworkVariable<bool>(false, 
-        NetworkVariableReadPermission.Everyone, 
-        NetworkVariableWritePermission.Server);
+	public NetworkVariable<bool> IsCarryingAnimal = new NetworkVariable<bool>(false,
+		NetworkVariableReadPermission.Everyone,
+		NetworkVariableWritePermission.Server);
 
 	// cinemachine
 	private float _cinemachineTargetPitch;
@@ -121,9 +142,9 @@ public class FirstPersonController : NetworkBehaviour
 	private float _fallTimeoutDelta;
 
 	// pause
-	[SerializeField] private PauseMenu _pauseMenu;
+	private PauseMenu _pauseMenu;
 
-	
+
 #if ENABLE_INPUT_SYSTEM
 	private PlayerInput _playerInput;
 #endif
@@ -138,11 +159,11 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		get
 		{
-			#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM
 			return _playerInput.currentControlScheme == "KeyboardMouse";
-			#else
+#else
 			return false;
-			#endif
+#endif
 		}
 	}
 
@@ -156,6 +177,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (vCam != null)
 		{
 			vCam.m_Lens.FieldOfView = GlobalVariables.cameraFOV;
+		}
+		if (_pauseMenu == null)
+		{
+			_pauseMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<PauseMenu>();
 		}
 		if (_interactText == null)
 		{
@@ -182,12 +207,28 @@ public class FirstPersonController : NetworkBehaviour
 		_fallTimeoutDelta = FallTimeout;
 	}
 
+	public override void OnNetworkSpawn()
+	{
+		if (IsOwner && IsClient)
+		{
+			string savedName = PlayerPrefs.GetString("PlayerName", "Player");
+			SubmitNameServerRpc(savedName);
+		}
+		if (IsLocalPlayer)
+		{
+			LocalPlayer = this;
+			OnLocalPlayerSpawned?.Invoke(this);
+			Debug.Log("Local player assigned via OnNetworkSpawn");
+		}
+	}
+
 	private void Update()
 	{
 		if (!IsOwner)
 			return;
 
 		JumpAndGravity();
+		HandlePause();
 
 		if (PauseMenu.IsPaused())
 			return;
@@ -212,6 +253,12 @@ public class FirstPersonController : NetworkBehaviour
 			DropAnimalServerRpc();
 		}
 		_input.interact = false;
+
+		if (_input.reload)
+		{
+			Money += 5;
+			Debug.Log("Current funds: " + Money);
+		}
 	}
 
 	private void LateUpdate()
@@ -236,7 +283,7 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			//Don't multiply mouse input by Time.deltaTime
 			float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-			
+
 			_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
 			_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
 
@@ -252,30 +299,43 @@ public class FirstPersonController : NetworkBehaviour
 	}
 
 	void DetectInteractable()
-    {
-        Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
+	{
+		Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
-        {
-            InteractableBase interactable = hit.collider.GetComponent<InteractableBase>();
+		if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
+		{
+			InteractableBase interactable = hit.collider.GetComponent<InteractableBase>();
 
-            if (interactable != null && interactable.IsInteractionEnabled())
-            {
-                if (interactable != currentInteractable)
-                {
+			if (interactable != null && interactable.IsInteractionEnabled())
+			{
+				if (interactable != currentInteractable)
+				{
 					Debug.Log("Changing current interactable");
-                    currentInteractable = interactable;
-                    _interactText.text = interactable.GetPrompt(this);
-                    _interactText.gameObject.SetActive(true);
-                }
-                return;
-            }
-        }
+					currentInteractable = interactable;
+					_interactText.text = interactable.GetPrompt(this);
+					_interactText.gameObject.SetActive(true);
+				}
+				return;
+			}
+		}
 
-        // No interactable found
-        currentInteractable = null;
-        _interactText.gameObject.SetActive(false);
-    }
+		// No interactable found
+		currentInteractable = null;
+		_interactText.gameObject.SetActive(false);
+	}
+
+	private void HandlePause()
+	{
+		if (_input.pause)
+        {
+            if (PauseMenu.IsPaused())
+                _pauseMenu.Resume();
+            else
+                _pauseMenu.Pause();
+
+            _input.pause = false;
+        }
+	}
 
 	private void Move()
 	{
@@ -410,14 +470,14 @@ public class FirstPersonController : NetworkBehaviour
 
 		// Pickup logic
 		animal.corpse.SetInteractionEnabled(false);
-		
+
 		animal.DisableInternalCollidersClientRpc(); // CHANGE THIS SO PLAYER DOESN'T COLLIDE WITH INTERNALS, THIS ONLY AFFECTS MAIN ANIMAL COLLIDER FOR PLAYERS
 
 		animal.NetworkObject.ChangeOwnership(OwnerClientId);
 
 		if (animal.animalAI != null)
 			animal.animalAI.animator.SetTrigger("carry");
-		
+
 		IsCarryingAnimal.Value = true;
 
 		OnPickupAnimalClientRpc(animalRef);
@@ -430,7 +490,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
 		if (animal.animalAI != null)
-        	animal.animalAI.animator.SetTrigger("carry");
+			animal.animalAI.animator.SetTrigger("carry");
 
 		carriedAnimal = animal; // client stores the local reference
 	}
@@ -470,7 +530,7 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		carriedAnimal = null;
 	}
-	
+
 	[ServerRpc(RequireOwnership = false)]
 	public void PlaceAnimalServerRpc(NetworkObjectReference tableRef)
 	{
@@ -516,53 +576,45 @@ public class FirstPersonController : NetworkBehaviour
 		carriedAnimal = null;
 	}
 
-	public override void OnNetworkSpawn()
-	{
-		if (IsOwner && IsClient)
-		{
-			string savedName = PlayerPrefs.GetString("PlayerName", "Player");
-			SubmitNameServerRpc(savedName);
-		}
-	}
-
 	public InteractableBase GetCurrentInteractable()
 	{
 		return currentInteractable;
 	}
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SubmitNameServerRpc(string newName)
-    {
+	[ServerRpc(RequireOwnership = false)]
+	private void SubmitNameServerRpc(string newName)
+	{
 		PlayerName.Value = newName;
-    }
+	}
 
 	[ServerRpc(RequireOwnership = false)]
-    public void AddKillServerRpc()
-    {
-        // Only the server can update authoritative stats
-        KillCount.Value += 1;
-    }
+	public void AddKillServerRpc()
+	{
+		// Only the server can update authoritative stats
+		KillCount.Value += 1;
+	}
 
 	public void SavePlayer()
-    {
-        PlayerSaveData data = new PlayerSaveData();
-        data.money = Money;
-        data.inventoryItems = Inventory;
-        SaveSystem.SavePlayer(data);
-    }
+	{
+		Debug.Log("Saved player data");
+		PlayerSaveData data = new PlayerSaveData();
+		data.money = Money;
+		data.inventoryItems = Inventory;
+		SaveSystem.SavePlayer(data);
+	}
 
-    public void LoadPlayer()
-    {
-        PlayerSaveData data = SaveSystem.LoadPlayer();
-        if (data == null) return;
+	public void LoadPlayer()
+	{
+		PlayerSaveData data = SaveSystem.LoadPlayer();
+		if (data == null) return;
 
-        Money = data.money;
-        Inventory.Clear();
-        foreach (var id in data.inventoryItems)
-        {
-            Inventory.Add(id);
-        }
-    }
+		Money = data.money;
+		Inventory.Clear();
+		foreach (var id in data.inventoryItems)
+		{
+			Inventory.Add(id);
+		}
+	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{
@@ -582,4 +634,11 @@ public class FirstPersonController : NetworkBehaviour
 		// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 		Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 	}
+	
+	public override void OnDestroy()
+    {
+		base.OnDestroy();
+        if (LocalPlayer == this)
+			LocalPlayer = null;
+    }
 }

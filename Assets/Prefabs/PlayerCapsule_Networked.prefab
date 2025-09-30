@@ -682,10 +682,10 @@ MonoBehaviour:
         byte0061: 0
   KillCount:
     m_InternalValue: 0
-  Money: 0
   Inventory: []
   IsCarryingAnimal:
     m_InternalValue: 0
+  _pauseMenu: {fileID: 0}
 --- !u!114 &8791639418517175756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,6 +711,7 @@ MonoBehaviour:
   equip2: 0
   equip3: 0
   interact: 0
+  pause: 0
   toggleShader: 0
   crouchToggleMode: 0
   steadyAimToggleMode: 0
