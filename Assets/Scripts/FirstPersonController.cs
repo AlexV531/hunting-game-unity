@@ -2,8 +2,8 @@
 using TMPro;
 using Cinemachine;
 using Unity.Netcode;
-using System;
 using Unity.Collections;
+using System.Collections.Generic;
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -90,6 +90,10 @@ public class FirstPersonController : NetworkBehaviour
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
 
+	// Inventory
+	public int Money;
+    public List<string> Inventory;
+
 	// interactables
 	private InteractableBase currentInteractable;
 
@@ -115,6 +119,9 @@ public class FirstPersonController : NetworkBehaviour
 	// timeout deltatime
 	private float _jumpTimeoutDelta;
 	private float _fallTimeoutDelta;
+
+	// pause
+	[SerializeField] private PauseMenu _pauseMenu;
 
 	
 #if ENABLE_INPUT_SYSTEM
@@ -177,9 +184,14 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void Update()
 	{
-		if (!IsOwner) return;
+		if (!IsOwner)
+			return;
 
 		JumpAndGravity();
+
+		if (PauseMenu.IsPaused())
+			return;
+
 		GroundedCheck();
 		HandleCrouch();
 		Move();
@@ -204,6 +216,9 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void LateUpdate()
 	{
+		if (PauseMenu.IsPaused())
+			return;
+
 		CameraRotation();
 	}
 
@@ -526,6 +541,27 @@ public class FirstPersonController : NetworkBehaviour
     {
         // Only the server can update authoritative stats
         KillCount.Value += 1;
+    }
+
+	public void SavePlayer()
+    {
+        PlayerSaveData data = new PlayerSaveData();
+        data.money = Money;
+        data.inventoryItems = Inventory;
+        SaveSystem.SavePlayer(data);
+    }
+
+    public void LoadPlayer()
+    {
+        PlayerSaveData data = SaveSystem.LoadPlayer();
+        if (data == null) return;
+
+        Money = data.money;
+        Inventory.Clear();
+        foreach (var id in data.inventoryItems)
+        {
+            Inventory.Add(id);
+        }
     }
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

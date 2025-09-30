@@ -3,13 +3,13 @@ using UnityEngine;
 public class ScopeSway : MonoBehaviour
 {
     [Header("Sway Settings")]
-    public float swayAmount = 0.5f;      // Max sway in degrees
-    public float swaySpeed = 1.5f;       // Sway cycle speed
-    public float returnSpeed = 2f;       // How fast it recenters
+    public float swayAmount = 0.5f; // Max sway in degrees
+    public float swaySpeed = 1.5f; // Sway cycle speed
+    public float returnSpeed = 2f; // How fast it recenters
 
     [Header("Steady Aim")]
-    [Range(0f, 1f)] public float steadyMultiplier = 0.2f;  // Sway scale when steady
-    public float steadyTransitionSpeed = 5f;               // Smooth blend speed
+    [Range(0f, 1f)] public float steadyMultiplier = 0.2f; // Sway scale when steady
+    public float steadyTransitionSpeed = 5f; // Smooth blend speed
 
     [SerializeField] private WeaponManager _weaponManager;
     [SerializeField] private PlayerInputs _inputs;

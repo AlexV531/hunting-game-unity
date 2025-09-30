@@ -67,6 +67,9 @@ public class Weapon : MonoBehaviour
         if (_fireCooldown > 0f)
             _fireCooldown -= Time.deltaTime;
 
+        if (PauseMenu.IsPaused())
+            return;
+
         HandleAim();
         HandleFire();
         HandleReload();

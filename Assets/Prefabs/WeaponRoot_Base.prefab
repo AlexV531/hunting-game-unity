@@ -78,13 +78,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80fbc3cdf21454d4c911cc9a474a7094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  model: {fileID: 0}
-  aimPosition: {fileID: 0}
-  hipPosition: {fileID: 0}
+  model: {fileID: 5834782184224562376}
+  aimPosition: {fileID: 7128737959558662897}
+  hipPosition: {fileID: 3165958024318943382}
   aimSpeed: 10
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
-  bulletSpeed: 60
+  bulletPrefab: {fileID: 1198269481787267308, guid: 47e639f39d28bcc4da75f6739162f0f3, type: 3}
+  firePoint: {fileID: 5581312515161585493}
+  bulletSpeed: 200
   weaponKey: 0
   isEquipped: 0
   scopedFOV: 20
@@ -1191,7 +1191,7 @@ Transform:
   m_GameObject: {fileID: 6804191206270180099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0.2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
