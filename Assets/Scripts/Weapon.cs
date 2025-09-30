@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
 
     public GameObject bulletPrefab;
     public Transform firePoint;
-    public float bulletSpeed = 60f;
+    public float bulletSpeed = 300f;
 
     public int weaponKey;
     public bool isEquipped;
