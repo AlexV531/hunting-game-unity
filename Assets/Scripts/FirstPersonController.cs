@@ -387,32 +387,6 @@ public class FirstPersonController : NetworkBehaviour
 		}
 	}
 
-	// public void PickUpAnimal(Animal animal)
-	// {
-	// 	if (carriedAnimal != null)
-	// 		return;
-
-	// 	carriedAnimal = animal;
-
-	// 	// disable interactable component
-	// 	animal.DisableCorpse();
-	// 	animal.NetworkObject.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
-	// 	animal.DisableInternalColliders();
-
-	// 	// parent to shoulder point and reset position/rotation
-	// 	// carriedAnimal.transform.position = shoulderCarryPoint.position;
-	// 	// carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
-	// 	// carriedAnimal.transform.SetParent(shoulderCarryPoint);
-
-	// 	// pose animal correctly
-	// 	if (carriedAnimal.animalAI != null)
-	// 	{
-	// 		carriedAnimal.animalAI.animator.SetTrigger("carry");
-	// 	}
-
-	// 	// Debug.Log(carriedAnimal.transform.position);
-	// }
-
 	[ServerRpc(RequireOwnership = false)]
 	public void PickUpAnimalServerRpc(NetworkObjectReference animalRef)
 	{
@@ -445,30 +419,6 @@ public class FirstPersonController : NetworkBehaviour
 
 		carriedAnimal = animal; // client stores the local reference
 	}
-
-	// public void DropAnimal()
-	// {
-	// 	if (carriedAnimal == null)
-	// 		return;
-
-	// 	// unparent
-	// 	// carriedAnimal.transform.SetParent(null);
-	// 	carriedAnimal.NetworkObject.RemoveOwnership();
-	// 	carriedAnimal.EnableInternalColliders();
-
-	// 	carriedAnimal.transform.position -= new Vector3(0f, 0.75f, 0f);
-
-	// 	// drop animal animation
-	// 	if (carriedAnimal.animalAI != null)
-	// 	{
-	// 		carriedAnimal.animalAI.animator.SetTrigger("drop");
-	// 	}
-
-	// 	// enable interactable component
-	// 	carriedAnimal.EnableCorpse();
-
-	// 	carriedAnimal = null;
-	// }
 
 	[ServerRpc(RequireOwnership = false)]
 	public void DropAnimalServerRpc()
@@ -558,6 +508,11 @@ public class FirstPersonController : NetworkBehaviour
 			string savedName = PlayerPrefs.GetString("PlayerName", "Player");
 			SubmitNameServerRpc(savedName);
 		}
+	}
+
+	public InteractableBase GetCurrentInteractable()
+	{
+		return currentInteractable;
 	}
 
     [ServerRpc(RequireOwnership = false)]

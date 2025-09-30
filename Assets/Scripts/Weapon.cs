@@ -5,9 +5,9 @@ using Unity.Netcode;
 
 public class Weapon : MonoBehaviour
 {
-    private PlayerInputs _input; // Reference to central input hub
-    private CameraRecoil _recoil;
-    private CinemachineVirtualCamera _vCam;
+    protected PlayerInputs _input; // Reference to central input hub
+    protected CameraRecoil _recoil;
+    protected CinemachineVirtualCamera _vCam;
 
 
     [Header("Weapon Settings")]
@@ -56,12 +56,12 @@ public class Weapon : MonoBehaviour
         _recoil = GetComponentInParent<CameraRecoil>();
     }
 
-    void Start()
+    protected virtual void Start()
     {
         _vCam = GetComponentInParent<FirstPersonController>().vCam;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         // reduce cooldown each frame
         if (_fireCooldown > 0f)
@@ -78,7 +78,7 @@ public class Weapon : MonoBehaviour
         return aiming;
     }
 
-    void HandleAim()
+    protected virtual void HandleAim()
     {
         if (!model || !aimPosition || !hipPosition) return;
 
@@ -133,7 +133,7 @@ public class Weapon : MonoBehaviour
         // QualitySettings.lodBias = normalLODBias;
     }
 
-    void HandleFire()
+    protected virtual void HandleFire()
     {
         if (_input.fire && _fireCooldown <= 0f)
         {

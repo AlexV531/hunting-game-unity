@@ -9,6 +9,7 @@ public class WeaponManager : NetworkBehaviour
 
     private Dictionary<int, Weapon> weapons = new Dictionary<int, Weapon>();
     private Weapon currentWeapon;
+    private int unequipedByAutoEquipKey = -1;
 
     // NetworkVariable to sync equipped weapon key
     private NetworkVariable<int> equippedWeaponKey = new NetworkVariable<int>(
@@ -68,6 +69,7 @@ public class WeaponManager : NetworkBehaviour
 
     public void EquipWeapon(int key)
     {
+        if (unequipedByAutoEquipKey != -1) return; // if this is -1 that means there is no weapon auto equipped
         if (!weapons.ContainsKey(key)) return;
         if (currentWeapon != null && currentWeapon.weaponKey == key) return;
 
@@ -82,6 +84,56 @@ public class WeaponManager : NetworkBehaviour
         // Sync the equipped weapon key across the network
         if (IsOwner)
             equippedWeaponKey.Value = key;
+    }
+
+    public void AutoEquipWeapon(int key) // Should be called by client
+    {
+        if (!weapons.ContainsKey(key)) return;
+        if (currentWeapon != null && currentWeapon.weaponKey == key) return;
+
+        // Unequip current
+        if (currentWeapon != null)
+            currentWeapon.OnUnequip();
+            unequipedByAutoEquipKey = currentWeapon.weaponKey;
+
+        // Equip new weapon
+        currentWeapon = weapons[key];
+        currentWeapon.OnEquip();
+
+        // Sync the equipped weapon key across the network
+        if (IsOwner)
+            equippedWeaponKey.Value = key;
+    }
+
+    public void AutoUnequipWeapon()
+    {
+        if (currentWeapon != null && currentWeapon.weaponKey == unequipedByAutoEquipKey) return;
+
+        // Unequip current
+        if (currentWeapon != null)
+            currentWeapon.OnUnequip();
+
+        // Equip new weapon
+        currentWeapon = weapons[unequipedByAutoEquipKey];
+        currentWeapon.OnEquip();
+
+        // Sync the equipped weapon key across the network
+        if (IsOwner)
+            equippedWeaponKey.Value = unequipedByAutoEquipKey;
+    }
+
+    [ClientRpc]
+    public void AutoEquipWeaponClientRpc(int key, ClientRpcParams rpcParams = default)
+    {
+        if (IsOwner)
+            AutoEquipWeapon(key);
+    }
+
+    [ClientRpc]
+    public void AutoUnequipWeaponClientRpc(ClientRpcParams rpcParams = default)
+    {
+        if (IsOwner)
+            AutoUnequipWeapon();
     }
 
     public Weapon GetCurrentWeapon()
