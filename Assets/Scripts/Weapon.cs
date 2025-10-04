@@ -2,11 +2,15 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Cinemachine;
 using Unity.Netcode;
+using NUnit.Framework;
+using System;
 
-public class Weapon : MonoBehaviour
+public class Weapon : NetworkBehaviour
 {
     protected PlayerInputs _input; // Reference to central input hub
     protected CameraRecoil _recoil;
+    protected FirstPersonController _owner;
+    protected Transform _followTarget;
     protected CinemachineVirtualCamera _vCam;
 
 
@@ -22,7 +26,11 @@ public class Weapon : MonoBehaviour
     public float bulletSpeed = 300f;
 
     public int weaponKey;
-    public bool isEquipped;
+    private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(
+        false,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner
+    );
 
     [Header("Zoom Settings")]
     // public CinemachineVirtualCamera vCam;
@@ -49,26 +57,47 @@ public class Weapon : MonoBehaviour
     private float _fireCooldown = 0f;
     private bool aiming = false;
 
-    void Awake()
-    {
-        // Finds PlayerInputs on parent
-        _input = GetComponentInParent<PlayerInputs>();
-        _recoil = GetComponentInParent<CameraRecoil>();
-    }
+    protected bool initialized = false;
 
-    protected virtual void Start()
+    public virtual void Initialize()
     {
-        _vCam = GetComponentInParent<FirstPersonController>().vCam;
+        if (IsOwner)
+        {
+            GameObject playerObj = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+            _owner = playerObj.GetComponent<FirstPersonController>();
+            _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponKey, this);
+            _input = _owner.GetComponent<PlayerInputs>();
+            _recoil = _owner.GetComponent<CameraRecoil>();
+            _followTarget = _owner.weaponContainer;
+            _vCam = _owner.vCam;
+
+            Debug.Log("Weapon initialized for local owner: " + _owner.name);
+            initialized = true;
+        }
+
+        isEquipped.OnValueChanged += OnEquipChange;
+        OnEquipChange(true, isEquipped.Value);
     }
 
     protected virtual void Update()
     {
-        // reduce cooldown each frame
-        if (_fireCooldown > 0f)
-            _fireCooldown -= Time.deltaTime;
+        if (!initialized)
+        {
+            Initialize();
+        }
+
+        if (!IsOwner)
+            return;
+
+        if (!isEquipped.Value)
+            return;
 
         if (PauseMenu.IsPaused())
             return;
+        
+        // reduce cooldown each frame
+        if (_fireCooldown > 0f)
+            _fireCooldown -= Time.deltaTime;
 
         HandleAim();
         HandleFire();
@@ -76,9 +105,26 @@ public class Weapon : MonoBehaviour
         HandleZoom();
     }
 
+    protected virtual void LateUpdate()
+    {
+        if (!IsOwner)
+            return;
+
+        HandleFollowTarget();
+    }
+
     public bool IsAiming()
     {
         return aiming;
+    }
+
+    protected virtual void HandleFollowTarget()
+    {
+        if (_followTarget != null)
+        {
+            transform.position = _followTarget.position;
+            transform.rotation = _followTarget.rotation;
+        }
     }
 
     protected virtual void HandleAim()
@@ -189,21 +235,22 @@ public class Weapon : MonoBehaviour
         // Play reload animation
     }
 
+    private void OnEquipChange(bool previousValue, bool newValue)
+    {
+        gameObject.SetActive(newValue);
+    }
+
     public virtual void OnEquip()
     {
-        isEquipped = true;
-        gameObject.SetActive(true);
+        if (!IsOwner)
+            return;
+        isEquipped.Value = true;
     }
 
     public virtual void OnUnequip()
     {
-        isEquipped = false;
-        gameObject.SetActive(false);
-    }
-
-
-    public void SetEquip()
-    {
-        Debug.Log("Equiping weapon");
+        if (!IsOwner)
+            return;
+        isEquipped.Value = false;
     }
 }

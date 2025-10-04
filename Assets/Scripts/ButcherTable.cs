@@ -48,16 +48,9 @@ public class ButcherTable : AnimalStoringInteractableBase
         if (other.CompareTag("Player"))
         {
             var wm = other.GetComponent<WeaponManager>();
-            var netObj = other.GetComponent<NetworkObject>();
-            if (wm != null && netObj != null)
+            if (wm != null && other.TryGetComponent<FirstPersonController>(out var player))
             {
-                wm.AutoEquipWeaponClientRpc(autoEquipKey, new ClientRpcParams
-                {
-                    Send = new ClientRpcSendParams
-                    {
-                        TargetClientIds = new[] { netObj.OwnerClientId }
-                    }
-                });
+                wm.EquipWeapon(autoEquipKey);
             }
         }
     }
@@ -69,16 +62,9 @@ public class ButcherTable : AnimalStoringInteractableBase
         if (other.CompareTag("Player"))
         {
             var wm = other.GetComponent<WeaponManager>();
-            var netObj = other.GetComponent<NetworkObject>();
-            if (wm != null && netObj != null)
+            if (wm != null)
             {
-                wm.AutoUnequipWeaponClientRpc(new ClientRpcParams
-                {
-                    Send = new ClientRpcSendParams
-                    {
-                        TargetClientIds = new[] { netObj.OwnerClientId }
-                    }
-                });
+                // wm.AutoUnequipWeapon();
             }
         }
     }

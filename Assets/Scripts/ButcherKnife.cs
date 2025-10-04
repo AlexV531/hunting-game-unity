@@ -5,28 +5,14 @@ using Unity.Netcode;
 
 public class ButcherKnife : Weapon
 {
-    protected FirstPersonController _player;
-
-    protected override void Start()
-    {
-        base.Start();
-        _player = GetComponentInParent<FirstPersonController>();
-    }
-
-    protected override void Update()
-    {
-        HandleAim();
-        HandleFire();
-    }
-
     protected override void HandleFire()
     {
         if (_input.fire)
         {
-            InteractableBase currentInteractable = _player.GetCurrentInteractable();
+            InteractableBase currentInteractable = _owner.GetCurrentInteractable();
             if (currentInteractable is ButcherTable butcherTable)
             {
-                butcherTable.ButcherServerRpc(_player.OwnerClientId);
+                butcherTable.ButcherServerRpc(_owner.OwnerClientId);
             }
             _input.fire = false;
         }

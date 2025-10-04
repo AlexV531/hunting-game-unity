@@ -144,6 +144,10 @@ public class FirstPersonController : NetworkBehaviour
 	// pause
 	private PauseMenu _pauseMenu;
 
+	// weapon manager
+	private WeaponManager _weaponManager;
+	public Transform weaponContainer;
+
 
 #if ENABLE_INPUT_SYSTEM
 	private PlayerInput _playerInput;
@@ -169,7 +173,6 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void Awake()
 	{
-		// get a reference to our main camera
 		if (_mainCamera == null)
 		{
 			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -198,6 +201,7 @@ public class FirstPersonController : NetworkBehaviour
 #else
 		Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
+		_weaponManager = GetComponent<WeaponManager>();
 
 		// crouch setup
 		_cameraStandPos = CinemachineCameraTarget.transform.localPosition;
@@ -213,6 +217,8 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			string savedName = PlayerPrefs.GetString("PlayerName", "Player");
 			SubmitNameServerRpc(savedName);
+
+			LoadPlayer();
 		}
 		if (IsLocalPlayer)
 		{
@@ -328,10 +334,11 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		if (_input.pause)
         {
+			Debug.Log("Pausing game");
             if (PauseMenu.IsPaused())
-                _pauseMenu.Resume();
-            else
-                _pauseMenu.Pause();
+				_pauseMenu.Resume();
+			else
+				_pauseMenu.Pause();
 
             _input.pause = false;
         }
@@ -599,7 +606,10 @@ public class FirstPersonController : NetworkBehaviour
 		Debug.Log("Saved player data");
 		PlayerSaveData data = new PlayerSaveData();
 		data.money = Money;
-		data.inventoryItems = Inventory;
+		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
+		List<int> loadoutWeaponKeysToAdd = new List<int>{0, 10};
+		data.loadoutWeaponKeys = loadoutWeaponKeysToAdd;
+		data.equippedWeaponKey = _weaponManager.GetEquippedWeaponKey();
 		SaveSystem.SavePlayer(data);
 	}
 
@@ -610,10 +620,6 @@ public class FirstPersonController : NetworkBehaviour
 
 		Money = data.money;
 		Inventory.Clear();
-		foreach (var id in data.inventoryItems)
-		{
-			Inventory.Add(id);
-		}
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
