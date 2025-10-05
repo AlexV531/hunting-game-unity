@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using Cinemachine;
-using Unity.Netcode;
 
 public class ButcherKnife : Weapon
 {

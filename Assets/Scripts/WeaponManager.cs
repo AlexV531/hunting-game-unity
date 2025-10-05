@@ -82,7 +82,7 @@ public class WeaponManager : NetworkBehaviour
 
         if (_input.equip1) { EquipWeapon(0); _input.equip1 = false; }
         if (_input.equip2) { EquipWeapon(10); _input.equip2 = false; }
-        if (_input.equip3) { EquipWeapon(2); _input.equip3 = false; }
+        if (_input.equip3) { EquipWeapon(5); _input.equip3 = false; }
     }
 
     public void UnlockWeapon(int key)
