@@ -7,4 +7,7 @@ public class WeaponDefinition
     public string weaponName;     // display name
     public GameObject prefab;     // prefab to instantiate
     public bool unlockedByDefault;
+    public bool contextual;
+    public Sprite icon;
+    public WeaponClass weaponClass;
 }

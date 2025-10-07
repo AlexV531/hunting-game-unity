@@ -10,18 +10,13 @@ public class WeaponManager : NetworkBehaviour
 
     private Weapon currentWeapon;
     private int previousWeaponKey = -1;
-
-    // private NetworkVariable<int> equippedWeaponKey = new NetworkVariable<int>(
-    //     -1,
-    //     NetworkVariableReadPermission.Everyone,
-    //     NetworkVariableWritePermission.Owner
-    // );
     private int equippedWeaponKey = -1;
 
     private Dictionary<int, Weapon> spawnedWeapons = new Dictionary<int, Weapon>();
+    private Dictionary<int, Weapon> defaultSpawnedWeapons = new Dictionary<int, Weapon>();
     private List<int> unlockedKeys = new List<int>();
     private PlayerInputs _input;
-    // private FirstPersonController _ownerController;
+    private FirstPersonController _player;
 
     public override void OnNetworkSpawn()
     {
@@ -29,7 +24,7 @@ public class WeaponManager : NetworkBehaviour
 
         if (IsOwner)
         {
-            // _ownerController = GetComponent<FirstPersonController>();
+            _player = GetComponent<FirstPersonController>();
             _input = GetComponent<PlayerInputs>();
 
             StartCoroutine(WaitForPlayerAndInit());
@@ -51,19 +46,25 @@ public class WeaponManager : NetworkBehaviour
         {
             unlockedKeys = new List<int>(data.unlockedWeaponKeys);
 
-            foreach (int key in data.loadoutWeaponKeys)
-            {
-                Debug.Log("Requesting to spawn a weapon");
-                RequestSpawnWeapon(key, false);
-            }
+            _player.GetLoadoutManager().InitializePlayerLoadout(data.loadout);
+            SetUpLoadout(data.loadout);
 
+            // unlock weapons to be unlocked by default
             foreach (var def in WeaponDatabase.Instance.allWeapons)
             {
                 if (def.unlockedByDefault)
                 {
                     UnlockWeapon(def.weaponKey);
+                }
+            }
+
+            // Spawn contextual weapons
+            foreach (var def in WeaponDatabase.Instance.allWeapons)
+            {
+                if (def.contextual)
+                {
                     if (!spawnedWeapons.ContainsKey(def.weaponKey))
-                        RequestSpawnWeapon(def.weaponKey, false);
+                        RequestSpawnContextualWeapon(def.weaponKey);
                 }
             }
 
@@ -87,6 +88,8 @@ public class WeaponManager : NetworkBehaviour
 
     public void UnlockWeapon(int key)
     {
+        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+            return;
         if (!unlockedKeys.Contains(key))
             unlockedKeys.Add(key);
     }
@@ -95,24 +98,39 @@ public class WeaponManager : NetworkBehaviour
     {
         if (!unlockedKeys.Contains(key) || spawnedWeapons.ContainsKey(key)) return;
 
-        RequestSpawnWeapon(key, false);
+        RequestSpawnWeapon(key);
     }
 
     public void RemoveFromLoadout(int key)
     {
         if (!spawnedWeapons.ContainsKey(key)) return;
 
-        // DespawnWeapon(key);
+        RequestDespawnWeapon(key);
+        UnregisterSpawnedWeapon(key);
     }
 
-    private void OnWeaponChanged(int previous, int current)
+    public void SetUpLoadout(Loadout newLoadout)
     {
-        if (IsOwner)
-            return;
-        Debug.Log("Swapping to weapon " + current);
-        if (current != -1)
+        foreach (int weaponKey in spawnedWeapons.Keys)
         {
-            EquipWeapon(current);
+            RequestDespawnWeapon(weaponKey);
+        }
+        foreach (int weaponKey in new List<int>(spawnedWeapons.Keys))
+        {
+            UnregisterSpawnedWeapon(weaponKey);
+        }
+
+        foreach (WeaponDefinition weaponDef in newLoadout.largeWeapons)
+        {
+            RequestSpawnWeapon(weaponDef.weaponKey);
+        }
+        foreach (WeaponDefinition weaponDef in newLoadout.smallWeapons)
+        {
+            RequestSpawnWeapon(weaponDef.weaponKey);
+        }
+        foreach (WeaponDefinition weaponDef in newLoadout.tools)
+        {
+            RequestSpawnWeapon(weaponDef.weaponKey);
         }
     }
 
@@ -142,13 +160,7 @@ public class WeaponManager : NetworkBehaviour
             Debug.Log("Attempting to equip a player's weapon without being the player's owner client, use autoequip if you are the server");
         }
 
-        // Debug.Log("Equipping weapon key " + key);
-        // foreach(KeyValuePair<int, Weapon> entry in spawnedWeapons)
-        // {
-        //     Debug.Log("key " + entry.Key + " value " + entry.Value.name);
-        // }
         if (!spawnedWeapons.ContainsKey(key) || currentWeapon == spawnedWeapons[key]) return;
-        // Debug.Log("Made it 1");
 
         previousWeaponKey = currentWeapon != null ? currentWeapon.weaponKey : -1;
 
@@ -157,43 +169,42 @@ public class WeaponManager : NetworkBehaviour
         currentWeapon.OnEquip();
 
         equippedWeaponKey = key;
-
-        // if (IsOwner)
-        // {
-        //     equippedWeaponKey.Value = key;
-        //     Debug.Log("Made it 2");
-        // }
     }
 
-    // private void DespawnWeapon(int key)
-    // {
-    //     if (!spawnedWeapons.TryGetValue(key, out Weapon weapon)) return;
-
-    //     NetworkObject netObj = weapon.GetComponent<NetworkObject>();
-    //     if (netObj != null && netObj.IsSpawned)
-    //     {
-    //         if (IsServer)
-    //         {
-    //             netObj.Despawn(true);
-    //         }
-    //         else
-    //         {
-    //             DespawnWeaponServerRpc(key);
-    //         }
-    //     }
-
-    //     spawnedWeapons.Remove(key);
-    //     Destroy(weapon.gameObject);
-    // }
-
-    public void RequestSpawnWeapon(int key, bool autoEquip = false)
+    public void RequestSpawnWeapon(int key)
     {
-        if (!IsOwner) return;
-        SpawnWeaponServerRpc(key, autoEquip);
+        if (!IsOwner)
+            return;
+        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+            return;
+        SpawnWeaponServerRpc(key);
+    }
+
+    public void RequestDespawnWeapon(int key)
+    {
+        if (!IsOwner)
+            return;
+        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+            return;
+        DespawnWeaponServerRpc(spawnedWeapons[key].NetworkObjectId);
+    }
+
+    public void RequestSpawnContextualWeapon(int key)
+    {
+        if (!IsOwner)
+            return;
+        SpawnWeaponServerRpc(key);
+    }
+
+    public void RequestDespawnContextualWeapon(int key)
+    {
+        if (!IsOwner)
+            return;
+        DespawnWeaponServerRpc(spawnedWeapons[key].NetworkObjectId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnWeaponServerRpc(int key, bool autoEquip, ServerRpcParams rpcParams = default)
+    private void SpawnWeaponServerRpc(int key, ServerRpcParams rpcParams = default)
     {
         Debug.Log("Spawning weapon");
         ulong senderClientId = rpcParams.Receive.SenderClientId;
@@ -227,17 +238,39 @@ public class WeaponManager : NetworkBehaviour
         spawnedWeapons[key] = weapon;
     }
 
-    // [ServerRpc(RequireOwnership = false)]
-    // private void DespawnWeaponServerRpc(int key)
-    // {
-    //     DespawnWeapon(key);
-    // }
+    public void UnregisterSpawnedWeapon(int key)
+    {
+        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+            return;
+        Debug.Log("Weapon unregistered");
+        spawnedWeapons.Remove(key);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnWeaponServerRpc(ulong weaponNetworkId, ServerRpcParams rpcParams = default)
+    {
+        // Validate that this weapon actually exists
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(weaponNetworkId, out var weapon))
+        {
+            Debug.LogWarning($"Weapon with ID {weaponNetworkId} not found on server");
+            return;
+        }
+
+        // Security check: make sure the caller actually owns this weapon
+        ulong senderClientId = rpcParams.Receive.SenderClientId;
+        if (weapon.OwnerClientId != senderClientId)
+        {
+            Debug.LogWarning($"Client {senderClientId} tried to despawn weapon not owned by them.");
+            return;
+        }
+
+        // Now safely despawn
+        weapon.Despawn(true);
+    }
 
     public Weapon GetCurrentWeapon() => currentWeapon;
 
     public List<int> GetUnlockedWeaponKeys() => unlockedKeys;
 
     public int GetEquippedWeaponKey() => equippedWeaponKey;
-
-    // public int GetEquippedWeaponKey() => equippedWeaponKey.Value;
 }

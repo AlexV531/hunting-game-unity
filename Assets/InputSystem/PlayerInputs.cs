@@ -20,6 +20,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool equip3;
 	public bool interact;
 	public bool pause;
+	public bool loadout;
 	public bool toggleShader;
 
 	[Header("Crouch Settings")]
@@ -112,6 +113,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnPause(InputValue value)
 	{
 		PauseInput(value.isPressed);
+	}
+
+	public void OnLoadout(InputValue value)
+	{
+		LoadoutInput(value.isPressed);
 	}
 
 	public void OnToggleShader(InputValue value)
@@ -217,6 +223,11 @@ public class PlayerInputs : MonoBehaviour
 	public void PauseInput(bool newPauseState)
 	{
 		pause = newPauseState;
+	}
+
+	public void LoadoutInput(bool newLoadoutState)
+	{
+		loadout = newLoadoutState;
 	}
 
 	public void ToggleShaderInput(bool newToggleShaderState)

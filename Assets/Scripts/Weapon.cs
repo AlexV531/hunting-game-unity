@@ -2,8 +2,13 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Cinemachine;
 using Unity.Netcode;
-using NUnit.Framework;
-using System;
+
+public enum WeaponClass
+{
+    Tool,
+    Small,
+    Large
+}
 
 public class Weapon : NetworkBehaviour
 {
@@ -15,15 +20,17 @@ public class Weapon : NetworkBehaviour
 
 
     [Header("Weapon Settings")]
-    public Transform model;            // assign your model in Inspector
-    public Transform aimPosition;      // where the weapon moves to when aiming
-    public Transform hipPosition;      // default position
+    public Transform model;
+    public Transform aimPosition;
+    public Transform hipPosition;
 
-    public float aimSpeed = 10f;       // speed to move weapon between positions
+    public float aimSpeed = 10f;
 
     public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed = 300f;
+
+    public WeaponClass weaponClass = WeaponClass.Large; // This is for loadouts
 
     public int weaponKey;
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(
@@ -34,8 +41,8 @@ public class Weapon : NetworkBehaviour
 
     [Header("Zoom Settings")]
     // public CinemachineVirtualCamera vCam;
-    public float scopedFOV = 20f;          // FOV when scoped
-    public float zoomSpeed = 10f;          // FOV transition speed
+    public float scopedFOV = 20f; // FOV when scoped
+    public float zoomSpeed = 10f; // FOV transition speed
 
     // [Header("Shadow & LOD Settings")]
     // public UniversalRenderPipelineAsset urpAsset;   // Assigned URP Asset
@@ -92,9 +99,9 @@ public class Weapon : NetworkBehaviour
         if (!isEquipped.Value)
             return;
 
-        if (PauseMenu.IsPaused())
+        if (_owner.IsPlayerInMenu())
             return;
-        
+
         // reduce cooldown each frame
         if (_fireCooldown > 0f)
             _fireCooldown -= Time.deltaTime;

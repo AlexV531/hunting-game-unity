@@ -5,7 +5,6 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     private static bool isPaused = false;
-    private PlayerInputs _inputs;
 
     private void Awake()
     {
@@ -15,12 +14,16 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         isPaused = false;
     }
 
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         isPaused = true;
     }
 

@@ -6,6 +6,12 @@ using Unity.Collections;
 using System.Collections.Generic;
 using System;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
+using NUnit.Framework;
+
+
+
+
 
 
 
@@ -143,6 +149,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	// pause
 	private PauseMenu _pauseMenu;
+	private LoadoutManager _loadoutManager;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -184,6 +191,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_pauseMenu == null)
 		{
 			_pauseMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<PauseMenu>();
+		}
+		if (_loadoutManager == null)
+		{
+			_loadoutManager = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<LoadoutManager>();
 		}
 		if (_interactText == null)
 		{
@@ -234,9 +245,9 @@ public class FirstPersonController : NetworkBehaviour
 			return;
 
 		JumpAndGravity();
-		HandlePause();
+		HandleMenus();
 
-		if (PauseMenu.IsPaused())
+		if (IsPlayerInMenu())
 			return;
 
 		GroundedCheck();
@@ -269,7 +280,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void LateUpdate()
 	{
-		if (PauseMenu.IsPaused())
+		if (IsPlayerInMenu())
 			return;
 
 		CameraRotation();
@@ -330,18 +341,39 @@ public class FirstPersonController : NetworkBehaviour
 		_interactText.gameObject.SetActive(false);
 	}
 
-	private void HandlePause()
+	private void HandleMenus()
 	{
-		if (_input.pause)
-        {
-			Debug.Log("Pausing game");
-            if (PauseMenu.IsPaused())
+		if (_loadoutManager.IsLoadoutOpen()) // Loadout menu open
+		{
+			if (_input.loadout || _input.pause)
+			{
+				_loadoutManager.CloseLoadoutScreen();
+				_input.pause = false;
+				_input.loadout = false;
+			}
+		}
+		else if (PauseMenu.IsPaused()) // Pause menu open
+		{
+			if (_input.pause)
+			{
 				_pauseMenu.Resume();
-			else
+				_input.pause = false;
+			}
+		}
+		else // No menus open
+		{
+			if (_input.pause)
+			{
 				_pauseMenu.Pause();
-
-            _input.pause = false;
-        }
+				_input.pause = false;
+			}
+			else if (_input.loadout)
+			{
+				_loadoutManager.OpenLoadoutScreen();
+				_input.loadout = false;
+			}
+		}
+		
 	}
 
 	private void Move()
@@ -607,8 +639,7 @@ public class FirstPersonController : NetworkBehaviour
 		PlayerSaveData data = new PlayerSaveData();
 		data.money = Money;
 		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
-		List<int> loadoutWeaponKeysToAdd = new List<int>{0, 10};
-		data.loadoutWeaponKeys = loadoutWeaponKeysToAdd;
+		data.loadout = _loadoutManager.GetCurrentLoadout();
 		data.equippedWeaponKey = _weaponManager.GetEquippedWeaponKey();
 		SaveSystem.SavePlayer(data);
 	}
@@ -620,6 +651,21 @@ public class FirstPersonController : NetworkBehaviour
 
 		Money = data.money;
 		Inventory.Clear();
+	}
+
+	public bool IsPlayerInMenu()
+	{
+		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen();
+	}
+
+	public WeaponManager GetWeaponManager()
+	{
+		return _weaponManager;
+	}
+
+	public LoadoutManager GetLoadoutManager()
+	{
+		return _loadoutManager;
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

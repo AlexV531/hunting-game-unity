@@ -17,11 +17,20 @@ MonoBehaviour:
     weaponName: Muskette
     prefab: {fileID: 1631708624346822267, guid: c057193311e8be749b24ed949125d9be, type: 3}
     unlockedByDefault: 1
+    contextual: 0
+    icon: {fileID: 21300000, guid: 4ed61ba2fbc616548b311169afdb6e27, type: 3}
+    weaponClass: 2
   - weaponKey: 5
     weaponName: Balloons
     prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
-    unlockedByDefault: 1
+    unlockedByDefault: 0
+    contextual: 0
+    icon: {fileID: 21300000, guid: b00d031c043494841824c019623c957c, type: 3}
+    weaponClass: 0
   - weaponKey: 10
     weaponName: ButcherKnife
     prefab: {fileID: 5986808091100910953, guid: 8b1006b4195617a42930f7f353569201, type: 3}
     unlockedByDefault: 1
+    contextual: 1
+    icon: {fileID: 21300000, guid: 54ca687667a96bd4e84af54b3c335b7c, type: 3}
+    weaponClass: 0
