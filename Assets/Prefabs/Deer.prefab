@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2034573511
+  GlobalObjectIdHash: 744583523
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1328,6 +1328,7 @@ MonoBehaviour:
   enableColliderSync: 1
   interactionEnabled:
     m_InternalValue: 1
+  initialInteractionEnabledValue: 0
   animal: {fileID: 3651933989365759357}
 --- !u!1 &9017630797139198235
 GameObject:

@@ -9,13 +9,6 @@ using System.Xml.Serialization;
 using Unity.VisualScripting;
 using NUnit.Framework;
 
-
-
-
-
-
-
-
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -24,7 +17,6 @@ using UnityEngine.InputSystem;
 #if ENABLE_INPUT_SYSTEM
 [RequireComponent(typeof(PlayerInput))]
 #endif
-
 
 public class FirstPersonController : NetworkBehaviour
 {
@@ -88,6 +80,9 @@ public class FirstPersonController : NetworkBehaviour
 
 	[Header("Shoulder Carry")]
 	public Transform shoulderCarryPoint;
+
+	[Header("Cart Pulling")]
+	public Transform grabPoint;
 
 	[Header("Multiplayer")]
 	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(

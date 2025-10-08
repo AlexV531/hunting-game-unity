@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 3860327484710091276}
   - component: {fileID: 4547363607548388873}
   - component: {fileID: 438105904991772349}
+  - component: {fileID: 7925094639610938169}
   m_Layer: 8
   m_Name: PlayerCapsule_Networked
   m_TagString: Player
@@ -302,6 +303,7 @@ Transform:
   - {fileID: 569294695800174897}
   - {fileID: 3434154932474057570}
   - {fileID: 3114307596873294267}
+  - {fileID: 6582197765361090636}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &5274068184629879561
@@ -341,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 71539812
+  GlobalObjectIdHash: 3182954585
   InScenePlacedSourceGlobalObjectIdHash: 3182954585
   DeferredDespawnTick: 0
   Ownership: 1
@@ -394,6 +396,7 @@ MonoBehaviour:
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
   shoulderCarryPoint: {fileID: 3114307596873294267}
+  grabPoint: {fileID: 6582197765361090636}
   PlayerName:
     m_InternalValue:
       utf8LengthInBytes: 6
@@ -495,6 +498,7 @@ MonoBehaviour:
   equip3: 0
   interact: 0
   pause: 0
+  loadout: 0
   toggleShader: 0
   crouchToggleMode: 0
   steadyAimToggleMode: 0
@@ -712,6 +716,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
   weaponContainer: {fileID: 1678939170201699571}
+--- !u!54 &7925094639610938169
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435097450268482601}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8519950718463265629
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +769,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.709, y: 1.466, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5087568743913183604}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9081693367002221356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6582197765361090636}
+  m_Layer: 8
+  m_Name: GrabPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6582197765361090636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9081693367002221356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
