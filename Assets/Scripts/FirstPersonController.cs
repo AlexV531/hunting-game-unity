@@ -322,7 +322,7 @@ public class FirstPersonController : NetworkBehaviour
 			{
 				if (interactable != currentInteractable)
 				{
-					Debug.Log("Changing current interactable");
+					// Debug.Log("Changing current interactable");
 					currentInteractable = interactable;
 					_interactText.text = interactable.GetPrompt(this);
 					_interactText.gameObject.SetActive(true);
@@ -509,8 +509,12 @@ public class FirstPersonController : NetworkBehaviour
 
 		animal.NetworkObject.ChangeOwnership(OwnerClientId);
 
+		BalloonAttach animalAttach = animal.GetComponent<BalloonAttach>();
+		if (animalAttach != null)
+			animalAttach.Release();
+
 		if (animal.animalAI != null)
-			animal.animalAI.animator.SetTrigger("carry");
+				animal.animalAI.animator.SetTrigger("carry");
 
 		IsCarryingAnimal.Value = true;
 
@@ -608,6 +612,15 @@ public class FirstPersonController : NetworkBehaviour
 
 		table.SetPlacedAnimal(animal);
 		carriedAnimal = null;
+	}
+
+	public Animal GetCarriedAnimal()
+	{
+		if (IsOwner)
+		{
+			return carriedAnimal;
+		}
+		return null;
 	}
 
 	public InteractableBase GetCurrentInteractable()

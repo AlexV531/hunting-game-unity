@@ -5,10 +5,27 @@ public class BalloonAttach : NetworkBehaviour
 {
     private Transform balloon;
     public Transform objectToAttach;
+    private AttachInteractable interactable;
 
-    public void Attach(Transform balloonTransform)
+    public void Attach(Transform balloonTransform, AttachInteractable newInteractable = null)
     {
         balloon = balloonTransform;
+        if (newInteractable != null)
+        {
+            interactable = newInteractable;
+        }
+    }
+
+    public void Release(bool calledFromAttachInteractable = false)
+    {
+        if (interactable != null && !calledFromAttachInteractable)
+        {
+            interactable.ReleaseTarget(this);
+        }
+        else
+        {
+            balloon = null;
+        }
     }
 
     public bool IsAttached()

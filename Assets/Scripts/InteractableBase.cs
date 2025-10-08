@@ -49,7 +49,6 @@ public abstract class InteractableBase : NetworkBehaviour
 
     public virtual string GetPrompt(FirstPersonController player)
     {
-        Debug.Log(interactionEnabled.Value);
         return "Press \"e\" to Interact";
     }
 
@@ -60,8 +59,6 @@ public abstract class InteractableBase : NetworkBehaviour
         if (!IsServer)
             throw new System.InvalidOperationException("SetInteractionEnabled can only be called on the server.");
         
-        Debug.Log("Interaction enabled set to " + interactionEnabled.Value);
-
         interactionEnabled.Value = enabled;
         if (enableColliderSync)
         {
@@ -72,11 +69,9 @@ public abstract class InteractableBase : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SetInteractionEnabledServerRpc(bool enabled)
     {
-        Debug.Log("Attempting to set interaction enabled to " + interactionEnabled.Value + " from server rpc");
         if (interactionEnabled.Value != enabled)
         {
             interactionEnabled.Value = enabled;
-            Debug.Log("Interaction enabled set to " + interactionEnabled.Value + " from server rpc");
             if (enableColliderSync)
             {
                 UpdateCollider(enabled);

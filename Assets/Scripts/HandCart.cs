@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class HandCart : InteractableBase
+public class HandCart : AttachInteractable
 {
     [SerializeField] private Transform frontAnchor;
     [SerializeField] private float maxDistanceFromPlayer = 5f; // maximum allowed distance before release
@@ -32,6 +32,20 @@ public class HandCart : InteractableBase
         ulong playerId = player.OwnerClientId;
         Debug.Log(playerId);
 
+        // If the player is carrying an animal,
+        if (player.IsCarryingAnimal.Value)
+        {
+            Animal animalToAttach = player.GetCarriedAnimal();
+            if (animalToAttach != null)
+            {
+                player.DropAnimalServerRpc();
+                AttachAnimalToCartServerRpc(animalToAttach.NetworkObject);
+            }
+            else
+                Debug.Log("player.GetCarriedAnimal() failed");
+            return;
+        }
+
         // If cart is currently unclaimed, request a grab
         if (owningPlayerId.Value == UnclaimedId)
         {
@@ -44,6 +58,18 @@ public class HandCart : InteractableBase
         else
         {
             Debug.Log($"Player {playerId} attempted to interact with a cart owned by {owningPlayerId.Value}.");
+        }
+    }
+
+    public override string GetPrompt(FirstPersonController player)
+    {
+        if (player.IsCarryingAnimal.Value)
+        {
+            return "Press \"e\" to place animal";
+        }
+        else
+        {
+            return "Press \"e\" to pick up cart";
         }
     }
 
@@ -152,5 +178,20 @@ public class HandCart : InteractableBase
             activeJoint = null;
             Debug.Log("Cart released.");
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AttachAnimalToCartServerRpc(NetworkObjectReference animalRef)
+    {
+        if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animalToAttach)) return;
+
+        BalloonAttach animalAttach = animalToAttach.GetComponent<BalloonAttach>();
+        if (animalAttach != null)
+        {
+            AttachTarget(animalAttach);
+        }
+        else
+            Debug.Log("animalToAttach.GetComponent<BalloonAttach>() failed");
     }
 }
