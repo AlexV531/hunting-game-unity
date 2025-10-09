@@ -39,5 +39,6 @@ public class BalloonAttach : NetworkBehaviour
             return;
 
         objectToAttach.position = balloon.position;
+        objectToAttach.rotation = balloon.rotation;
     }
 }

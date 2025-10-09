@@ -534,7 +534,7 @@ public class FirstPersonController : NetworkBehaviour
 	}
 
 	[ServerRpc(RequireOwnership = false)]
-	public void DropAnimalServerRpc()
+	public void DropAnimalServerRpc(bool enableCollidersOnDrop = true)
 	{
 		// Make sure the player is carrying an animal
 		if (carriedAnimal == null) return;
@@ -545,7 +545,8 @@ public class FirstPersonController : NetworkBehaviour
 		animal.NetworkObject.RemoveOwnership();
 
 		// Enable colliders and corpse state
-		animal.EnableInternalCollidersClientRpc();
+		if (enableCollidersOnDrop)
+			animal.EnableInternalCollidersClientRpc();
 		animal.corpse.SetInteractionEnabled(true);
 
 		// Drop slightly below player
