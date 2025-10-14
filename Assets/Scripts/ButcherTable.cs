@@ -38,7 +38,14 @@ public class ButcherTable : AnimalStoringInteractableBase
     [ServerRpc(RequireOwnership = false)]
     public void ButcherServerRpc(ulong clientId)
     {
-        Debug.Log("Animal butchered");
+        Debug.Log($"Animal butchered by client {clientId}");
+
+        // Retrieve that player's server-side instance
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
+        {
+            var player = client.PlayerObject.GetComponent<FirstPersonController>();
+            player.Money += 5;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -265,12 +265,6 @@ public class FirstPersonController : NetworkBehaviour
 			DropAnimalServerRpc();
 		}
 		_input.interact = false;
-
-		if (_input.reload)
-		{
-			Money += 5;
-			Debug.Log("Current funds: " + Money);
-		}
 	}
 
 	private void LateUpdate()
