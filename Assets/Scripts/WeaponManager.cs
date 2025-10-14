@@ -9,6 +9,7 @@ public class WeaponManager : NetworkBehaviour
     public Transform weaponContainer;
 
     private Weapon currentWeapon;
+    private Loadout currentLoadout;
     private int previousWeaponKey = -1;
     private int equippedWeaponKey = -1;
 
@@ -81,9 +82,14 @@ public class WeaponManager : NetworkBehaviour
     {
         if (!IsOwner || _input == null) return;
 
-        if (_input.equip1) { EquipWeapon(0); _input.equip1 = false; }
-        if (_input.equip2) { EquipWeapon(10); _input.equip2 = false; }
-        if (_input.equip3) { EquipWeapon(5); _input.equip3 = false; }
+        if (_input.equip1) { EquipWeaponInSlot(0); _input.equip1 = false; }
+        if (_input.equip2) { EquipWeaponInSlot(1); _input.equip2 = false; }
+        if (_input.equip3) { EquipWeaponInSlot(2); _input.equip3 = false; }
+        if (_input.equip4) { EquipWeaponInSlot(3); _input.equip4 = false; }
+        if (_input.equip5) { EquipWeaponInSlot(4); _input.equip5 = false; }
+        if (_input.equip6) { EquipWeaponInSlot(5); _input.equip6 = false; }
+        if (_input.equip7) { EquipWeaponInSlot(6); _input.equip7 = false; }
+        if (_input.equip8) { EquipWeaponInSlot(7); _input.equip8 = false; }
     }
 
     public void UnlockWeapon(int key)
@@ -132,6 +138,8 @@ public class WeaponManager : NetworkBehaviour
         {
             RequestSpawnWeapon(weaponDef.weaponKey);
         }
+
+        currentLoadout = newLoadout;
     }
 
     private IEnumerator EquipWhenReady(int key, float timeout = 1f)
@@ -157,7 +165,7 @@ public class WeaponManager : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Debug.Log("Attempting to equip a player's weapon without being the player's owner client, use autoequip if you are the server");
+            Debug.Log("Attempting to equip a player's weapon without being the player's owner client");
         }
 
         if (!spawnedWeapons.ContainsKey(key) || currentWeapon == spawnedWeapons[key]) return;
@@ -169,6 +177,88 @@ public class WeaponManager : NetworkBehaviour
         currentWeapon.OnEquip();
 
         equippedWeaponKey = key;
+    }
+
+    public void EquipWeaponInSlot(int slot)
+    {
+        if (!IsOwner)
+        {
+            Debug.Log("Attempting to equip a player's weapon without being the player's owner client");
+        }
+
+        if (currentLoadout == null)
+        {
+            Debug.LogWarning("Loadout not set in weapon manager");
+            return;
+        }
+
+        int key = 0;
+        if (slot == 0)
+        {
+            if (currentLoadout.largeWeapons.Count < 1)
+            {
+                return;
+            }
+            key = currentLoadout.largeWeapons[0].weaponKey;
+        }
+        else if (slot == 1)
+        {
+            if (currentLoadout.largeWeapons.Count < 2)
+            {
+                return;
+            }
+            key = currentLoadout.largeWeapons[1].weaponKey;
+        }
+        else if (slot == 2)
+        {
+            if (currentLoadout.smallWeapons.Count < 1)
+            {
+                return;
+            }
+            key = currentLoadout.smallWeapons[0].weaponKey;
+        }
+        else if (slot == 3)
+        {
+            if (currentLoadout.smallWeapons.Count < 2)
+            {
+                return;
+            }
+            key = currentLoadout.smallWeapons[1].weaponKey;
+        }
+        else if (slot == 4)
+        {
+            if (currentLoadout.tools.Count < 1)
+            {
+                return;
+            }
+            key = currentLoadout.tools[0].weaponKey;
+        }
+        else if (slot == 5)
+        {
+            if (currentLoadout.tools.Count < 2)
+            {
+                return;
+            }
+            key = currentLoadout.tools[1].weaponKey;
+        }
+        else if (slot == 6)
+        {
+            if (currentLoadout.tools.Count < 3)
+            {
+                return;
+            }
+            key = currentLoadout.tools[2].weaponKey;
+        }
+        else if (slot == 7)
+        {
+            if (currentLoadout.tools.Count < 4)
+            {
+                return;
+            }
+            key = currentLoadout.tools[3].weaponKey;
+        }
+
+        EquipWeapon(key);
     }
 
     public void RequestSpawnWeapon(int key)

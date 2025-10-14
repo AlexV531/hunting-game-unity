@@ -18,6 +18,11 @@ public class PlayerInputs : MonoBehaviour
 	public bool equip1;
 	public bool equip2;
 	public bool equip3;
+	public bool equip4;
+	public bool equip5;
+	public bool equip6;
+	public bool equip7;
+	public bool equip8;
 	public bool interact;
 	public bool pause;
 	public bool loadout;
@@ -103,6 +108,31 @@ public class PlayerInputs : MonoBehaviour
 	public void OnEquip3(InputValue value)
 	{
 		Equip3Input(value.isPressed);
+	}
+
+	public void OnEquip4(InputValue value)
+	{
+		Equip4Input(value.isPressed);
+	}
+
+	public void OnEquip5(InputValue value)
+	{
+		Equip5Input(value.isPressed);
+	}
+
+	public void OnEquip6(InputValue value)
+	{
+		Equip6Input(value.isPressed);
+	}
+
+	public void OnEquip7(InputValue value)
+	{
+		Equip7Input(value.isPressed);
+	}
+
+	public void OnEquip8(InputValue value)
+	{
+		Equip8Input(value.isPressed);
 	}
 
 	public void OnInteract(InputValue value)
@@ -213,6 +243,31 @@ public class PlayerInputs : MonoBehaviour
 	public void Equip3Input(bool newEquip3State)
 	{
 		equip3 = newEquip3State;
+	}
+
+	public void Equip4Input(bool newEquip4State)
+	{
+		equip4 = newEquip4State;
+	}
+
+	public void Equip5Input(bool newEquip5State)
+	{
+		equip5 = newEquip5State;
+	}
+
+	public void Equip6Input(bool newEquip6State)
+	{
+		equip6 = newEquip6State;
+	}
+
+	public void Equip7Input(bool newEquip7State)
+	{
+		equip7 = newEquip7State;
+	}
+
+	public void Equip8Input(bool newEquip8State)
+	{
+		equip8 = newEquip8State;
 	}
 
 	public void InteractInput(bool newInteractState)

@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3182954585
+  GlobalObjectIdHash: 71539812
   InScenePlacedSourceGlobalObjectIdHash: 3182954585
   DeferredDespawnTick: 0
   Ownership: 1
@@ -496,6 +496,11 @@ MonoBehaviour:
   equip1: 0
   equip2: 0
   equip3: 0
+  equip4: 0
+  equip5: 0
+  equip6: 0
+  equip7: 0
+  equip8: 0
   interact: 0
   pause: 0
   loadout: 0
