@@ -18,7 +18,7 @@ public class Loadout
 
             var entries = list.Select((w, i) =>
                 w != null
-                    ? $"[{i}] {w.weaponName} (Key {w.weaponKey})"
+                    ? $"[{i}] {w.itemName} (Key {w.key})"
                     : $"[{i}] null");
 
             return $"{label}: {string.Join(", ", entries)}";

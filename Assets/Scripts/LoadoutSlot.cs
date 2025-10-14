@@ -24,7 +24,7 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
 
     public void AssignWeapon(WeaponDefinition weapon)
     {
-        Debug.Log("Weapon assigned: " + weapon.weaponKey);
+        Debug.Log("Weapon assigned: " + weapon.key);
         assignedWeapon = weapon;
         icon.sprite = weapon.icon;
     }

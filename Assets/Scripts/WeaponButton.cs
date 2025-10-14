@@ -17,7 +17,7 @@ public class WeaponButton : MonoBehaviour
         this.manager = manager;
 
         icon.sprite = weapon.icon;
-        nameText.text = weapon.weaponName;
+        nameText.text = weapon.itemName;
         button.onClick.AddListener(OnClicked);
     }
 

@@ -72,11 +72,11 @@ public class LoadoutManager : MonoBehaviour
         // Rebuild from current weapon list
         foreach (var weaponKey in FirstPersonController.LocalPlayer.GetWeaponManager().GetUnlockedWeaponKeys())
         {
-            if (WeaponDatabase.Instance.GetWeapon(weaponKey).contextual)
+            if (WeaponDatabase.GetWeapon(weaponKey).contextual)
                 continue;
             GameObject btnObj = Instantiate(weaponButtonPrefab, weaponListContainer);
             WeaponButton btn = btnObj.GetComponent<WeaponButton>();
-            btn.Initialize(WeaponDatabase.Instance.GetWeapon(weaponKey), this);
+            btn.Initialize(WeaponDatabase.GetWeapon(weaponKey), this);
         }
     }
 
@@ -113,7 +113,7 @@ public class LoadoutManager : MonoBehaviour
         var targetList = GetListForClass(weapon.weaponClass);
         foreach (WeaponDefinition def in targetList)
         {
-            Debug.Log(def.weaponKey);
+            Debug.Log(def.key);
         }
         Debug.Log(targetList);
         int maxSlots = targetList.Capacity;
@@ -179,7 +179,7 @@ public class LoadoutManager : MonoBehaviour
     {
         var list = GetListForClass(weapon.weaponClass);
         list.Remove(weapon);
-        Debug.Log($"Removed {weapon.weaponName} from {weapon.weaponClass} loadout");
+        Debug.Log($"Removed {weapon.itemName} from {weapon.weaponClass} loadout");
     }
 
     private void OnLoadoutConfirmed()

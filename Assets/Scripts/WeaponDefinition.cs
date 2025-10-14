@@ -1,13 +1,15 @@
 using UnityEngine;
 
 [System.Serializable]
-public class WeaponDefinition
+public class WeaponDefinition : ItemDefinition
 {
-    public int weaponKey;         // unique identifier
-    public string weaponName;     // display name
-    public GameObject prefab;     // prefab to instantiate
+    public GameObject prefab; // prefab to instantiate
     public bool unlockedByDefault;
     public bool contextual;
-    public Sprite icon;
     public WeaponClass weaponClass;
+
+    public override void Acquire(FirstPersonController player)
+    {
+        player.GetWeaponManager().UnlockWeapon(key);
+    }
 }

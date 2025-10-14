@@ -145,6 +145,7 @@ public class FirstPersonController : NetworkBehaviour
 	// pause
 	private PauseMenu _pauseMenu;
 	private LoadoutManager _loadoutManager;
+	private ShopUI _shopUI;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -190,6 +191,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_loadoutManager == null)
 		{
 			_loadoutManager = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<LoadoutManager>();
+		}
+		if (_shopUI == null)
+		{
+			_shopUI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<ShopUI>();
 		}
 		if (_interactText == null)
 		{
@@ -341,6 +346,15 @@ public class FirstPersonController : NetworkBehaviour
 				_input.loadout = false;
 			}
 		}
+		else if (_shopUI.IsShopOpen())
+		{
+            if (_input.loadout || _input.pause)
+			{
+				_shopUI.CloseShopScreen();
+				_input.pause = false;
+				_input.loadout = false;
+			}
+        }
 		else if (PauseMenu.IsPaused()) // Pause menu open
 		{
 			if (_input.pause)
@@ -658,7 +672,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen();
+		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen();
 	}
 
 	public WeaponManager GetWeaponManager()
@@ -669,6 +683,11 @@ public class FirstPersonController : NetworkBehaviour
 	public LoadoutManager GetLoadoutManager()
 	{
 		return _loadoutManager;
+	}
+
+	public ShopUI GetShopUI()
+	{
+		return _shopUI;
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce3efef482bd1c4398e435d1dc05851, type: 3}
+  m_Name: ItemDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
+  allItems:
+  - rid: 2233891300149559394
+  - rid: 2233891300149559399
+  - rid: 2233891300149559400
+  references:
+    version: 2
+    RefIds:
+    - rid: 2233891300149559394
+      type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
+      data:
+        key: 0
+        itemName: Muskette
+        icon: {fileID: 21300000, guid: 4ed61ba2fbc616548b311169afdb6e27, type: 3}
+        price: 100
+        prefab: {fileID: 1631708624346822267, guid: c057193311e8be749b24ed949125d9be, type: 3}
+        unlockedByDefault: 1
+        contextual: 0
+        weaponClass: 2
+    - rid: 2233891300149559399
+      type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
+      data:
+        key: 5
+        itemName: Balloons
+        icon: {fileID: 21300000, guid: b00d031c043494841824c019623c957c, type: 3}
+        price: 60
+        prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
+        unlockedByDefault: 0
+        contextual: 0
+        weaponClass: 0
+    - rid: 2233891300149559400
+      type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
+      data:
+        key: 10
+        itemName: Butcher Knife
+        icon: {fileID: 21300000, guid: 54ca687667a96bd4e84af54b3c335b7c, type: 3}
+        price: 0
+        prefab: {fileID: 5986808091100910953, guid: 8b1006b4195617a42930f7f353569201, type: 3}
+        unlockedByDefault: 1
+        contextual: 1
+        weaponClass: 0

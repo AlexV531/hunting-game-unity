@@ -51,21 +51,21 @@ public class WeaponManager : NetworkBehaviour
             SetUpLoadout(data.loadout);
 
             // unlock weapons to be unlocked by default
-            foreach (var def in WeaponDatabase.Instance.allWeapons)
+            foreach (var def in WeaponDatabase.GetAllWeapons())
             {
                 if (def.unlockedByDefault)
                 {
-                    UnlockWeapon(def.weaponKey);
+                    UnlockWeapon(def.key);
                 }
             }
 
             // Spawn contextual weapons
-            foreach (var def in WeaponDatabase.Instance.allWeapons)
+            foreach (var def in WeaponDatabase.GetAllWeapons())
             {
                 if (def.contextual)
                 {
-                    if (!spawnedWeapons.ContainsKey(def.weaponKey))
-                        RequestSpawnContextualWeapon(def.weaponKey);
+                    if (!spawnedWeapons.ContainsKey(def.key))
+                        RequestSpawnContextualWeapon(def.key);
                 }
             }
 
@@ -94,7 +94,7 @@ public class WeaponManager : NetworkBehaviour
 
     public void UnlockWeapon(int key)
     {
-        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+        if (WeaponDatabase.GetWeapon(key).contextual)
             return;
         if (!unlockedKeys.Contains(key))
             unlockedKeys.Add(key);
@@ -128,15 +128,15 @@ public class WeaponManager : NetworkBehaviour
 
         foreach (WeaponDefinition weaponDef in newLoadout.largeWeapons)
         {
-            RequestSpawnWeapon(weaponDef.weaponKey);
+            RequestSpawnWeapon(weaponDef.key);
         }
         foreach (WeaponDefinition weaponDef in newLoadout.smallWeapons)
         {
-            RequestSpawnWeapon(weaponDef.weaponKey);
+            RequestSpawnWeapon(weaponDef.key);
         }
         foreach (WeaponDefinition weaponDef in newLoadout.tools)
         {
-            RequestSpawnWeapon(weaponDef.weaponKey);
+            RequestSpawnWeapon(weaponDef.key);
         }
 
         currentLoadout = newLoadout;
@@ -199,7 +199,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.largeWeapons[0].weaponKey;
+            key = currentLoadout.largeWeapons[0].key;
         }
         else if (slot == 1)
         {
@@ -207,7 +207,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.largeWeapons[1].weaponKey;
+            key = currentLoadout.largeWeapons[1].key;
         }
         else if (slot == 2)
         {
@@ -215,7 +215,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.smallWeapons[0].weaponKey;
+            key = currentLoadout.smallWeapons[0].key;
         }
         else if (slot == 3)
         {
@@ -223,7 +223,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.smallWeapons[1].weaponKey;
+            key = currentLoadout.smallWeapons[1].key;
         }
         else if (slot == 4)
         {
@@ -231,7 +231,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.tools[0].weaponKey;
+            key = currentLoadout.tools[0].key;
         }
         else if (slot == 5)
         {
@@ -239,7 +239,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.tools[1].weaponKey;
+            key = currentLoadout.tools[1].key;
         }
         else if (slot == 6)
         {
@@ -247,7 +247,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.tools[2].weaponKey;
+            key = currentLoadout.tools[2].key;
         }
         else if (slot == 7)
         {
@@ -255,7 +255,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 return;
             }
-            key = currentLoadout.tools[3].weaponKey;
+            key = currentLoadout.tools[3].key;
         }
 
         EquipWeapon(key);
@@ -265,7 +265,7 @@ public class WeaponManager : NetworkBehaviour
     {
         if (!IsOwner)
             return;
-        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+        if (WeaponDatabase.GetWeapon(key).contextual)
             return;
         SpawnWeaponServerRpc(key);
     }
@@ -274,7 +274,7 @@ public class WeaponManager : NetworkBehaviour
     {
         if (!IsOwner)
             return;
-        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+        if (WeaponDatabase.GetWeapon(key).contextual)
             return;
         DespawnWeaponServerRpc(spawnedWeapons[key].NetworkObjectId);
     }
@@ -299,7 +299,7 @@ public class WeaponManager : NetworkBehaviour
         Debug.Log("Spawning weapon");
         ulong senderClientId = rpcParams.Receive.SenderClientId;
 
-        WeaponDefinition def = WeaponDatabase.Instance.GetWeapon(key);
+        WeaponDefinition def = WeaponDatabase.GetWeapon(key);
         if (def == null) return;
 
         if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(senderClientId, out var clientData)) return;
@@ -330,7 +330,7 @@ public class WeaponManager : NetworkBehaviour
 
     public void UnregisterSpawnedWeapon(int key)
     {
-        if (WeaponDatabase.Instance.GetWeapon(key).contextual)
+        if (WeaponDatabase.GetWeapon(key).contextual)
             return;
         Debug.Log("Weapon unregistered");
         spawnedWeapons.Remove(key);
