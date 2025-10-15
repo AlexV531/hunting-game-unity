@@ -12,4 +12,11 @@ public class WeaponDefinition : ItemDefinition
     {
         player.GetWeaponManager().UnlockWeapon(key);
     }
+
+    public override string ToString()
+    {
+        return $"WeaponDefinition [Key={key}, Name={itemName}, Price={price}, Class={weaponClass}, " +
+            $"UnlockedByDefault={unlockedByDefault}, Contextual={contextual}, " +
+            $"Prefab={(prefab != null ? prefab.name : "None")}, Icon={(icon != null ? icon.name : "None")}]";
+    }
 }
