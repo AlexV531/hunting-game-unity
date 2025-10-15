@@ -125,6 +125,9 @@ public class FirstPersonController : NetworkBehaviour
 		NetworkVariableReadPermission.Everyone,
 		NetworkVariableWritePermission.Server);
 
+	// hand cart carry
+	public HandCart attachedCart;
+
 	// cinemachine
 	private float _cinemachineTargetPitch;
 
@@ -269,6 +272,11 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			DropAnimalServerRpc();
 		}
+		else if (attachedCart != null && _input.interact)
+        {
+			attachedCart.ReleaseCartServerRpc(OwnerClientId);
+			attachedCart = null;
+        }
 		_input.interact = false;
 	}
 

@@ -46,14 +46,16 @@ public class HandCart : AttachInteractable
             return;
         }
 
-        // If cart is currently unclaimed, request a grab
-        if (owningPlayerId.Value == UnclaimedId)
+        // If cart is currently unclaimed and player does not already have a cart attached, request a grab
+        if (owningPlayerId.Value == UnclaimedId && player.attachedCart == null)
         {
+            player.attachedCart = this;
             GrabCartServerRpc(playerId);
         }
         else if (owningPlayerId.Value == playerId)
         {
             ReleaseCartServerRpc(playerId);
+            player.attachedCart = null;
         }
         else
         {
@@ -66,6 +68,10 @@ public class HandCart : AttachInteractable
         if (player.IsCarryingAnimal.Value)
         {
             return "Press \"e\" to place animal";
+        }
+        else if (player.attachedCart == this)
+        {
+            return "Press \"e\" to release cart";
         }
         else
         {
