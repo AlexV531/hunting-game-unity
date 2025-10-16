@@ -4,19 +4,28 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class AnimalStateManager : MonoBehaviour
 {
-    AnimalBaseState currentState;
-    public AnimalGrazingState GrazingState = new AnimalGrazingState();
-    public AnimalMovingState MovingState = new AnimalMovingState();
-    public AnimalFleeingState FleeingState = new AnimalFleeingState();
-    public AnimalListeningState ListeningState = new AnimalListeningState();
-    public AnimalDeadState DeadState = new AnimalDeadState();
+    protected AnimalBaseState currentState;
+
+    public AnimalBaseState GrazingState;
+    public AnimalMovingState MovingState;
+    public AnimalMovingState FleeingState;
+    public AnimalBaseState ListeningState;
+    public AnimalBaseState DeadState;
+
+    protected virtual void InitializeStates()
+    {
+        GrazingState = new AnimalGrazingState();
+        MovingState = new AnimalMovingState();
+        FleeingState = new AnimalFleeingState();
+        ListeningState = new AnimalListeningState();
+        DeadState = new AnimalDeadState();
+    }
 
     void Start()
     {
+        InitializeStates();
         // Set up states
-        MovingState.agent = GetComponent<NavMeshAgent>();
         MovingState.SetNextState(GrazingState);
-        FleeingState.agent = GetComponent<NavMeshAgent>();
         FleeingState.SetNextState(GrazingState);
         ListeningState.SetNextState(GrazingState);
         // Initial state

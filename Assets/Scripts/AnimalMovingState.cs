@@ -4,91 +4,87 @@ using System.Collections.Generic;
 
 public class AnimalMovingState : AnimalBaseState
 {
-    public float navmeshSearchRadius = 2.0f;
+    [Header("Movement Settings")]
+    public float navmeshSearchRadius = 2f;
     public float movingSpeed = 4.5f;
-    public NavMeshAgent agent;
-    private AnimalBaseState nextState;
-    private Queue<Vector3> targetQueue = new Queue<Vector3>();
-    private bool hasTarget = false;
+
+    protected NavMeshAgent agent;
+    private readonly Queue<Vector3> targetQueue = new();
+
     public override AlertnessLevel Alertness => AlertnessLevel.Calm;
 
     public override void EnterState(AnimalStateManager animal)
     {
-        Debug.Log("Moving state entered.");
         agent = animal.GetComponent<NavMeshAgent>();
         agent.speed = movingSpeed;
+        Debug.Log("Moving state entered.");
     }
 
     public override void UpdateState(AnimalStateManager animal)
     {
-        if (hasTarget)
+        // If the agent currently has a valid path and hasn't reached the destination
+        if (agent.hasPath && !agent.pathPending)
         {
-            CheckIfReachedTarget(animal);
+            if (agent.remainingDistance <= 0.1f)
+                AdvanceToNextTarget(animal);
+
+            return; // Wait until path is done before considering new targets
         }
-        else if (targetQueue.Count > 0)
+
+        // No current path and nothing to do
+        if (!agent.hasPath && targetQueue.Count == 0)
+        {
+            OnTargetsDepleted(animal);
+            return;
+        }
+
+        // No current path, but more targets exist
+        if (!agent.hasPath && targetQueue.Count > 0)
         {
             SetNextTarget();
-        }
-        else // No more targets in queue
-        {
-            animal.ChangeState(animal.GrazingState);
         }
     }
 
     public void ClearQueueAndAddTarget(Vector3 targetPosition)
     {
-        ClearTargets();
+        targetQueue.Clear();
         AddTarget(targetPosition);
     }
 
     public void AddTarget(Vector3 targetPosition)
     {
-        // Snap the target to the navmesh if possible
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(targetPosition, out hit, navmeshSearchRadius, NavMesh.AllAreas))
-        {
+        if (NavMesh.SamplePosition(targetPosition, out var hit, navmeshSearchRadius, NavMesh.AllAreas))
             targetQueue.Enqueue(hit.position);
-        }
         else
-        {
             Debug.LogWarning("Target position is not on or near the NavMesh.");
-        }
     }
 
     public void ClearTargets()
     {
         targetQueue.Clear();
-        agent.SetDestination(agent.transform.position);
-    }
-
-    public void SetNextState(AnimalBaseState nextState)
-    {
-        this.nextState = nextState;
+        if (agent != null)
+            agent.ResetPath();
     }
 
     private void SetNextTarget()
     {
         if (targetQueue.Count == 0) return;
 
-        Vector3 nextTarget = targetQueue.Dequeue();
-        agent.SetDestination(nextTarget);
-        hasTarget = true;
+        agent.SetDestination(targetQueue.Dequeue());
     }
 
-    private void CheckIfReachedTarget(AnimalStateManager animal)
-{
-    if (!agent.pathPending && agent.remainingDistance <= 0.1f)
+    private void AdvanceToNextTarget(AnimalStateManager animal)
     {
-        hasTarget = false;
-
+        agent.ResetPath(); // clear current path before setting next one
         if (targetQueue.Count > 0)
-        {
             SetNextTarget();
-        }
-        else // Final target reached
-        {
-            animal.ChangeState(nextState);
-        }
+        else
+            OnTargetsDepleted(animal);
     }
-}
+
+    protected virtual void OnTargetsDepleted(AnimalStateManager animal)
+    {
+        if (nextState != null)
+            animal.ChangeState(nextState);
+    }
 }

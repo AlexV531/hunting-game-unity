@@ -9,9 +9,10 @@ public class HerdManager : MonoBehaviour
 
     [Header("Herd Settings")]
     public GameObject herdPrefab;
-    public GameObject animalPrefab;
-    public int maxHerds = 15;
-    public float herdSeparation = 200f; // minimum distance between herds
+    public GameObject[] animalPrefabs;
+    public int[] maxHerdForAnimal;
+    public int[] maxAnimalInHerdForAnimal;
+    public float herdSeparation = 100f; // minimum distance between herds
     private bool initialized = false;
     private int maxAttempts = 30;
 
@@ -40,23 +41,29 @@ public class HerdManager : MonoBehaviour
 
     public void InitializeHerds()
     {
-        // Initial population
-        for (int i = 0; i < maxHerds; i++)
+        if (!(maxAnimalInHerdForAnimal.Length == maxHerdForAnimal.Length && maxHerdForAnimal.Length == animalPrefabs.Length))
         {
-            TrySpawnHerd();
+            Debug.LogError("Herd manager data arrays not equal lengths.");
         }
-        // Debug.Log("Active herds: " + activeHerds);
+        for (int j = 0; j < animalPrefabs.Length; j++)
+        {
+            // Initial population
+            for (int i = 0; i < maxHerdForAnimal[j]; i++)
+            {
+                TrySpawnHerd(animalPrefabs[j], maxHerdForAnimal[j], maxAnimalInHerdForAnimal[j]);
+            }
+        }
 
         initialized = true;
     }
 
-    public void TrySpawnHerd()
+    public void TrySpawnHerd(GameObject animalPrefab, int maxHerds, int maxAnimals)
     {
-        if (activeHerds.Count >= maxHerds)
-            return;
+        // if (activeHerds.Count >= maxHerds)
+        //     return;
 
         Vector3? pos = GetValidSpawnPosition();
-        Debug.Log(pos);
+        Debug.Log("Trying to spawn a herd of " + animalPrefab.name + " at position " + pos);
         if (pos.HasValue)
         {
             GameObject herdObj = Instantiate(herdPrefab, pos.Value, Quaternion.identity);
@@ -65,7 +72,7 @@ public class HerdManager : MonoBehaviour
             {
                 activeHerds.Add(herd);
                 herd.transform.position = pos.Value; // set position
-                herd.InitializeAnimals(3, animalPrefab);
+                herd.InitializeAnimals(maxAnimals, animalPrefab);
             }
         }
     }

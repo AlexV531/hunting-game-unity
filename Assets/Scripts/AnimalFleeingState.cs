@@ -8,8 +8,8 @@ public class AnimalFleeingState : AnimalMovingState
 
     public override void EnterState(AnimalStateManager animal)
     {
-        Debug.Log("Fleeing state entered.");
         agent = animal.GetComponent<NavMeshAgent>();
         agent.speed = fleeingSpeed;
+        Debug.Log("Fleeing state entered.");
     }
 }

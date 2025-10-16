@@ -3,19 +3,18 @@ using UnityEngine;
 public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
 {
     public float turnSpeed = 180f;
-    private AnimalBaseState nextState;
+    private Animal actor;
     public override AlertnessLevel Alertness => AlertnessLevel.Alert;
 
 
     public override void EnterState(AnimalStateManager animal)
     {
         Debug.Log("Listening state entered.");
+        actor = animal.GetComponent<Animal>();
     }
 
     public override void UpdateState(AnimalStateManager animal)
     {
-        Animal actor = animal.GetComponent<Animal>();
-
         // If there’s no recent sound, go to next state
         if (actor == null || actor.animalAI.MostRecentSoundPosition == null || actor.animalAI.soundHeard <= 0)
             animal.ChangeState(nextState);
@@ -45,10 +44,5 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
         // Rotate the actor around the Y axis
         // Debug.Log("rotating to face sound");
         actor.transform.Rotate(Vector3.up, step);
-    }
-    
-    public void SetNextState(AnimalBaseState nextState)
-    {
-        this.nextState = nextState;
     }
 }

@@ -303,7 +303,8 @@ public class Animal : NetworkBehaviour
             animalAI.animator.SetTrigger("dead");
             animalAI.fsm.ChangeState(animalAI.fsm.DeadState);
             animalAI.agent.enabled = false;
-            animalAI.herd.UnregisterHerdAnimal(animalAI);
+            if (animalAI.herd != null)
+                animalAI.herd.UnregisterHerdAnimal(animalAI);
         }
 
         FirstPersonController killCredit = DetermineKillCredit(hits);

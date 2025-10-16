@@ -128,7 +128,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     {
         if (animal.IsDead())
             return;
-
         fsm.FleeingState.ClearTargets();
         for (int i = 0; i < target_list.Count; i++)
         {
