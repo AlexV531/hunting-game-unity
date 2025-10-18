@@ -141,6 +141,15 @@ public class FirstPersonController : NetworkBehaviour
 	private bool _isCrouching = false;
 	private Vector3 _cameraStandPos;
 
+	// footsteps
+	private float timeSinceLastStep;
+	private float timeBetweenSteps = 0.75f;
+	private float crouchTimeBetweenModifier = 0.5f;
+	private float sprintTimeBetweenModfier = 2f;
+	private float footstepLoudness = 17f;
+	private float crouchLoudnessModifier = 0.4f;
+	private float sprintLoudnessModfier = 1.75f;
+
 	// timeout deltatime
 	private float _jumpTimeoutDelta;
 	private float _fallTimeoutDelta;
@@ -432,7 +441,42 @@ public class FirstPersonController : NetworkBehaviour
 
 		// move the player
 		_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+		float loudnessModifier = 1f;
+		float timeBetweenStepsModifier = 1f;
+		if (_isCrouching)
+		{
+			loudnessModifier *= crouchLoudnessModifier;
+			timeBetweenStepsModifier *= crouchTimeBetweenModifier;
+		}
+		if (_input.sprint)
+        {
+        	loudnessModifier *= sprintLoudnessModfier;
+			timeBetweenStepsModifier *= sprintTimeBetweenModfier;
+        }
+		float trueFootstepLoudness = footstepLoudness * loudnessModifier;
+		float trueTimeBetweenSteps = timeBetweenSteps * timeBetweenStepsModifier;
+
+		// increment footstep timer if player is moving
+		if (targetSpeed != 0)
+		{
+			timeSinceLastStep += Time.deltaTime;
+		}
+		// emit noise based on footstep timing and whether player is crouching, sprinting etc.
+		if (timeSinceLastStep >= trueTimeBetweenSteps)
+        {
+			timeSinceLastStep %= trueTimeBetweenSteps;
+			EmitNoiseServerRpc(transform.position, trueFootstepLoudness, "player " + OwnerClientId + " footstep");
+        }
+
 	}
+
+	[ServerRpc(RequireOwnership = false)]
+    void EmitNoiseServerRpc(Vector3 position, float loudness, string name)
+    {
+        var noiseEvent = new NoiseEvent(position, loudness, name);
+        NoiseManager.Instance.EmitNoise(noiseEvent);
+    }
 
 	private void JumpAndGravity()
 	{

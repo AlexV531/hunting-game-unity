@@ -40,7 +40,34 @@ public class ButcherTable : AnimalStoringInteractableBase
     {
         Debug.Log($"Animal butchered by client {clientId}");
 
-        // Retrieve that player's server-side instance
+        // Destroy the animal
+        var animal = GetPlacedAnimal();
+        if (animal != null)
+        {
+            var netObj = animal.GetComponent<NetworkObject>();
+            if (netObj != null && netObj.IsSpawned)
+            {
+                if (netObj.IsSceneObject == true)
+                {
+                    // For in-scene objects — unspawn but keep the GameObject
+                    netObj.Despawn(false);
+                    animal.gameObject.SetActive(false);
+                }
+                else
+                {
+                    // For runtime-spawned animals — despawn and destroy completely
+                    netObj.Despawn(true);
+                }
+            }
+            else
+            {
+                Destroy(animal.gameObject); // fallback safety
+            }
+
+            ClearPlacedAnimal();
+        }
+
+        // Reward the player who did the butchering
         if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
         {
             var player = client.PlayerObject.GetComponent<FirstPersonController>();
