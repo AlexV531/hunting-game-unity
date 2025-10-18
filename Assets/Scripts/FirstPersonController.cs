@@ -212,6 +212,7 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			_interactText = GameObject.FindGameObjectWithTag("InteractText").GetComponent<TextMeshProUGUI>();
 		}
+		GroundLayers = LayerMask.GetMask("Terrain", "Default", "Interactable");
 	}
 
 	private void Start()
@@ -563,7 +564,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
 		// Pickup logic
-		animal.corpse.SetInteractionEnabled(false);
+		animal.corpseInteractable.SetInteractionEnabled(false);
 
 		animal.DisableInternalCollidersClientRpc(); // CHANGE THIS SO PLAYER DOESN'T COLLIDE WITH INTERNALS, THIS ONLY AFFECTS MAIN ANIMAL COLLIDER FOR PLAYERS
 
@@ -607,7 +608,7 @@ public class FirstPersonController : NetworkBehaviour
 		// Enable colliders and corpse state
 		if (enableCollidersOnDrop)
 			animal.EnableInternalCollidersClientRpc();
-		animal.corpse.SetInteractionEnabled(true);
+		animal.corpseInteractable.SetInteractionEnabled(true);
 
 		// Drop slightly below player
 		animal.transform.position -= new Vector3(0f, 0.75f, 0f);

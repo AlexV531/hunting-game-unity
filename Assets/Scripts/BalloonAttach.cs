@@ -5,22 +5,22 @@ public class BalloonAttach : NetworkBehaviour
 {
     private Transform balloon;
     public Transform objectToAttach;
-    private AttachInteractable interactable;
+    private AttachHandler handler;
 
-    public void Attach(Transform balloonTransform, AttachInteractable newInteractable = null)
+    public void Attach(Transform balloonTransform, AttachHandler handler = null)
     {
         balloon = balloonTransform;
-        if (newInteractable != null)
+        if (handler != null)
         {
-            interactable = newInteractable;
+            this.handler = handler;
         }
     }
 
-    public void Release(bool calledFromAttachInteractable = false)
+    public void Release(bool calledFromAttachHandler = false)
     {
-        if (interactable != null && !calledFromAttachInteractable)
+        if (handler != null && !calledFromAttachHandler)
         {
-            interactable.ReleaseTarget(this);
+            handler.ReleaseTarget(this);
         }
         else
         {
@@ -33,7 +33,7 @@ public class BalloonAttach : NetworkBehaviour
         return balloon != null;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!IsServer || balloon == null)
             return;

@@ -146,7 +146,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 3072
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 5386279661680571859}
   - component: {fileID: 3535825559096231583}
   - component: {fileID: 6699711025765793950}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Deer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,6 +610,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6805021877742488793}
+  - {fileID: 6174839480051914535}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4786927308017071663
@@ -658,7 +659,8 @@ MonoBehaviour:
   animalBleedFactor: 0.1
   animalHealFactor: 0.1
   animalAI: {fileID: 0}
-  corpse: {fileID: 5324222755641310043}
+  corpseInteractable: {fileID: 5324222755641310043}
+  bottom: {fileID: 6174839480051914535}
   internalContainer: {fileID: 47556156525332122}
   internals:
   - {fileID: 2977844790142421907}
@@ -1303,7 +1305,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 11264
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1330,6 +1332,37 @@ MonoBehaviour:
     m_InternalValue: 1
   initialInteractionEnabledValue: 0
   animal: {fileID: 3651933989365759357}
+--- !u!1 &7413826866866050825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6174839480051914535}
+  m_Layer: 13
+  m_Name: Bottom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6174839480051914535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7413826866866050825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.649, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8237469793533726296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9017630797139198235
 GameObject:
   m_ObjectHideFlags: 0

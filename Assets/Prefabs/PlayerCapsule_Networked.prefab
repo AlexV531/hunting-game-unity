@@ -319,7 +319,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 9216
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 71539812
+  GlobalObjectIdHash: 3182954585
   InScenePlacedSourceGlobalObjectIdHash: 3182954585
   DeferredDespawnTick: 0
   Ownership: 1
@@ -471,6 +471,7 @@ MonoBehaviour:
   Inventory: []
   IsCarryingAnimal:
     m_InternalValue: 0
+  attachedCart: {fileID: 0}
   weaponContainer: {fileID: 1678939170201699571}
 --- !u!114 &8791639418517175756
 MonoBehaviour:

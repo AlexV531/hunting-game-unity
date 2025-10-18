@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         velocity = transform.forward * speed;
-        layerMask = ~LayerMask.GetMask("Interactable");
+        layerMask = ~LayerMask.GetMask("Interactable", "AnimalPhysics");
         Destroy(gameObject, lifetime);
     }
 

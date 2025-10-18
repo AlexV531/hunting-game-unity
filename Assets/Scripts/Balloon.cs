@@ -10,10 +10,16 @@ public class Balloon : NetworkBehaviour
     [SerializeField] private Transform tetherPoint;
     private Vector3 targetPosition;
     private bool isInitialized = false;
+    private AttachHandler attachHandler;
 
-    public void Initialize(Vector3 target)
+    public void Initialize(Vector3 targetPosition, BalloonAttach attachTarget)
     {
-        targetPosition = target;
+        this.targetPosition = targetPosition;
+        attachHandler = new AttachHandler(new Transform[] { tetherPoint });
+
+        if (attachTarget != null)
+            attachHandler.AttachTarget(attachTarget);
+
         isInitialized = true;
     }
 
@@ -37,6 +43,12 @@ public class Balloon : NetworkBehaviour
             currentPosition = Vector3.MoveTowards(currentPosition, horizontalTarget, moveSpeed * Time.deltaTime);
 
             transform.position = currentPosition;
+
+            // Check if balloon has reached target
+            if (Vector3.Distance(transform.position, targetPosition) <= 0.01)
+            {
+                attachHandler.ReleaseAll();
+            }
         }
     }
 

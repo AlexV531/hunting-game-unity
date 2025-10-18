@@ -12,13 +12,14 @@ public class Animal : NetworkBehaviour
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
     public AnimalAI animalAI;
-    public Corpse corpse;
+    public Corpse corpseInteractable;
+    public Transform bottom;
     [SerializeField] GameObject internalContainer;
     private bool isDead = false;
     public Internal[] internals; // assign all organs in inspector
     private Dictionary<int, Internal> internalLookup;
-
     LayerMask layerMask;
+    private BalloonAttach balloonAttach;
 
     void Awake()
     {
@@ -29,6 +30,7 @@ public class Animal : NetworkBehaviour
         {
             internalLookup[internalOrg.internalId] = internalOrg;
         }
+        balloonAttach = GetComponent<BalloonAttach>();
     }
 
     private void Update()
@@ -297,7 +299,7 @@ public class Animal : NetworkBehaviour
             return;
         isDead = true;
         Debug.Log($"{name} has died.");
-        corpse.SetInteractionEnabledServerRpc(true);
+        corpseInteractable.SetInteractionEnabledServerRpc(true);
         if (animalAI != null)
         {
             animalAI.animator.SetTrigger("dead");
@@ -354,4 +356,6 @@ public class Animal : NetworkBehaviour
 
         return topPlayer;
     }
+
+    public BalloonAttach GetBalloonAttach() => balloonAttach;
 }

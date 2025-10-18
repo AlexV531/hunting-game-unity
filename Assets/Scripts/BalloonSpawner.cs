@@ -22,7 +22,7 @@ public class BalloonSpawner : Weapon
                     return;
 
                 Vector3 spawnPos = transform.position + transform.forward * spawnDistance;
-                Vector3 targetPos = Vector3.zero;
+                Vector3 targetPos = GlobalVariables.balloonTargetPosition;
 
                 // Pass its NetworkObjectId instead of a GameObject
                 SpawnBalloonServerRpc(spawnPos, targetPos, targetObject.NetworkObjectId);
@@ -53,21 +53,24 @@ public class BalloonSpawner : Weapon
 
         GameObject balloonInstance = Instantiate(balloonPrefab, spawnPos, Quaternion.identity);
         var balloon = balloonInstance.GetComponent<Balloon>();
-        balloon.Initialize(targetPos);
-        balloon.GetComponent<NetworkObject>().Spawn();
+
+        BalloonAttach attach = null;
 
         // Look up the target object on the server by ID
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(attachTargetId, out NetworkObject targetNetObj))
         {
-            var attach = targetNetObj.GetComponent<BalloonAttach>();
+            attach = targetNetObj.GetComponent<BalloonAttach>();
             if (attach == null)
                 Debug.LogWarning($"Could not find attach target on target");
-            else
-                attach.Attach(balloon.GetTetherPoint());
+            // else
+            //     attach.Attach(balloon.GetTetherPoint());
         }
         else
         {
             Debug.LogWarning($"Could not find attach target with ID {attachTargetId}");
         }
+        
+        balloon.Initialize(targetPos, attach);
+        balloon.GetComponent<NetworkObject>().Spawn();
     }
 }
