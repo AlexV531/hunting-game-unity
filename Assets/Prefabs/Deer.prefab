@@ -698,6 +698,8 @@ MonoBehaviour:
   sightRange: 20
   sightAngle: 160
   panicCooldown: 3
+  onHitReactionTime: 1
+  sightReactionTime: 1.5
 --- !u!195 &5216222710232790833
 NavMeshAgent:
   m_ObjectHideFlags: 0

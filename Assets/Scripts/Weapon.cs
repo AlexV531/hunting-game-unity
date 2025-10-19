@@ -1,7 +1,7 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using Cinemachine;
 using Unity.Netcode;
+using System.Collections;
 
 public enum WeaponClass
 {
@@ -17,6 +17,7 @@ public class Weapon : NetworkBehaviour
     protected FirstPersonController _owner;
     protected Transform _followTarget;
     protected CinemachineVirtualCamera _vCam;
+    protected AudioSource _audioSource;
 
 
     [Header("Weapon Settings")]
@@ -66,7 +67,7 @@ public class Weapon : NetworkBehaviour
 
     protected bool initialized = false;
 
-    public static bool recoilEnabled = false;
+    public static bool recoilEnabled = true;
 
     public virtual void Initialize()
     {
@@ -76,7 +77,9 @@ public class Weapon : NetworkBehaviour
             _owner = playerObj.GetComponent<FirstPersonController>();
             _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponKey, this);
             _input = _owner.GetComponent<PlayerInputs>();
+            _input.fire = false;
             _recoil = _owner.GetComponent<CameraRecoil>();
+            _audioSource = GetComponent<AudioSource>();
             _followTarget = _owner.weaponContainer;
             _vCam = _owner.vCam;
 
@@ -216,6 +219,16 @@ public class Weapon : NetworkBehaviour
     {
         var noiseEvent = new NoiseEvent(position, loudness, name);
         NoiseManager.Instance.EmitNoise(noiseEvent);
+        PlayShootAudioClientRpc();
+    }
+
+    [ClientRpc]
+    void PlayShootAudioClientRpc()
+    {
+        if (_audioSource != null)
+        {
+            _audioSource.Play();
+        }
     }
 
     void HandleReload()
