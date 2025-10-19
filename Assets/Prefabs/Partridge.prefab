@@ -337,6 +337,37 @@ MonoBehaviour:
   lethality: 100
   bleedFactor: 1
   internalStrength: 1
+--- !u!1 &1834502105662690422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 411568493768629629}
+  m_Layer: 0
+  m_Name: Bottom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &411568493768629629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834502105662690422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.691, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6352981123725255490}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2579790100823343004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1199,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6434778958322858762}
+  - {fileID: 411568493768629629}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4175010449337907251
@@ -1216,7 +1248,8 @@ MonoBehaviour:
   animalBleedFactor: 0.1
   animalHealFactor: 0.1
   animalAI: {fileID: 0}
-  corpse: {fileID: 2265031257982314243}
+  corpseInteractable: {fileID: 2265031257982314243}
+  bottom: {fileID: 411568493768629629}
   internalContainer: {fileID: 4804727054258140002}
   internals:
   - {fileID: 8915568836421134648}
@@ -1254,6 +1287,8 @@ MonoBehaviour:
   sightRange: 5
   sightAngle: 160
   panicCooldown: 3
+  onHitReactionTime: 1
+  sightReactionTime: 1.5
 --- !u!195 &2916116541173487332
 NavMeshAgent:
   m_ObjectHideFlags: 0
