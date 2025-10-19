@@ -12,7 +12,7 @@ public class ButcherTable : AnimalStoringInteractableBase
         {
             player.PlaceAnimalServerRpc(NetworkObject);
         }
-        else if (GetPlacedAnimal() != null)
+        else if (!player.IsCarryingAnimal.Value && GetPlacedAnimal() != null)
         {
             player.PickUpAnimalServerRpc(GetPlacedAnimal().NetworkObject);
             ClearPlacedAnimal();
