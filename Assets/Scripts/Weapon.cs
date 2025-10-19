@@ -196,7 +196,6 @@ public class Weapon : NetworkBehaviour
 
     protected virtual void HandleFire()
     {
-        Debug.Log("Fire cooldown: " + _fireCooldown);
         if (_input.fire && _fireCooldown <= 0f)
         {
             if (currentAmmo <= 0)

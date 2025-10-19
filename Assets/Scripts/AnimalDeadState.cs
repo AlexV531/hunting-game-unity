@@ -37,7 +37,6 @@ public class AnimalDeadState : AnimalBaseState
         RaycastHit hit;
         if (Physics.Raycast(animal.transform.position, Vector3.down, out hit, Math.Abs(animal.GetComponent<Animal>().bottom.localPosition.y), groundLayers))
         {
-            Debug.Log("Hello");
             animal.transform.position = hit.point - animal.GetComponent<Animal>().bottom.localPosition / 2;
             velocity = Vector3.zero;
             isGrounded = true;

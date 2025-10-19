@@ -70153,7 +70153,7 @@ MonoBehaviour:
   animalPrefabs:
   - {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
   - {fileID: 8227079613855998398, guid: b5295cb9803d230419d628d02d035223, type: 3}
-  maxHerdForAnimal: 050000000a000000
+  maxHerdForAnimal: 3200000023000000
   maxAnimalInHerdForAnimal: 0400000002000000
   herdSeparation: 100
 --- !u!4 &269943458

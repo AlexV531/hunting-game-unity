@@ -22,15 +22,19 @@ public class Herd : MonoBehaviour
     public void RegisterHerdAnimal(AnimalAI animalAI)
     {
         if (!animalsInHerd.Contains(animalAI))
+        {
             animalAI.herd = this;
             animalsInHerd.Add(animalAI);
+        }
     }
 
     public void UnregisterHerdAnimal(AnimalAI animalAI)
     {
         if (animalsInHerd.Contains(animalAI))
+        {
             animalAI.herd = null;
             animalsInHerd.Remove(animalAI);
+        }
     }
 
     public void InitializeAnimals(int numAnimals, GameObject animalPrefab)
