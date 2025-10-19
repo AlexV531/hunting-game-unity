@@ -1,6 +1,4 @@
 TODO:
-Reaction time to animal vision before fleeing
-Animal flee on bullet hit
 Audio effects
 Tracking system (footsteps, blood, feces)
 Foliage and rocks
@@ -10,3 +8,5 @@ Spell system framework
 DONE:
 Player footstep noise
 Balloon dropoff (UNTESTED)
+Reaction time to animal vision before fleeing
+Animal flee on bullet hit
