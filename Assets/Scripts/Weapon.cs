@@ -66,6 +66,8 @@ public class Weapon : NetworkBehaviour
 
     protected bool initialized = false;
 
+    public static bool recoilEnabled = false;
+
     public virtual void Initialize()
     {
         if (IsOwner)
@@ -199,7 +201,8 @@ public class Weapon : NetworkBehaviour
             }
             Shoot();
             EmitNoiseServerRpc(transform.position, 20f, "gunshot");
-            _recoil.AddRecoil(50f, 1f);
+            if (recoilEnabled)
+                _recoil.AddRecoil(50f, 1f);
             currentAmmo--;
             _fireCooldown = fireRate;
 

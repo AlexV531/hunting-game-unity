@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using Unity.Netcode;
+using System.Collections;
 
 public class AnimalAI : NetworkBehaviour, INoiseListener
 {
@@ -21,10 +22,13 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float sightRange = 20f;
     public float sightAngle = 160f; // degrees
     public float panicCooldown = 3f; // seconds
+    public float onHitReactionTime = 0.6f;
+    public float sightReactionTime = 1.5f;
     private float lastPanicTime = -Mathf.Infinity;
     private int sightLayerMask;
     private bool initialized = false;
     private bool aiEnabled = true;
+    private Coroutine sightPanicRoutine;
 
     void Awake()
     {
@@ -59,9 +63,16 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
 
         List<GameObject> visiblePlayers = GetVisiblePlayers();
-        if (visiblePlayers.Count > 0)
+
+        if (visiblePlayers.Count > 0 && sightPanicRoutine == null)
         {
-            BecomePanicked(visiblePlayers[0].transform.position);
+            sightPanicRoutine = StartCoroutine(PanicReactionRoutine(sightReactionTime, visiblePlayers[0].transform.position));
+        }
+        else if (visiblePlayers.Count == 0 && sightPanicRoutine != null)
+        {
+            StopCoroutine(sightPanicRoutine);
+            sightPanicRoutine = null;
+            Debug.Log("Calmed before panicking");
         }
     }
 
@@ -98,6 +109,22 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         {
             BecomeAlert();
         }
+    }
+
+    public void OnHit(Vector3 panicSourceDirection)
+    {
+        if (animal.IsDead())
+            return;
+
+        animator.SetTrigger("hit");
+        StartCoroutine(PanicReactionRoutine(onHitReactionTime, panicSourceDirection * 5));
+    }
+
+    public IEnumerator PanicReactionRoutine(float reactionTime, Vector3 panicSource)
+    {
+        yield return new WaitForSeconds(reactionTime);
+        BecomePanicked(panicSource);
+        sightPanicRoutine = null;
     }
 
     public void BecomeAlert()

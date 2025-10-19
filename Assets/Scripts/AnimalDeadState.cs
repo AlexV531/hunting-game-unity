@@ -39,7 +39,6 @@ public class AnimalDeadState : AnimalBaseState
         {
             Debug.Log("Hello");
             animal.transform.position = hit.point - animal.GetComponent<Animal>().bottom.localPosition / 2;
-            // animal.transform.position = hit.point - animal.GetComponent<Animal>().bottom.localPosition;
             velocity = Vector3.zero;
             isGrounded = true;
         }
@@ -48,7 +47,6 @@ public class AnimalDeadState : AnimalBaseState
             velocity.y -= gravity * Time.deltaTime;
             animal.transform.position += velocity * Time.deltaTime;
         }
-        Debug.Log("Hello I'm falling");
 
         lastPosition = animal.transform.position;
     }

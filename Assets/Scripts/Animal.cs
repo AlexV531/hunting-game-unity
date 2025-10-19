@@ -212,6 +212,12 @@ public class Animal : NetworkBehaviour
             Debug.Log("Projectile exited internals with power: " + power);
             AddHit(hitData);
         }
+
+        if (animalAI != null)
+        {
+            // Make animal flee if hit
+            animalAI.OnHit(direction.normalized);
+        }
     }
 
     public bool IsDead()
