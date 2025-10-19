@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2048815156
+  GlobalObjectIdHash: 3474141279
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
   weaponKey: 0
   scopedFOV: 20
   zoomSpeed: 10
-  fireRate: 0.2
+  fireRate: 1
   automaticFire: 1
   maxAmmo: 3
   reserveAmmo: 100

@@ -53,7 +53,7 @@ public class Weapon : NetworkBehaviour
     // public float normalLODBias = 1f;      
 
     [Tooltip("Time in seconds between shots")]
-    public float fireRate = 0.2f;
+    public float fireRate = 1f;
 
     [Tooltip("If true, holding the fire button will shoot automatically")]
     public bool automaticFire = true;
@@ -196,6 +196,7 @@ public class Weapon : NetworkBehaviour
 
     protected virtual void HandleFire()
     {
+        Debug.Log("Fire cooldown: " + _fireCooldown);
         if (_input.fire && _fireCooldown <= 0f)
         {
             if (currentAmmo <= 0)
