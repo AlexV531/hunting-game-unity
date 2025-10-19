@@ -6,7 +6,7 @@ public class GlobalVariables : MonoBehaviour
 
     // public static Terrain terrain { get; private set; }
     public static Vector3 mapMin = new Vector3(0f, -100f, 0f);
-    public static Vector3 mapMax = new Vector3(100f, 500f, 100f);
+    public static Vector3 mapMax = new Vector3(2000f, 500f, 2000f);
     public static Vector3 balloonTargetPosition = new Vector3(50f, 0f, 50f);
 
     // public static PlayerInputs playerInputs { get; private set; }

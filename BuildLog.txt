@@ -1,7 +1,7 @@
 ========== Build Completed ==========
 Build Result: Unknown
-Total Size: 129608956 bytes
-Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/My project.exe
+Total Size: 129609404 bytes
+Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000003/My project.exe
 -----------------------------------------
 ========== Assets Used in Build ==========
 Asset: Assets/Scenes/SampleScene.unity, Size: 14.93 MB
@@ -31,7 +31,6 @@ Asset: Packages/com.unity.netcode.gameobjects/Runtime/Transports/UTP/UnityTransp
 Asset: Packages/com.unity.netcode.gameobjects/Runtime/Core/NetworkManager.cs, Size: 0.07 MB
 Asset: Assets/Models/MageHunter - Muskette.fbx, Size: 0.07 MB
 Asset: Assets/Models/MageHunter - Deer.fbx, Size: 0.06 MB
-Asset: Packages/com.unity.cinemachine/Editor/EditorResources/cm_logo_sm.png, Size: 0.06 MB
 Asset: Assets/Models/MageHunter - Environment.fbx, Size: 0.05 MB
 Asset: Assets/Models/MageHunter - Grouse.fbx, Size: 0.05 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/ScrollRect.cs, Size: 0.05 MB
@@ -40,8 +39,8 @@ Asset: Packages/com.unity.inputsystem/InputSystem/Actions/InputActionAsset.cs, S
 Asset: Packages/com.unity.cinemachine/Runtime/Behaviours/CinemachineBrain.cs, Size: 0.04 MB
 Asset: Assets/Prefabs/WeaponRoot_Base.prefab, Size: 0.04 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/UniversalAdditionalCameraData.cs, Size: 0.04 MB
-Asset: Assets/Prefabs/Deer.prefab, Size: 0.04 MB
 Asset: Assets/Prefabs/Partridge.prefab, Size: 0.04 MB
+Asset: Assets/Prefabs/Deer.prefab, Size: 0.04 MB
 Asset: Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputAction.png, Size: 0.04 MB
 Asset: Assets/Models/MageHunter - Cart.fbx, Size: 0.03 MB
 Asset: Packages/com.unity.inputsystem/InputSystem/Plugins/PlayerInput/DefaultInputActions.inputactions, Size: 0.03 MB
@@ -193,8 +192,8 @@ Unused Asset: Assets\Models\MageHunter - Crossbow.fbx, Size: 0.04 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Models\Tunnel_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Models\Box_350x250x200_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground.unity, Size: 0.04 MB
-Unused Asset: Assets\Prefabs\Deer.prefab, Size: 0.04 MB
 Unused Asset: Assets\Prefabs\Partridge.prefab, Size: 0.04 MB
+Unused Asset: Assets\Prefabs\Deer.prefab, Size: 0.04 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ramp_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ground_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\InputSystem_Actions.inputactions, Size: 0.04 MB
@@ -305,33 +304,33 @@ Unused Asset: Assets\Scripts\MySetTerrainObstacles.cs, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Prefabs\Wall_Prefab.prefab, Size: 0.00 MB
 Unused Asset: Assets\Resources\PerformanceTestRunInfo.json, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Icons\URP.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\ButcherTable.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_BaseMap.png.meta, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_Normal.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\butcher_knife_icon_1.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\muskette_icon_1.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\balloons_icon_1.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\ButcherTable.cs, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_shadowmask.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_dir.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\ReflectionProbe-0.exr.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\butcher_knife_icon_01.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\muskette_icon_01.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials\grass.jpg.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\balloons_icon_01.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials\grass002.jpg.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_light.exr.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\butcher_knife_icon_01.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\grass002.jpg.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\grass.jpg.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\muskette_icon_01.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\balloons_icon_01.png.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_650_400_300_Prefab.prefab, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_200x100x200_Prefab.prefab, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Knives.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Deer.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Environment.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Cart.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Knives.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Grouse.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Balloon.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Crossbow.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Cart.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Balloon.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Deer.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - GrouseOld.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Muskette.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\StarterAssets\Environment\Prefabs\Ramp_Prefab.prefab, Size: 0.00 MB
@@ -386,8 +385,8 @@ Unused Asset: Assets\Scripts\ItemDatabase.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitData.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Balloon.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\TMP Settings.asset, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AnimalDeadState.cs, Size: 0.00 MB
 Unused Asset: Assets\Resources\ItemDatabase.asset, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AnimalDeadState.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TerrainManager.cs, Size: 0.00 MB
 Unused Asset: Assets\Settings\LightingSettings.lighting, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalListeningState.cs, Size: 0.00 MB

@@ -112,7 +112,7 @@ public class HandCart : AttachInteractable
         {
             Debug.Log($"Cart too far from player {owningPlayerId.Value}, releasing.");
             ReleaseCartServerRpc(owningPlayerId.Value);
-            playerObj.GetComponent<FirstPersonController>().attachedCart = null;
+            playerObj.GetComponent<FirstPersonController>().attachedCart = null; // TODO requires client rpc
         }
     }
 

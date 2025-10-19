@@ -5,6 +5,11 @@ Foliage and rocks
 Partidge fly movement when fleeing
 Spell system framework
 
+BUGS:
+Cart flung away from player and player was unable to re grab the cart (likely auto release issue)
+Client's scoreboards do not recieve join notifications from late joiners
+Deer network transform does not sync x and z
+
 DONE:
 Player footstep noise
 Balloon dropoff (UNTESTED)
