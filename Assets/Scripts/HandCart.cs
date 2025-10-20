@@ -49,13 +49,13 @@ public class HandCart : AttachInteractable
         // If cart is currently unclaimed and player does not already have a cart attached, request a grab
         if (owningPlayerId.Value == UnclaimedId && player.attachedCart == null)
         {
-            player.attachedCart = this;
+            // player.attachedCart = this;
             GrabCartServerRpc(playerId);
         }
         else if (owningPlayerId.Value == playerId)
         {
             ReleaseCartServerRpc(playerId);
-            player.attachedCart = null;
+            // player.attachedCart = null;
         }
         else
         {
@@ -112,7 +112,7 @@ public class HandCart : AttachInteractable
         {
             Debug.Log($"Cart too far from player {owningPlayerId.Value}, releasing.");
             ReleaseCartServerRpc(owningPlayerId.Value);
-            playerObj.GetComponent<FirstPersonController>().attachedCart = null; // TODO requires client rpc
+            // playerObj.GetComponent<FirstPersonController>().attachedCart = null; // TODO requires client rpc
         }
     }
 
@@ -140,6 +140,17 @@ public class HandCart : AttachInteractable
         }
 
         AttachToPlayer(grabPoint);
+
+        GrabCartClientRpc(playerId);
+    }
+
+    [ClientRpc]
+    public void GrabCartClientRpc(ulong playerId)
+    {
+        NetworkObject playerObj = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(playerId);
+        if (playerObj == null)
+            return;
+        playerObj.GetComponent<FirstPersonController>().attachedCart = this;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -151,6 +162,17 @@ public class HandCart : AttachInteractable
         owningPlayerId.Value = UnclaimedId;
 
         DetachFromPlayer();
+
+        ReleaseCartClientRpc(playerId);
+    }
+
+    [ClientRpc]
+    public void ReleaseCartClientRpc(ulong playerId)
+    {
+        NetworkObject playerObj = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(playerId);
+        if (playerObj == null)
+            return;
+        playerObj.GetComponent<FirstPersonController>().attachedCart = null;
     }
 
     private void AttachToPlayer(Transform grabPoint)

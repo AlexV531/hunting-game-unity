@@ -285,7 +285,7 @@ public class FirstPersonController : NetworkBehaviour
 		else if (attachedCart != null && _input.interact)
         {
 			attachedCart.ReleaseCartServerRpc(OwnerClientId);
-			attachedCart = null;
+			// attachedCart = null;
         }
 		_input.interact = false;
 	}

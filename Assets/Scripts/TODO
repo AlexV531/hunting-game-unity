@@ -1,14 +1,17 @@
 TODO:
 Audio effects
+Animal corpse inspection screen
 Tracking system (footsteps, blood, feces)
 Foliage and rocks
 Partidge fly movement when fleeing
 Spell system framework
 
 BUGS:
-Cart flung away from player and player was unable to re grab the cart (likely auto release issue)
 Client's scoreboards do not recieve join notifications from late joiners
 Deer network transform does not sync x and z
+Butcher knife does not appear for clients
+Butcher knife is not put away if table range is exited
+Balloon spawner knife position not synced (likely no network transform)
 
 DONE:
 Player footstep noise
