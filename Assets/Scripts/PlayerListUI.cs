@@ -2,33 +2,19 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerListUI : MonoBehaviour
 {
-    public Transform contentPanel;   // Parent UI element for the list
-    public GameObject playerEntryPrefab; // A prefab with a Text or TMP_Text component
+    [Header("UI References")]
+    public Transform contentPanel;           // Parent UI container for entries
+    public GameObject playerEntryPrefab;     // Prefab with TMP_Text child
 
-    private Dictionary<ulong, GameObject> playerEntries = new Dictionary<ulong, GameObject>();
-
-    private IEnumerator WaitForNetworkManager()
-    {
-        while (!NetworkManager.Singleton.IsClient || !NetworkManager.Singleton.IsConnectedClient)
-            yield return null;
-
-        // Populate all current clients
-        foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
-        {
-            HandleClientConnected(kvp.Key);
-        }
-
-        // Optionally subscribe to future server updates if needed
-        NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
-    }
+    private Dictionary<ulong, GameObject> playerEntries = new();
 
     private void OnEnable()
     {
-        StartCoroutine(WaitForNetworkManager());
+        StartCoroutine(InitializeWhenReady());
     }
 
     private void OnDisable()
@@ -38,9 +24,47 @@ public class PlayerListUI : MonoBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnected;
     }
 
+    private IEnumerator InitializeWhenReady()
+    {
+        // Wait until NetworkManager exists and the client is connected
+        yield return new WaitUntil(() =>
+            NetworkManager.Singleton != null &&
+            (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost) &&
+            NetworkManager.Singleton.IsConnectedClient);
+
+        // Wait until the local player object exists (network spawn complete)
+        yield return new WaitUntil(() =>
+            NetworkManager.Singleton.LocalClient != null &&
+            NetworkManager.Singleton.LocalClient.PlayerObject != null);
+
+        // Wait a short frame delay to ensure all player objects are spawned on the client
+        yield return null;
+
+        // Now it's safe to populate
+        PopulateExistingPlayers();
+
+        // Subscribe to connection changes
+        NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
+    }
+
+    private void PopulateExistingPlayers()
+    {
+        foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
+        {
+            HandleClientConnected(kvp.Key);
+        }
+    }
+
     private void HandleClientConnected(ulong clientId)
     {
-        var playerObject = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+        // Avoid duplicates
+        if (playerEntries.ContainsKey(clientId)) return;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
+            return;
+
+        var playerObject = client.PlayerObject;
         if (playerObject == null)
             return;
 
@@ -48,10 +72,9 @@ public class PlayerListUI : MonoBehaviour
         if (player == null)
             return;
 
-        // Create entry
-        Debug.Log("client connected");
+        // Instantiate entry
         var entry = Instantiate(playerEntryPrefab, contentPanel);
-        var text = entry.GetComponentInChildren<TMPro.TMP_Text>();
+        var text = entry.GetComponentInChildren<TMP_Text>();
 
         void UpdateEntry()
         {
@@ -60,11 +83,13 @@ public class PlayerListUI : MonoBehaviour
 
         UpdateEntry();
 
-        // React to changes
+        // React to variable changes
         player.PlayerName.OnValueChanged += (_, __) => UpdateEntry();
         player.KillCount.OnValueChanged += (_, __) => UpdateEntry();
 
         playerEntries[clientId] = entry;
+
+        Debug.Log($"[PlayerListUI] Added client {clientId} ({player.PlayerName.Value})");
     }
 
     private void HandleClientDisconnected(ulong clientId)
@@ -73,6 +98,7 @@ public class PlayerListUI : MonoBehaviour
         {
             Destroy(entry);
             playerEntries.Remove(clientId);
+            Debug.Log($"[PlayerListUI] Removed client {clientId}");
         }
     }
 }

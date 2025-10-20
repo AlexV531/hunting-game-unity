@@ -10,7 +10,6 @@ BUGS:
 Client's scoreboards do not recieve join notifications from late joiners
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
-Balloon spawner knife position not synced (likely no network transform)
 
 DONE:
 Player footstep noise
