@@ -27,6 +27,8 @@ public class PlayerInputs : MonoBehaviour
 	public bool pause;
 	public bool loadout;
 	public bool toggleShader;
+	public bool leftMouseHeld;
+	public Vector2 dragInUI;
 
 	[Header("Crouch Settings")]
 	[Tooltip("If true, crouch is toggled on/off. If false, crouch is hold-to-crouch.")]
@@ -153,6 +155,16 @@ public class PlayerInputs : MonoBehaviour
 	public void OnToggleShader(InputValue value)
 	{
 		ToggleShaderInput(value.isPressed);
+	}
+
+	public void OnLeftMouseHeld(InputValue value)
+	{
+		LeftMouseHeldInput(value.isPressed);
+	}
+
+	public void OnDragInUI(InputValue value)
+	{
+		DragInUIInput(value.Get<Vector2>());
 	}
 #endif
 
@@ -288,6 +300,16 @@ public class PlayerInputs : MonoBehaviour
 	public void ToggleShaderInput(bool newToggleShaderState)
 	{
 		toggleShader = newToggleShaderState;
+	}
+
+	public void LeftMouseHeldInput(bool pressed)
+	{
+		leftMouseHeld = pressed;
+	}
+
+	public void DragInUIInput(Vector2 newDragInUIState)
+	{
+		dragInUI = newDragInUIState;
 	}
 	
 	private void OnApplicationFocus(bool hasFocus)

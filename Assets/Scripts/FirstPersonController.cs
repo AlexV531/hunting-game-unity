@@ -158,6 +158,7 @@ public class FirstPersonController : NetworkBehaviour
 	private PauseMenu _pauseMenu;
 	private LoadoutManager _loadoutManager;
 	private ShopUI _shopUI;
+	private AnimalInspectUI _inspectUI;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -208,6 +209,10 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			_shopUI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<ShopUI>();
 		}
+		if (_inspectUI == null)
+		{
+			_inspectUI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<AnimalInspectUI>();
+		}
 		if (_interactText == null)
 		{
 			_interactText = GameObject.FindGameObjectWithTag("InteractText").GetComponent<TextMeshProUGUI>();
@@ -219,6 +224,7 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
+		_inspectUI.SetPlayerInput(_input);
 		// GlobalVariables.RegisterPlayerInputs(_input);
 #if ENABLE_INPUT_SYSTEM
 		_playerInput = GetComponent<PlayerInput>();
@@ -366,9 +372,18 @@ public class FirstPersonController : NetworkBehaviour
 		}
 		else if (_shopUI.IsShopOpen())
 		{
-            if (_input.loadout || _input.pause)
+			if (_input.loadout || _input.pause)
 			{
 				_shopUI.CloseShopScreen();
+				_input.pause = false;
+				_input.loadout = false;
+			}
+		}
+		else if (_inspectUI.IsInspectOpen())
+		{
+            if (_input.loadout || _input.pause)
+			{
+				_inspectUI.CloseInspectScreen();
 				_input.pause = false;
 				_input.loadout = false;
 			}
@@ -390,7 +405,8 @@ public class FirstPersonController : NetworkBehaviour
 			}
 			else if (_input.loadout)
 			{
-				_loadoutManager.OpenLoadoutScreen();
+				// _loadoutManager.OpenLoadoutScreen();
+				_inspectUI.OpenInspectScreen();
 				_input.loadout = false;
 			}
 		}
@@ -725,7 +741,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen();
+		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen() || _inspectUI.IsInspectOpen();
 	}
 
 	public WeaponManager GetWeaponManager()

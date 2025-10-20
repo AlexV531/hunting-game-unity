@@ -9,9 +9,9 @@ Spell system framework
 BUGS:
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
+Corpses dropped by balloons do not fall
 
 DONE:
 Player footstep noise
-Balloon dropoff (UNTESTED)
 Reaction time to animal vision before fleeing
 Animal flee on bullet hit

@@ -84,7 +84,7 @@ public class ButcherTable : AnimalStoringInteractableBase
             var wm = other.GetComponent<WeaponManager>();
             if (wm != null && other.TryGetComponent<FirstPersonController>(out var player))
             {
-                wm.EquipWeapon(autoEquipKey);
+                wm.EquipWeapon(autoEquipKey); // NEEDS CLIENT RPC
             }
         }
     }

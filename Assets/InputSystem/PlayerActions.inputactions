@@ -194,6 +194,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LeftMouseHeld",
+                    "type": "PassThrough",
+                    "id": "122ef95b-2a93-48cc-b891-c0318405c6e9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragInUI",
+                    "type": "Value",
+                    "id": "b1c120cd-5f3e-4617-888e-2ae09f7ac78a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -744,6 +762,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Equip8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d219c20-2afc-46d7-a5f3-1aacce4b9612",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "LeftMouseHeld",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b4f5e9e-2bbb-447c-a7a1-8a585a24e6b5",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftMouseHeld",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "063296c3-e81a-47d2-89d0-d7be86d06094",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false),ScaleVector2",
+                    "groups": ";KeyboardMouse",
+                    "action": "DragInUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "292d41fd-e85c-4ca9-979a-4529373be017",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragInUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

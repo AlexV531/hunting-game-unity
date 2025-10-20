@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 
 public class PlayerListUI : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerListUI : MonoBehaviour
         StartCoroutine(WaitForManager());
     }
 
-    private System.Collections.IEnumerator WaitForManager()
+    private IEnumerator WaitForManager()
     {
         // Wait until we’re connected
         while (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsConnectedClient)
