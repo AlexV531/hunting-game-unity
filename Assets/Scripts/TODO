@@ -8,7 +8,6 @@ Spell system framework
 
 BUGS:
 Client's scoreboards do not recieve join notifications from late joiners
-Deer network transform does not sync x and z
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
 Balloon spawner knife position not synced (likely no network transform)
