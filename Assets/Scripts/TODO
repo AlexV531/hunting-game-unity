@@ -7,7 +7,6 @@ Partidge fly movement when fleeing
 Spell system framework
 
 BUGS:
-Client's scoreboards do not recieve join notifications from late joiners
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
 

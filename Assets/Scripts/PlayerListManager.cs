@@ -1,21 +1,18 @@
-using System.Collections.Generic;
-using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Unity.Collections;
 
 public class PlayerListManager : NetworkBehaviour
 {
-    public static PlayerListManager Instance { get; private set; }
+    public static PlayerListManager Instance;
 
-    public NetworkList<PlayerData> Players = new NetworkList<PlayerData>();
-
-    private void Awake()
-    {
-        Instance = this;
-    }
+    public NetworkList<PlayerData> playerList = new NetworkList<PlayerData>();
 
     public override void OnNetworkSpawn()
     {
+        if (Instance == null)
+            Instance = this;
+
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -23,44 +20,49 @@ public class PlayerListManager : NetworkBehaviour
         }
     }
 
+    public override void OnDestroy()
+    {
+        if (IsServer && NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+
+        base.OnDestroy();
+    }
+
+    // SERVER ONLY: Add new player to the NetworkList
     private void OnClientConnected(ulong clientId)
     {
-        var playerObj = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-        var player = playerObj.GetComponent<FirstPersonController>();
+        if (!IsServer) return;
 
-        Players.Add(new PlayerData
+        var playerObj = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+        if (playerObj == null) return;
+
+        var player = playerObj.GetComponent<FirstPersonController>();
+        if (player == null) return;
+
+        playerList.Add(new PlayerData
         {
             ClientId = clientId,
             Name = player.PlayerName.Value,
             Kills = player.KillCount.Value
         });
-
-        // Subscribe to live updates
-        player.PlayerName.OnValueChanged += (oldVal, newVal) => UpdatePlayer(clientId, newVal, player.KillCount.Value);
-        player.KillCount.OnValueChanged += (oldVal, newVal) => UpdatePlayer(clientId, player.PlayerName.Value, newVal);
     }
 
     private void OnClientDisconnected(ulong clientId)
     {
-        for (int i = 0; i < Players.Count; i++)
+        if (!IsServer) return;
+
+        for (int i = 0; i < playerList.Count; i++)
         {
-            if (Players[i].ClientId == clientId)
+            if (playerList[i].ClientId == clientId)
             {
-                Players.RemoveAt(i);
+                playerList.RemoveAt(i);
                 break;
             }
         }
     }
 
-    private void UpdatePlayer(ulong clientId, FixedString64Bytes name, int kills)
-    {
-        for (int i = 0; i < Players.Count; i++)
-        {
-            if (Players[i].ClientId == clientId)
-            {
-                Players[i] = new PlayerData { ClientId = clientId, Name = name, Kills = kills };
-                break;
-            }
-        }
-    }
+    public NetworkList<PlayerData> GetPlayerList() => playerList;
 }

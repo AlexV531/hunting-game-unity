@@ -1,104 +1,72 @@
-using Unity.Netcode;
 using UnityEngine;
-using System.Collections;
+using Unity.Netcode;
 using System.Collections.Generic;
 using TMPro;
 
 public class PlayerListUI : MonoBehaviour
 {
-    [Header("UI References")]
-    public Transform contentPanel;           // Parent UI container for entries
-    public GameObject playerEntryPrefab;     // Prefab with TMP_Text child
+    public Transform contentPanel;
+    public GameObject playerEntryPrefab;
 
-    private Dictionary<ulong, GameObject> playerEntries = new();
+    private Dictionary<ulong, GameObject> entries = new();
 
-    private void OnEnable()
+    private void Start()
     {
-        StartCoroutine(InitializeWhenReady());
+        StartCoroutine(WaitForManager());
     }
 
-    private void OnDisable()
+    private System.Collections.IEnumerator WaitForManager()
     {
-        if (NetworkManager.Singleton == null) return;
-        NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnected;
+        // Wait until we’re connected
+        while (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsConnectedClient)
+            yield return null;
+
+        // Wait until the PlayerListManager is spawned and synced
+        while (PlayerListManager.Instance == null || PlayerListManager.Instance.GetPlayerList() == null)
+            yield return null;
+
+        var list = PlayerListManager.Instance.GetPlayerList();
+
+        // Populate initial list
+        foreach (var p in list)
+            AddOrUpdate(p);
+
+        // React to future updates
+        list.OnListChanged += OnListChanged;
     }
 
-    private IEnumerator InitializeWhenReady()
+    private void OnListChanged(NetworkListEvent<PlayerData> change)
     {
-        // Wait until NetworkManager exists and the client is connected
-        yield return new WaitUntil(() =>
-            NetworkManager.Singleton != null &&
-            (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost) &&
-            NetworkManager.Singleton.IsConnectedClient);
-
-        // Wait until the local player object exists (network spawn complete)
-        yield return new WaitUntil(() =>
-            NetworkManager.Singleton.LocalClient != null &&
-            NetworkManager.Singleton.LocalClient.PlayerObject != null);
-
-        // Wait a short frame delay to ensure all player objects are spawned on the client
-        yield return null;
-
-        // Now it's safe to populate
-        PopulateExistingPlayers();
-
-        // Subscribe to connection changes
-        NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
-    }
-
-    private void PopulateExistingPlayers()
-    {
-        foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
+        switch (change.Type)
         {
-            HandleClientConnected(kvp.Key);
+            case NetworkListEvent<PlayerData>.EventType.Add:
+            case NetworkListEvent<PlayerData>.EventType.Value:
+                AddOrUpdate(change.Value);
+                break;
+            case NetworkListEvent<PlayerData>.EventType.Remove:
+                Remove(change.Value.ClientId);
+                break;
         }
     }
 
-    private void HandleClientConnected(ulong clientId)
+    private void AddOrUpdate(PlayerData data)
     {
-        // Avoid duplicates
-        if (playerEntries.ContainsKey(clientId)) return;
+        if (!entries.TryGetValue(data.ClientId, out var entry))
+        {
+            entry = Instantiate(playerEntryPrefab, contentPanel);
+            entries[data.ClientId] = entry;
+        }
 
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
-            return;
-
-        var playerObject = client.PlayerObject;
-        if (playerObject == null)
-            return;
-
-        var player = playerObject.GetComponent<FirstPersonController>();
-        if (player == null)
-            return;
-
-        // Instantiate entry
-        var entry = Instantiate(playerEntryPrefab, contentPanel);
         var text = entry.GetComponentInChildren<TMP_Text>();
-
-        void UpdateEntry()
-        {
-            text.text = $"{player.PlayerName.Value} - Kills: {player.KillCount.Value}";
-        }
-
-        UpdateEntry();
-
-        // React to variable changes
-        player.PlayerName.OnValueChanged += (_, __) => UpdateEntry();
-        player.KillCount.OnValueChanged += (_, __) => UpdateEntry();
-
-        playerEntries[clientId] = entry;
-
-        Debug.Log($"[PlayerListUI] Added client {clientId} ({player.PlayerName.Value})");
+        text.text = $"{data.Name} - Kills: {data.Kills}";
     }
 
-    private void HandleClientDisconnected(ulong clientId)
+    private void Remove(ulong clientId)
     {
-        if (playerEntries.TryGetValue(clientId, out var entry))
+        if (entries.TryGetValue(clientId, out var entry))
         {
             Destroy(entry);
-            playerEntries.Remove(clientId);
-            Debug.Log($"[PlayerListUI] Removed client {clientId}");
+            entries.Remove(clientId);
         }
     }
 }
