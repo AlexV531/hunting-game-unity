@@ -38,8 +38,6 @@ public class ButcherTable : AnimalStoringInteractableBase
     [ServerRpc(RequireOwnership = false)]
     public void ButcherServerRpc(ulong clientId)
     {
-        Debug.Log($"Animal butchered by client {clientId}");
-
         // Destroy the animal
         var animal = GetPlacedAnimal();
         if (animal != null)
@@ -65,13 +63,15 @@ public class ButcherTable : AnimalStoringInteractableBase
             }
 
             ClearPlacedAnimal();
-        }
 
-        // Reward the player who did the butchering
-        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
-        {
-            var player = client.PlayerObject.GetComponent<FirstPersonController>();
-            player.Money += 5;
+            // Reward the player who did the butchering
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
+            {
+                var player = client.PlayerObject.GetComponent<FirstPersonController>();
+                player.Money += 5;
+            }
+
+            Debug.Log($"Animal butchered by client {clientId}");
         }
     }
 
