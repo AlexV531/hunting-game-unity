@@ -112,7 +112,7 @@ MonoBehaviour:
   aimSpeed: 10
   bulletPrefab: {fileID: 1198269481787267308, guid: 47e639f39d28bcc4da75f6739162f0f3, type: 3}
   firePoint: {fileID: 5581312515161585493}
-  bulletSpeed: 200
+  bulletSpeed: 600
   weaponClass: 2
   weaponKey: 0
   scopedFOV: 20

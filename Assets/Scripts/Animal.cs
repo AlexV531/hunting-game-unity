@@ -14,7 +14,7 @@ public class Animal : NetworkBehaviour
     public AnimalAI animalAI;
     public Corpse corpseInteractable;
     public Transform bottom;
-    [SerializeField] GameObject internalContainer;
+    public GameObject internalContainer;
     private bool isDead = false;
     public Internal[] internals; // assign all organs in inspector
     private Dictionary<int, Internal> internalLookup;

@@ -2,53 +2,43 @@ using UnityEngine;
 
 public class ShaderSwitcher : MonoBehaviour
 {
-    public PlayerInputs playerInputs; // reference to your PlayerInputs
     public Shader newShader;
+    public Renderer rend;
 
     private Shader[] originalShaders;
+    private Material[] materials;
+    private bool isSwitched = false;
 
     void Start()
     {
-        if (playerInputs == null)
+        if (rend == null)
         {
-            playerInputs = GameObject.FindWithTag("Player").GetComponent<PlayerInputs>();
+            Debug.LogWarning("ShaderSwitcher: No renderer assigned.", this);
+            return;
         }
 
-        Renderer rend = GetComponent<Renderer>();
-        if (rend != null)
+        materials = rend.materials;
+        originalShaders = new Shader[materials.Length];
+
+        for (int i = 0; i < materials.Length; i++)
         {
-            Material[] mats = rend.materials;
-            originalShaders = new Shader[mats.Length];
-            for (int i = 0; i < mats.Length; i++)
-            {
-                originalShaders[i] = mats[i].shader;
-            }
+            originalShaders[i] = materials[i].shader;
         }
     }
 
-    void Update()
+    public void ToggleShader()
     {
-        if (playerInputs != null && playerInputs.toggleShader)
+        if (rend == null || newShader == null)
         {
-            ToggleShader();
+            Debug.LogWarning("ShaderSwitcher: Missing renderer or newShader.", this);
+            return;
         }
-    }
 
-    private bool isSwitched = false;
-
-    void ToggleShader()
-    {
-        Renderer rend = GetComponent<Renderer>();
-        if (rend == null) return;
-
-        Material[] mats = rend.materials;
-        for (int i = 0; i < mats.Length; i++)
+        for (int i = 0; i < materials.Length; i++)
         {
-            mats[i].shader = isSwitched ? originalShaders[i] : newShader;
+            materials[i].shader = isSwitched ? originalShaders[i] : newShader;
         }
-        rend.materials = mats;
 
         isSwitched = !isSwitched;
-        playerInputs.toggleShader = false; // reset input to avoid multiple triggers
     }
 }

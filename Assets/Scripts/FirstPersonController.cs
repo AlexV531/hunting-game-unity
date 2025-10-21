@@ -265,19 +265,30 @@ public class FirstPersonController : NetworkBehaviour
 
 		JumpAndGravity();
 		HandleMenus();
+		GroundedCheck();
+
+		if (!IsPlayerInMenu())
+			HandleCrouch();
+
+		Move();
 
 		if (IsPlayerInMenu())
 			return;
 
-		GroundedCheck();
-		HandleCrouch();
-		Move();
 		DetectInteractable();
 
 		if (carriedAnimal != null)
 		{
 			carriedAnimal.transform.position = shoulderCarryPoint.position;
 			carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
+		}
+
+		// If current interactable is an Animal and player presses inspect
+		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && currentInteractable is Corpse && _input.inspect)
+		{
+			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject);
+			_input.inspect = false;
+			return;
 		}
 
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && _input.interact)
@@ -291,7 +302,6 @@ public class FirstPersonController : NetworkBehaviour
 		else if (attachedCart != null && _input.interact)
         {
 			attachedCart.ReleaseCartServerRpc(OwnerClientId);
-			// attachedCart = null;
         }
 		_input.interact = false;
 	}
@@ -405,8 +415,7 @@ public class FirstPersonController : NetworkBehaviour
 			}
 			else if (_input.loadout)
 			{
-				// _loadoutManager.OpenLoadoutScreen();
-				_inspectUI.OpenInspectScreen();
+				_loadoutManager.OpenLoadoutScreen();
 				_input.loadout = false;
 			}
 		}

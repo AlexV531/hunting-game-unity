@@ -2,7 +2,7 @@ Shader "Custom/BackfacePinkTransparentURP"
 {
     Properties
     {
-        _BaseColor("Base Color", Color) = (1, 0.3, 0.5, 0.5)
+        _BaseColor("Base Color", Color) = (1, 0.3, 0.5, 1)
     }
 
     SubShader
@@ -10,9 +10,10 @@ Shader "Custom/BackfacePinkTransparentURP"
         Tags { "RenderType"="Transparent" "Queue"="Transparent" }
         LOD 100
 
-        Cull Front // only render backfaces
+        Cull Front // Only render backfaces
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
-        // Use URP shader library for correct transparency
         Pass
         {
             Name "FORWARD"
@@ -21,6 +22,8 @@ Shader "Custom/BackfacePinkTransparentURP"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -38,17 +41,18 @@ Shader "Custom/BackfacePinkTransparentURP"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-                OUT.positionCS = TransformObjectToHClip(float4(IN.positionOS,1));
+                OUT.positionCS = TransformObjectToHClip(float4(IN.positionOS, 1));
                 return OUT;
             }
 
             half4 frag(Varyings IN) : SV_Target
             {
+                // Return solid pink, unaffected by lighting
                 return _BaseColor;
             }
             ENDHLSL
         }
     }
 
-    FallBack "Universal Render Pipeline/Lit"
+    FallBack Off
 }

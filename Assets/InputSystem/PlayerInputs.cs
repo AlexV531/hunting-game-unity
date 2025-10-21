@@ -24,6 +24,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool equip7;
 	public bool equip8;
 	public bool interact;
+	public bool inspect;
 	public bool pause;
 	public bool loadout;
 	public bool toggleShader;
@@ -140,6 +141,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnInteract(InputValue value)
 	{
 		InteractInput(value.isPressed);
+	}
+
+	public void OnInspect(InputValue value)
+	{
+		InspectInput(value.isPressed);
 	}
 
 	public void OnPause(InputValue value)
@@ -285,6 +291,11 @@ public class PlayerInputs : MonoBehaviour
 	public void InteractInput(bool newInteractState)
 	{
 		interact = newInteractState;
+	}
+
+	public void InspectInput(bool newInspectState)
+	{
+		inspect = newInspectState;
 	}
 
 	public void PauseInput(bool newPauseState)

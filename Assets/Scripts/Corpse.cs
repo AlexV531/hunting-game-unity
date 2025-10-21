@@ -16,6 +16,6 @@ public class Corpse : InteractableBase
 
     public override string GetPrompt(FirstPersonController player)
     {
-        return "Press \"e\" to pick up animal";
+        return "Press \"e\" to pick up animal \n Press \"t\" to inspect";
     }
 }

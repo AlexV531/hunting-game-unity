@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 4547363607548388873}
   - component: {fileID: 438105904991772349}
   - component: {fileID: 7925094639610938169}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: PlayerCapsule_Networked
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -503,9 +503,12 @@ MonoBehaviour:
   equip7: 0
   equip8: 0
   interact: 0
+  inspect: 0
   pause: 0
   loadout: 0
   toggleShader: 0
+  leftMouseHeld: 0
+  dragInUI: {x: 0, y: 0}
   crouchToggleMode: 0
   steadyAimToggleMode: 0
   analogMovement: 0

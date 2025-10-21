@@ -12,6 +12,7 @@ public class AnimalInspectUI : MonoBehaviour
     private bool inspectOpen = true;
     private Vector2 lastMousePosition;
     private PlayerInputs inputs;
+    private GameObject inspectTarget;
     
     private void Start()
     {
@@ -24,6 +25,23 @@ public class AnimalInspectUI : MonoBehaviour
 
     public void OpenInspectScreen()
     {
+        inspectScreen.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        inspectOpen = true;
+    }
+
+    public void OpenInspectScreen(GameObject inspectTarget)
+    {
+        foreach (Transform child in modelTransform)
+        {
+            Destroy(child.gameObject);
+        }
+        this.inspectTarget = null;
+        GameObject targetClone = Instantiate(inspectTarget, modelTransform);
+        targetClone.transform.localPosition = Vector3.zero;
+        targetClone.transform.rotation = Quaternion.identity;
+        this.inspectTarget = targetClone;
         inspectScreen.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -43,6 +61,9 @@ public class AnimalInspectUI : MonoBehaviour
         if (inputs == null)
             return;
 
+        if (!inspectOpen)
+            return;
+
         if (inputs.leftMouseHeld)
         {
             Vector2 delta = inputs.dragInUI - lastMousePosition;
@@ -55,6 +76,14 @@ public class AnimalInspectUI : MonoBehaviour
 
             // Vertical rotation around right vector
             modelTransform.Rotate(Vector3.right, deltaY * rotationSpeed * sensitivity * Time.deltaTime, Space.World);
+        }
+        if (inputs.inspect)
+        {
+            if (inspectTarget != null && inspectTarget.GetComponent<ShaderSwitcher>() != null)
+            {
+                inspectTarget.GetComponent<ShaderSwitcher>().ToggleShader();
+            }
+            inputs.inspect = false;
         }
 
         lastMousePosition = inputs.dragInUI;

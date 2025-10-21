@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6805021877742488793}
+  - component: {fileID: 3385020149791348802}
   m_Layer: 0
   m_Name: InternalContainer
   m_TagString: Untagged
@@ -40,6 +41,20 @@ Transform:
   - {fileID: 4438581164326582040}
   m_Father: {fileID: 8237469793533726296}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &3385020149791348802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47556156525332122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 005ee9e5cd0b15746909edb4325c7ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderSwitcher
+  newShader: {fileID: 4800000, guid: adada3d598f229b47be6ace613f69ae5, type: 3}
+  rend: {fileID: 6845581437615129266}
 --- !u!1 &2192462265659396237
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +123,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: e12aac095ca8a6844880bbddfa484853, type: 3}
+  - {fileID: 2100000, guid: 2989c43b7f5a07047a2e38e29ebbd47e, type: 2}
   - {fileID: -3846018093981099296, guid: e12aac095ca8a6844880bbddfa484853, type: 3}
   - {fileID: -8274133419916619345, guid: e12aac095ca8a6844880bbddfa484853, type: 3}
   m_StaticBatchInfo:
