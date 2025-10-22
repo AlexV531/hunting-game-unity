@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
+using System;
 
 public class Animal : NetworkBehaviour
 {
@@ -55,11 +56,17 @@ public class Animal : NetworkBehaviour
             }
 
             // Apply bleed damage
-            health = Mathf.Clamp(
-                health - hit.bleedRate * animalBleedFactor * Time.deltaTime,
-                0f,
-                maxHealth
-            );
+            float bleedDamage = hit.bleedRate * animalBleedFactor * Time.deltaTime;
+            if (health - bleedDamage < 0)
+            {
+                hit.bleedDamageDone += health;
+            }
+            else
+            {
+                hit.bleedDamageDone += bleedDamage;
+            }
+            health = Mathf.Clamp(health - bleedDamage, 0f, maxHealth);
+            
 
             // Reduce bleed rate by healing
             hit.bleedRate -= hit.healRate * animalHealFactor * Time.deltaTime;
@@ -276,6 +283,14 @@ public class Animal : NetworkBehaviour
                 ((internalHit.hitWithPower * (internalHit.hitDist / distDamageFactor)) * hitData.bulletStrength)
                 / internalHit.internalPart.internalStrength, 0f, 1f) * internalHit.internalPart.lethality;
 
+            if (health - initialDamage < 0)
+            {
+                hitData.initialDamageDone += health;
+            }
+            else
+            {
+                hitData.initialDamageDone += initialDamage;
+            }
             health = Mathf.Clamp(health - initialDamage, 0f, maxHealth);
 
             float bleedInflicted = Mathf.Clamp(
@@ -364,4 +379,23 @@ public class Animal : NetworkBehaviour
     }
 
     public BalloonAttach GetBalloonAttach() => balloonAttach;
+
+    public List<HitDataStrings> GetHitData()
+    {
+        List<HitDataStrings> hitDataStringArrays = new List<HitDataStrings>();
+        foreach (HitData hit in hits)
+        {
+            HitDataStrings hitDataStrings = new HitDataStrings();
+            hitDataStrings.string1 = "Shot by " + hit.player.PlayerName.Value;
+            hitDataStrings.string2 = Math.Round((hit.initialDamageDone + hit.bleedDamageDone) / maxHealth * 100) + "% - " + Math.Round(hit.initialDamageDone) + " initial - " + Math.Round(hit.bleedDamageDone) + " bleed";
+            string internalHitDataString = "Hit:";
+            foreach (HitData.InternalHitData internalHit in hit.internalsHit)
+            {
+                internalHitDataString += " " + internalHit.internalPart.name;
+            }
+            hitDataStrings.string3 = internalHitDataString;
+            hitDataStringArrays.Add(hitDataStrings);
+        }
+        return hitDataStringArrays;
+    }
 }

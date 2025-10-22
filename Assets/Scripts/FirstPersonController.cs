@@ -286,7 +286,8 @@ public class FirstPersonController : NetworkBehaviour
 		// If current interactable is an Animal and player presses inspect
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && currentInteractable is Corpse && _input.inspect)
 		{
-			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject);
+			// _inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, ((Corpse)currentInteractable).animal.hits);
+			RequestOpenInspect(((Corpse)currentInteractable).animal.NetworkObjectId);
 			_input.inspect = false;
 			return;
 		}
@@ -767,6 +768,48 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		return _shopUI;
 	}
+
+    public void RequestOpenInspect(ulong animalId)
+    {
+        if (IsOwner)
+        {
+            RequestHitDataServerRpc(animalId, NetworkManager.Singleton.LocalClientId);
+        }
+    }
+
+    [ServerRpc]
+    private void RequestHitDataServerRpc(ulong animalId, ulong requesterClientId)
+    {
+        // Find the animal by its NetworkObjectId
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(animalId, out var animalObj))
+        {
+            var animal = animalObj.GetComponent<Animal>();
+            if (animal != null)
+            {
+                // Get data from the animal
+                List<HitDataStrings> hitData = animal.GetHitData();
+                
+                // Send data back to this client
+                SendAnimalInfoClientRpc(hitData.ToArray(), new ClientRpcParams
+                {
+                    Send = new ClientRpcSendParams
+                    {
+                        TargetClientIds = new[] { requesterClientId }
+                    }
+                });
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void SendAnimalInfoClientRpc(HitDataStrings[] hitData, ClientRpcParams rpcParams = default)
+    {
+		Debug.Log("Received animal info from server: " + hitData);
+		if (currentInteractable != null && currentInteractable is Corpse)
+		{
+			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData);
+		}
+    }
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{

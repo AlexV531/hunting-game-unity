@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,8 @@ public class AnimalInspectUI : MonoBehaviour
 {
     public GameObject inspectScreen;
     public Transform modelTransform;
+    public Transform hitDataContainer;
+    public GameObject hitDataPrefab;
     public float rotationSpeed = 1f;
     public float sensitivity = 1f;
     public float exponent = 1.5f;
@@ -31,17 +34,37 @@ public class AnimalInspectUI : MonoBehaviour
         inspectOpen = true;
     }
 
-    public void OpenInspectScreen(GameObject inspectTarget)
+    public void OpenInspectScreen(GameObject inspectTarget, HitDataStrings[] hits)
     {
+        // Remove old model
         foreach (Transform child in modelTransform)
         {
             Destroy(child.gameObject);
         }
         this.inspectTarget = null;
+        // Add model
         GameObject targetClone = Instantiate(inspectTarget, modelTransform);
         targetClone.transform.localPosition = Vector3.zero;
         targetClone.transform.rotation = Quaternion.identity;
         this.inspectTarget = targetClone;
+        // Remove old hit data entries
+        foreach (Transform child in hitDataContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        // Add hit data entries
+        foreach (HitDataStrings hitDataStrings in hits)
+        {
+            GameObject hitDataEntryObj = Instantiate(hitDataPrefab, hitDataContainer);
+            HitDataUIEntry hitDataEntry = hitDataEntryObj.GetComponent<HitDataUIEntry>();
+            if (hitDataEntry != null)
+            {
+                hitDataEntry.WeaponAndPlayerText.text = hitDataStrings.string1.ToString();
+                Debug.Log("String1: " + hitDataStrings.string1.ToString());
+                hitDataEntry.DamageAndBleedText.text = hitDataStrings.string2.ToString();
+                hitDataEntry.InternalsHitText.text = hitDataStrings.string3.ToString();
+            }
+        }
         inspectScreen.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005ee9e5cd0b15746909edb4325c7ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShaderSwitcher
-  newShader: {fileID: 4800000, guid: adada3d598f229b47be6ace613f69ae5, type: 3}
+  newShader: {fileID: -6465566751694194690, guid: 92a8ed0728103b3499d515d27ac17d0f, type: 3}
   rend: {fileID: 6845581437615129266}
 --- !u!1 &2192462265659396237
 GameObject:
