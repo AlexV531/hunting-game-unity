@@ -35,31 +35,35 @@ public class Antler : MonoBehaviour
     {
         AntlerBranch main = new AntlerBranch();
         main.radius = mainRadius;
-        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments);
+        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, 0.05f);
 
         int tineCount = Random.Range(minTines, maxTines + 1);
+        List<int> usedIndices = new List<int>(); // keep track of previous attach points
+
         for (int i = 0; i < tineCount; i++)
         {
-            AntlerBranch tine = GenerateRandomTine(main, 1, maxDepth);
-            main.children.Add(tine);
+            AntlerBranch tine = GenerateRandomTine(main, usedIndices, 1, maxDepth);
+            if (tine != null)
+                main.children.Add(tine);
         }
 
         return main;
     }
 
-    AntlerBranch GenerateRandomTine(AntlerBranch parent, int depth, int maxDepth)
+    AntlerBranch GenerateRandomTine(AntlerBranch parent, List<int> usedIndices, int depth, int maxDepth)
     {
         AntlerBranch tine = new AntlerBranch();
 
         // Choose attach point along parent
-        int attachIndex = Random.Range(1, parent.pathPoints.Count - 2);
+        int attachIndex = GetUniqueAttachIndex(parent.pathPoints.Count, usedIndices, 2);
         tine.attachIndex = attachIndex;
+        usedIndices.Add(attachIndex);
 
         // Random length and segments
         int segments = Random.Range(3, 6);
-        float length = Random.Range(0.2f, tineMaxLength);
+        float length = Random.Range(0.2f, tineMaxLength / depth);
 
-        // Clamp tine radius to the parent’s radius at attach point
+        // Clamp tine radius to parent's radius at attach point
         float parentRadiusAtAttach = GetParentRadiusAt(parent, attachIndex);
         float baseRadius = parent.radius * Mathf.Pow(0.6f, depth);
         tine.radius = Mathf.Min(baseRadius, parentRadiusAtAttach);
@@ -70,15 +74,17 @@ public class Antler : MonoBehaviour
             length,
             Random.Range(-0.2f, 0.2f)
         );
-        tine.pathPoints = GenerateBeam(Vector3.zero, offset, segments);
+        tine.pathPoints = GenerateBeam(Vector3.zero, offset, segments, tineCurvature);
 
         // Recursively generate sub-tines if depth allows
         if (depth < maxDepth)
         {
-            int subTines = Random.Range(0, 1);
+            List<int> subUsed = new List<int>(); // new list per tine level
+            int subTines = Random.Range(0, 1); // small chance of sub-tines
             for (int i = 0; i < subTines; i++)
             {
-                tine.children.Add(GenerateRandomTine(tine, depth + 1, maxDepth));
+                AntlerBranch sub = GenerateRandomTine(tine, subUsed, depth + 1, maxDepth);
+                tine.children.Add(sub);
             }
         }
 
@@ -110,8 +116,10 @@ public class Antler : MonoBehaviour
             Vector3 pos = Vector3.Lerp(start, end, t);
 
             // Apply sinusoidal curves scaled by curvature factor
-            float curveX = Mathf.Sin(t * Mathf.PI * 1.5f) * Random.Range(curvature * 0.4f, curvature * 1f);
-            float curveZ = Mathf.Sin(t * Mathf.PI * 2f) * Random.Range(curvature * 0.4f, curvature * 1f);
+            // float curveX = Mathf.Sin(t * Mathf.PI * 1.5f) * Random.Range(curvature * 0.8f, curvature * 1f);
+            // float curveZ = Mathf.Sin(t * Mathf.PI * 2f) * Random.Range(curvature * 0.8f, curvature * 1f);
+            float curveX = Mathf.Sin(t * Mathf.PI * 1f) * Random.Range(curvature * 0.8f, curvature * 1f);
+            float curveZ = Mathf.Sin(t * Mathf.PI * 1.2f) * Random.Range(curvature * 0.8f, curvature * 1f);
 
             pos.x += curveX;
             pos.z += curveZ;
@@ -125,5 +133,30 @@ public class Antler : MonoBehaviour
     {
         float t = attachIndex / (float)(parent.pathPoints.Count - 1);
         return parent.radius * Mathf.Lerp(parent.taperStart, parent.taperEnd, t); // same taper formula as ExtrudePath
+    }
+
+    int GetUniqueAttachIndex(int totalPoints, List<int> usedIndices, int minSpacing)
+    {
+        const int maxAttempts = 10;
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            int candidate = Random.Range(1, totalPoints - 2);
+            bool tooClose = false;
+
+            foreach (int used in usedIndices)
+            {
+                if (Mathf.Abs(candidate - used) < minSpacing)
+                {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            if (!tooClose)
+                return candidate;
+        }
+
+        // fallback if too many failed attempts
+        return Random.Range(1, totalPoints - 2);
     }
 }

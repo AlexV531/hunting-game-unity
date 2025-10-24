@@ -604,6 +604,7 @@ GameObject:
   - component: {fileID: 5386279661680571859}
   - component: {fileID: 3535825559096231583}
   - component: {fileID: 6699711025765793950}
+  - component: {fileID: 5113355362509187546}
   m_Layer: 13
   m_Name: Deer
   m_TagString: Untagged
@@ -640,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 744583523
+  GlobalObjectIdHash: 1721945765
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -880,6 +881,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BalloonAttach
   ShowTopMostFoldoutHeaderGroup: 1
   objectToAttach: {fileID: 8237469793533726296}
+--- !u!114 &5113355362509187546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406503103205657411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0656dcd2c3be11a40ad9dd92ff742251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalVariator
+  ShowTopMostFoldoutHeaderGroup: 1
+  rend: {fileID: 6845581437615129266}
 --- !u!1 &4837697612702868702
 GameObject:
   m_ObjectHideFlags: 0

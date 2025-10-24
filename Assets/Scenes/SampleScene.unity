@@ -187682,57 +187682,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1263434616501865402, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 260904136
-      objectReference: {fileID: 0}
-    - target: {fileID: 1263434616501865402, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1263434616501865402, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 487792030
-      objectReference: {fileID: 0}
-    - target: {fileID: 1771417567411772431, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 4106703885
-      objectReference: {fileID: 0}
-    - target: {fileID: 1771417567411772431, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1771417567411772431, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 993737944
-      objectReference: {fileID: 0}
-    - target: {fileID: 4346095237443006537, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 996747405
-      objectReference: {fileID: 0}
-    - target: {fileID: 4346095237443006537, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4346095237443006537, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3377173092
-      objectReference: {fileID: 0}
     - target: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
       propertyPath: m_Name
       value: Deer (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 4406503103205657411, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4786927308017071663, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1721945765
-      objectReference: {fileID: 0}
-    - target: {fileID: 4786927308017071663, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3525937885
       objectReference: {fileID: 0}
     - target: {fileID: 6834382181995577058, guid: b623b417d17f0bd47a188f4895eebce0, type: 3}
       propertyPath: herd
