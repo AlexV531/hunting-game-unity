@@ -79,7 +79,6 @@ public class Weapon : NetworkBehaviour
             _input = _owner.GetComponent<PlayerInputs>();
             _input.fire = false;
             _recoil = _owner.GetComponent<CameraRecoil>();
-            _audioSource = GetComponent<AudioSource>();
             _followTarget = _owner.weaponContainer;
             _vCam = _owner.vCam;
 
@@ -87,6 +86,7 @@ public class Weapon : NetworkBehaviour
             initialized = true;
         }
 
+        _audioSource = GetComponent<AudioSource>();
         isEquipped.OnValueChanged += OnEquipChange;
         OnEquipChange(true, isEquipped.Value);
     }

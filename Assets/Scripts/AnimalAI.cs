@@ -13,6 +13,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float HearingThreshold => 0.5f;
     public float fleeAngleSpread = 45f; // degrees
     public float fleeDistance = 50f;
+    public int fleeSegments = 3;
     public Herd herd;
     public Vector3 MostRecentSoundPosition;
     public float soundHeard = 0f;
@@ -163,12 +164,12 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         fsm.ChangeState(fsm.FleeingState);
     }
 
-    public List<Vector3> ChooseEscapePositions(Vector3 panicSource, int numTargets = 3, int maxAttempts = 10)
+    public List<Vector3> ChooseEscapePositions(Vector3 panicSource, int maxAttempts = 10)
     {
         Vector3 deerPos = transform.position;
         List<Vector3> targetQueue = new List<Vector3>();
 
-        for (int j = 0; j < numTargets; j++)
+        for (int j = 0; j < fleeSegments; j++)
         {
             Vector3 escapeDir = (deerPos - panicSource).normalized;
             bool targetFound = false;
