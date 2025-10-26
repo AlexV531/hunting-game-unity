@@ -106,13 +106,13 @@ MonoBehaviour:
   generator: {fileID: 8793793919697073829}
   mainSegments: 10
   mainLength: 1.2
-  mainRadius: 0.06
+  mainRadius: 0.1
   minTines: 2
   maxTines: 5
   tineMaxLength: 0.5
   tineMaxRadius: 0.03
   maxDepth: 2
-  mainBeamCurvature: 0.12
+  mainBeamCurvature: 0.22
   tineCurvature: 0.05
 --- !u!114 &8793793919697073829
 MonoBehaviour:

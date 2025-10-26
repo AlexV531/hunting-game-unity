@@ -9,7 +9,7 @@ public class Antler : MonoBehaviour
     [Header("Main Beam")]
     public int mainSegments = 10;
     public float mainLength = 1.2f;
-    public float mainRadius = 0.06f;
+    public float mainRadius = 0.1f;
 
     [Header("Tines")]
     public int minTines = 2;
@@ -21,7 +21,7 @@ public class Antler : MonoBehaviour
     public int maxDepth = 2;
 
     [Header("Beam Curvature")]
-    public float mainBeamCurvature = 0.08f; // default moderate bend
+    public float mainBeamCurvature = 0.22f; // default moderate bend
     public float tineCurvature = 0.05f; // tines can curve more
 
     void Start()
@@ -35,7 +35,7 @@ public class Antler : MonoBehaviour
     {
         AntlerBranch main = new AntlerBranch();
         main.radius = mainRadius;
-        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, 0.05f);
+        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, mainBeamCurvature);
 
         int tineCount = Random.Range(minTines, maxTines + 1);
         List<int> usedIndices = new List<int>(); // keep track of previous attach points
@@ -61,19 +61,33 @@ public class Antler : MonoBehaviour
 
         // Random length and segments
         int segments = Random.Range(3, 6);
-        float length = Random.Range(0.2f, tineMaxLength / depth);
+        float length = Random.Range(0.2f, tineMaxLength);
 
         // Clamp tine radius to parent's radius at attach point
         float parentRadiusAtAttach = GetParentRadiusAt(parent, attachIndex);
         float baseRadius = parent.radius * Mathf.Pow(0.6f, depth);
         tine.radius = Mathf.Min(baseRadius, parentRadiusAtAttach);
 
-        // Generate curved, randomized tine
-        Vector3 offset = new Vector3(
-            Random.Range(-0.2f, 0.2f),
-            length,
-            Random.Range(-0.2f, 0.2f)
-        );
+        // Compute local tangent direction of the parent beam at the attach point
+        int idx = Mathf.Clamp(attachIndex, 1, parent.pathPoints.Count - 2);
+        Vector3 tangent = (parent.pathPoints[idx + 1] - parent.pathPoints[idx - 1]).normalized;
+
+        // Choose a roughly perpendicular direction
+        Vector3 randomUp = Random.insideUnitSphere.normalized; // gives some variation
+        Vector3 perpendicular = Vector3.Cross(randomUp, tangent).normalized;
+
+        // Ensure it's truly perpendicular and consistent
+        if (perpendicular == Vector3.zero)
+            perpendicular = Vector3.Cross(tangent, Vector3.up).normalized;
+
+        // Now define offset direction slightly angled upward
+        float upwardBias = Random.Range(0.8f, 1.5f); // much stronger upward influence
+        Vector3 growthDir = (perpendicular + tangent * upwardBias).normalized;
+
+        // Scale by tine length
+        Vector3 offset = growthDir * length;
+
+        // Generate tine beam
         tine.pathPoints = GenerateBeam(Vector3.zero, offset, segments, tineCurvature);
 
         // Recursively generate sub-tines if depth allows

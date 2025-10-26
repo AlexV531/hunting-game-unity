@@ -4,21 +4,25 @@ using UnityEngine;
 public class AnimalVariator : NetworkBehaviour
 {
     public Renderer rend;
+    private AnimalPelt pelt;
 
     public override void OnNetworkSpawn()
     {
         if (IsServer)
         {
             // Pick a random color on the server
-            Color color = GetColorVariant();
-            SetColorClientRpc(color);
+            pelt = GetPeltVariant();
+            SetColorClientRpc(pelt);
+
+            Debug.Log($"Spawned deer with {pelt.Description} pelt.");
         }
     }
 
     [ClientRpc]
-    void SetColorClientRpc(Color color)
+    void SetColorClientRpc(AnimalPelt pelt)
     {
-        ApplyColor(color);
+        this.pelt = pelt;
+        ApplyColor(pelt.Color);
     }
 
     private void ApplyColor(Color c)
@@ -26,28 +30,23 @@ public class AnimalVariator : NetworkBehaviour
         rend.materials[0].color = c;
     }
 
-    public Color GetColorVariant()
+    public AnimalPelt GetPeltVariant()
     {
-        // Base color: #4A2A0B
-        Color baseColor = new Color32(0x4A, 0x2A, 0x0B, 255);
+        Color baseColor = rend.materials[0].color;
 
-        // 0.5% chance for an albino-like variant
+        // Albino check
         if (Random.value < 0.005f)
         {
-            // Very light tan to near white (but not pure white)
             float shade = Random.Range(0.85f, 1f);
-            return new Color(shade, shade * 0.95f, shade * 0.9f); // warm tone
+            Color albinoColor = new Color(shade, shade * 0.95f, shade * 0.9f);
+            return new AnimalPelt(albinoColor, "Albino");
         }
 
-        // Normal brown variation
         Color.RGBToHSV(baseColor, out float h, out float s, out float v);
-
         float hOffset = Random.Range(-0.02f, 0.02f);
         float sOffset = Random.Range(-0.05f, 0.05f);
         float vOffset;
 
-        // 80% of the time: subtle variation
-        // 20%: more distinct light/dark
         if (Random.value < 0.8f)
             vOffset = Random.Range(-0.05f, 0.05f);
         else
@@ -57,6 +56,17 @@ public class AnimalVariator : NetworkBehaviour
         float newS = Mathf.Clamp01(s + sOffset);
         float newV = Mathf.Clamp01(v + vOffset);
 
-        return Color.HSVToRGB(newH, newS, newV);
+        Color newColor = Color.HSVToRGB(newH, newS, newV);
+
+        // Determine descriptive category
+        string desc;
+        if (newV < 0.35f)
+            desc = "Dark Brown";
+        else if (newV < 0.55f)
+            desc = "Brown";
+        else
+            desc = "Light Brown";
+
+        return new AnimalPelt(newColor, desc);
     }
 }
