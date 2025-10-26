@@ -21,11 +21,18 @@ public class Antler : MonoBehaviour
     public int maxDepth = 2;
 
     [Header("Beam Curvature")]
-    public float mainBeamCurvature = 0.22f; // default moderate bend
-    public float tineCurvature = 0.05f; // tines can curve more
+    public float mainBeamCurvature = 0.22f;
+    public float tineCurvature = 0.05f;
+
+    [Header("Randomization")]
+    public int seed = 0;
+    public bool useSeed = true;
 
     void Start()
     {
+        if (useSeed)
+            Random.InitState(seed);
+        
         generator = GetComponent<AntlerMeshGenerator>();
         AntlerBranch main = GenerateMainBranch();
         generator.GenerateAntler(main);
