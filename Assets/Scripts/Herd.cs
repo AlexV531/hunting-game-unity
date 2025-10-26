@@ -37,12 +37,19 @@ public class Herd : MonoBehaviour
         }
     }
 
-    public void InitializeAnimals(int numAnimals, GameObject animalPrefab)
+    public void InitializeAnimals(int maxNumAnimals, GameObject animalPrefab)
     {
         if (!NetworkManager.Singleton.IsServer)
         {
             Debug.LogWarning("InitializeAnimals should only be called on the server.");
             return;
+        }
+
+        // Randomly determines the number of animals in the herd
+        int numAnimals = maxNumAnimals;
+        if (maxNumAnimals > 2)
+        {
+            numAnimals = Random.Range(2, maxNumAnimals + 1);
         }
 
         for (int i = 0; i < numAnimals; i++)
