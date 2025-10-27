@@ -40,11 +40,9 @@ public class Animal : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        Debug.Log(IsServer + " and " + antler);
         if (IsServer && antler != null)
         {
-            Debug.Log("attempting antler generation");
-            antlerSeed = UnityEngine.Random.Range(-100000, 100000);
+            antlerSeed = UnityEngine.Random.Range(0, 100000);
             GenerateAntlersClientRpc(antlerSeed);
         }
     }
@@ -398,10 +396,11 @@ public class Animal : NetworkBehaviour
     [ClientRpc]
     public void GenerateAntlersClientRpc(int antlerSeed)
     {
-        Debug.Log("Hello " + antler);
+        if (UnityEngine.Random.value < 0.5)
+            return;
+
         if (antler != null)
         {
-            Debug.Log("Hello");
             this.antlerSeed = antlerSeed;
             antler.Initialize(antlerSeed);
         }

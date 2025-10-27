@@ -140,6 +140,8 @@ public class Herd : MonoBehaviour
             Vector3 pos = GetRandomPointInRadius();
             animal.transform.position = pos;
 
+            animal.transform.rotation = Quaternion.Euler(0f, Random.value * 360f, 0f);
+
             Vector3 currentScale = animal.transform.localScale;
 
             var netTransform = animal.GetComponent<NetworkTransform>();
