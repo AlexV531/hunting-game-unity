@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3226401211403403176}
   - component: {fileID: 8793793919697073829}
   m_Layer: 0
-  m_Name: AntlerTest
+  m_Name: Antler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

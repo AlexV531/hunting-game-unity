@@ -25,31 +25,36 @@ public class Antler : MonoBehaviour
     public float tineCurvature = 0.05f;
 
     [Header("Randomization")]
+    public bool randomizeSeed = true;
     public int seed = 0;
-    public bool useSeed = true;
 
     void Start()
     {
-        if (useSeed)
-            Random.InitState(seed);
-        
         generator = GetComponent<AntlerMeshGenerator>();
-        AntlerBranch main = GenerateMainBranch();
+
+        // Determine seed
+        if (randomizeSeed)
+            seed = Random.Range(int.MinValue, int.MaxValue);
+
+        // Generate antler deterministically
+        AntlerBranch main = GenerateMainBranch(seed);
         generator.GenerateAntler(main);
     }
 
-    AntlerBranch GenerateMainBranch()
+    AntlerBranch GenerateMainBranch(int seed)
     {
+        System.Random rng = new System.Random(seed);
+
         AntlerBranch main = new AntlerBranch();
         main.radius = mainRadius;
-        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, mainBeamCurvature);
+        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, mainBeamCurvature, rng);
 
-        int tineCount = Random.Range(minTines, maxTines + 1);
-        List<int> usedIndices = new List<int>(); // keep track of previous attach points
+        int tineCount = RandomRangeInt(rng, minTines, maxTines + 1);
+        List<int> usedIndices = new List<int>();
 
         for (int i = 0; i < tineCount; i++)
         {
-            AntlerBranch tine = GenerateRandomTine(main, usedIndices, 1, maxDepth);
+            AntlerBranch tine = GenerateRandomTine(main, usedIndices, 1, maxDepth, rng);
             if (tine != null)
                 main.children.Add(tine);
         }
@@ -57,18 +62,18 @@ public class Antler : MonoBehaviour
         return main;
     }
 
-    AntlerBranch GenerateRandomTine(AntlerBranch parent, List<int> usedIndices, int depth, int maxDepth)
+    AntlerBranch GenerateRandomTine(AntlerBranch parent, List<int> usedIndices, int depth, int maxDepth, System.Random rng)
     {
         AntlerBranch tine = new AntlerBranch();
 
         // Choose attach point along parent
-        int attachIndex = GetUniqueAttachIndex(parent.pathPoints.Count, usedIndices, 2);
+        int attachIndex = GetUniqueAttachIndex(parent.pathPoints.Count, usedIndices, 2, rng);
         tine.attachIndex = attachIndex;
         usedIndices.Add(attachIndex);
 
         // Random length and segments
-        int segments = Random.Range(3, 6);
-        float length = Random.Range(0.2f, tineMaxLength);
+        int segments = RandomRangeInt(rng, 3, 6);
+        float length = RandomRangeFloat(rng, 0.2f, tineMaxLength);
 
         // Clamp tine radius to parent's radius at attach point
         float parentRadiusAtAttach = GetParentRadiusAt(parent, attachIndex);
@@ -80,31 +85,30 @@ public class Antler : MonoBehaviour
         Vector3 tangent = (parent.pathPoints[idx + 1] - parent.pathPoints[idx - 1]).normalized;
 
         // Choose a roughly perpendicular direction
-        Vector3 randomUp = Random.insideUnitSphere.normalized; // gives some variation
+        Vector3 randomUp = RandomInsideUnitSphere(rng).normalized;
         Vector3 perpendicular = Vector3.Cross(randomUp, tangent).normalized;
 
-        // Ensure it's truly perpendicular and consistent
         if (perpendicular == Vector3.zero)
             perpendicular = Vector3.Cross(tangent, Vector3.up).normalized;
 
-        // Now define offset direction slightly angled upward
-        float upwardBias = Random.Range(0.8f, 1.5f); // much stronger upward influence
+        // Define offset direction slightly angled upward
+        float upwardBias = RandomRangeFloat(rng, 0.8f, 1.5f);
         Vector3 growthDir = (perpendicular + tangent * upwardBias).normalized;
 
         // Scale by tine length
         Vector3 offset = growthDir * length;
 
         // Generate tine beam
-        tine.pathPoints = GenerateBeam(Vector3.zero, offset, segments, tineCurvature);
+        tine.pathPoints = GenerateBeam(Vector3.zero, offset, segments, tineCurvature, rng);
 
         // Recursively generate sub-tines if depth allows
         if (depth < maxDepth)
         {
-            List<int> subUsed = new List<int>(); // new list per tine level
-            int subTines = Random.Range(0, 1); // small chance of sub-tines
+            List<int> subUsed = new List<int>();
+            int subTines = RandomRangeInt(rng, 0, 1); // small chance of sub-tines
             for (int i = 0; i < subTines; i++)
             {
-                AntlerBranch sub = GenerateRandomTine(tine, subUsed, depth + 1, maxDepth);
+                AntlerBranch sub = GenerateRandomTine(tine, subUsed, depth + 1, maxDepth, rng);
                 tine.children.Add(sub);
             }
         }
@@ -112,56 +116,39 @@ public class Antler : MonoBehaviour
         return tine;
     }
 
-    // List<Vector3> GenerateBeam(Vector3 start, Vector3 end, int segments)
-    // {
-    //     List<Vector3> pts = new List<Vector3>();
-    //     for (int i = 0; i < segments; i++)
-    //     {
-    //         float t = i / (float)(segments - 1);
-    //         Vector3 pos = Vector3.Lerp(start, end, t);
-
-    //         pos.x += Mathf.Sin(t * Mathf.PI * 1.5f) * Random.Range(0.02f, 0.05f);
-    //         pos.z += Mathf.Sin(t * Mathf.PI * 1.5f) * Random.Range(0.02f, 0.05f);
-
-    //         pts.Add(pos);
-    //     }
-    //     return pts;
-    // }
-
-    List<Vector3> GenerateBeam(Vector3 start, Vector3 end, int segments, float curvature = 0.05f)
+    List<Vector3> GenerateBeam(Vector3 start, Vector3 end, int segments, float curvature, System.Random rng)
     {
         List<Vector3> pts = new List<Vector3>();
+
         for (int i = 0; i < segments; i++)
         {
             float t = i / (float)(segments - 1);
             Vector3 pos = Vector3.Lerp(start, end, t);
 
-            // Apply sinusoidal curves scaled by curvature factor
-            // float curveX = Mathf.Sin(t * Mathf.PI * 1.5f) * Random.Range(curvature * 0.8f, curvature * 1f);
-            // float curveZ = Mathf.Sin(t * Mathf.PI * 2f) * Random.Range(curvature * 0.8f, curvature * 1f);
-            float curveX = Mathf.Sin(t * Mathf.PI * 1f) * Random.Range(curvature * 0.8f, curvature * 1f);
-            float curveZ = Mathf.Sin(t * Mathf.PI * 1.2f) * Random.Range(curvature * 0.8f, curvature * 1f);
+            float curveX = Mathf.Sin(t * Mathf.PI * 1f) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
+            float curveZ = Mathf.Sin(t * Mathf.PI * 1.2f) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
 
             pos.x += curveX;
             pos.z += curveZ;
 
             pts.Add(pos);
         }
+
         return pts;
     }
 
     float GetParentRadiusAt(AntlerBranch parent, int attachIndex)
     {
         float t = attachIndex / (float)(parent.pathPoints.Count - 1);
-        return parent.radius * Mathf.Lerp(parent.taperStart, parent.taperEnd, t); // same taper formula as ExtrudePath
+        return parent.radius * Mathf.Lerp(parent.taperStart, parent.taperEnd, t);
     }
 
-    int GetUniqueAttachIndex(int totalPoints, List<int> usedIndices, int minSpacing)
+    int GetUniqueAttachIndex(int totalPoints, List<int> usedIndices, int minSpacing, System.Random rng)
     {
         const int maxAttempts = 10;
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            int candidate = Random.Range(1, totalPoints - 2);
+            int candidate = RandomRangeInt(rng, 1, totalPoints - 2);
             bool tooClose = false;
 
             foreach (int used in usedIndices)
@@ -177,7 +164,35 @@ public class Antler : MonoBehaviour
                 return candidate;
         }
 
-        // fallback if too many failed attempts
-        return Random.Range(1, totalPoints - 2);
+        return RandomRangeInt(rng, 1, totalPoints - 2);
+    }
+
+    // --- Deterministic Random Helpers ---
+
+    int RandomRangeInt(System.Random rng, int min, int max)
+    {
+        return rng.Next(min, max); // upper bound exclusive
+    }
+
+    float RandomRangeFloat(System.Random rng, float min, float max)
+    {
+        return (float)(rng.NextDouble() * (max - min) + min);
+    }
+
+    Vector3 RandomInsideUnitSphere(System.Random rng)
+    {
+        // Uniformly random vector inside a unit sphere
+        float u = (float)rng.NextDouble();
+        float v = (float)rng.NextDouble();
+        float theta = 2f * Mathf.PI * u;
+        float phi = Mathf.Acos(2f * v - 1f);
+        float r = Mathf.Pow((float)rng.NextDouble(), 1f / 3f);
+        float sinPhi = Mathf.Sin(phi);
+
+        return new Vector3(
+            r * sinPhi * Mathf.Cos(theta),
+            r * sinPhi * Mathf.Sin(theta),
+            r * Mathf.Cos(phi)
+        );
     }
 }
