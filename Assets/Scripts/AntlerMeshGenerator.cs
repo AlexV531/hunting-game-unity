@@ -7,7 +7,7 @@ public class AntlerMeshGenerator : MonoBehaviour
     public Material material;
     public int radialSegments = 8;
 
-    public void GenerateAntler(AntlerBranch root)
+    public void GenerateAntler(AntlerBranch root, GameObject antlerMirror)
     {
         List<CombineInstance> combineInstances = new List<CombineInstance>();
         BuildBranchMesh(root, combineInstances, Vector3.zero);
@@ -17,6 +17,11 @@ public class AntlerMeshGenerator : MonoBehaviour
 
         GetComponent<MeshFilter>().sharedMesh = finalMesh;
         GetComponent<MeshRenderer>().sharedMaterial = material;
+        if (antlerMirror != null)
+        {
+            antlerMirror.GetComponent<MeshFilter>().sharedMesh = finalMesh;
+            antlerMirror.GetComponent<MeshRenderer>().sharedMaterial = material;
+        }
     }
 
     void BuildBranchMesh(AntlerBranch branch, List<CombineInstance> combineInstances, Vector3 parentAttachPos)

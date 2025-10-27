@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [RequireComponent(typeof(AntlerMeshGenerator))]
 public class Antler : MonoBehaviour
 {
     public AntlerMeshGenerator generator;
+    public GameObject antlerMirror;
 
     [Header("Main Beam")]
     public int mainSegments = 10;
@@ -28,7 +30,7 @@ public class Antler : MonoBehaviour
     {
         generator = GetComponent<AntlerMeshGenerator>();
         AntlerBranch main = GenerateMainBranch(seed);
-        generator.GenerateAntler(main);
+        generator.GenerateAntler(main, antlerMirror);
         Debug.Log("Antlers generated with seed " + seed);
     }
 
@@ -38,7 +40,14 @@ public class Antler : MonoBehaviour
 
         AntlerBranch main = new AntlerBranch();
         main.radius = mainRadius;
-        main.pathPoints = GenerateBeam(Vector3.zero, new Vector3(0, mainLength, 0), mainSegments, mainBeamCurvature, rng);
+
+        Quaternion baseRotation = Quaternion.Euler(40f, 142f, -10f);
+
+        // Apply that rotation to the end direction
+        Vector3 start = Vector3.zero;
+        Vector3 end = baseRotation * new Vector3(0, mainLength, 0);
+
+        main.pathPoints = GenerateBeam(start, end, mainSegments, mainBeamCurvature, rng);
 
         int tineCount = RandomRangeInt(rng, minTines, maxTines + 1);
         List<int> usedIndices = new List<int>();
@@ -107,8 +116,11 @@ public class Antler : MonoBehaviour
         return tine;
     }
 
-    List<Vector3> GenerateBeam(Vector3 start, Vector3 end, int segments, float curvature, System.Random rng)
+    List<Vector3> GenerateBeam(Vector3 start, Vector3 end, int segments, float curvature, System.Random rng, Quaternion rotation = default)
     {
+        if (rotation == default)
+            rotation = Quaternion.identity;
+
         List<Vector3> pts = new List<Vector3>();
 
         for (int i = 0; i < segments; i++)
@@ -116,11 +128,13 @@ public class Antler : MonoBehaviour
             float t = i / (float)(segments - 1);
             Vector3 pos = Vector3.Lerp(start, end, t);
 
-            float curveX = Mathf.Sin(t * Mathf.PI * 1f) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
-            float curveZ = Mathf.Sin(t * Mathf.PI * 1.2f) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
+            float curveX = Mathf.Sin(t * Mathf.PI * 1f + Mathf.PI) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
+            float curveZ = Mathf.Sin(t * Mathf.PI * 1.2f + Mathf.PI) * RandomRangeFloat(rng, curvature * 0.8f, curvature * 1f);
 
             pos.x += curveX;
             pos.z += curveZ;
+
+            pos = rotation * pos;
 
             pts.Add(pos);
         }
