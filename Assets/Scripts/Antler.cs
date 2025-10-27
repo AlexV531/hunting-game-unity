@@ -24,21 +24,12 @@ public class Antler : MonoBehaviour
     public float mainBeamCurvature = 0.22f;
     public float tineCurvature = 0.05f;
 
-    [Header("Randomization")]
-    public bool randomizeSeed = true;
-    public int seed = 0;
-
-    void Start()
+    public void Initialize(int seed)
     {
         generator = GetComponent<AntlerMeshGenerator>();
-
-        // Determine seed
-        if (randomizeSeed)
-            seed = Random.Range(int.MinValue, int.MaxValue);
-
-        // Generate antler deterministically
         AntlerBranch main = GenerateMainBranch(seed);
         generator.GenerateAntler(main);
+        Debug.Log("Antlers generated with seed " + seed);
     }
 
     AntlerBranch GenerateMainBranch(int seed)
