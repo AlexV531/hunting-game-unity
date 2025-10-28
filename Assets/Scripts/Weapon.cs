@@ -242,9 +242,19 @@ public class Weapon : NetworkBehaviour
 
     void Shoot()
     {
+        // GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        // Bullet bullet = bulletObj.GetComponent<Bullet>();
+        // bullet.speed = bulletSpeed;
+        CreateBulletServerRpc();
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void CreateBulletServerRpc(ServerRpcParams rpcParams = default)
+    {
         GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.speed = bulletSpeed;
+        bullet.playerClientId = rpcParams.Receive.SenderClientId;
     }
 
     void Reload()

@@ -8,8 +8,8 @@ public class Animal : NetworkBehaviour
     public float health = 100f;
     public float maxHealth = 100f;
     public List<HitData> hits = new List<HitData>();
-    public float distDamageFactor = 0.5f; // How much the distance the bullet travels through the internal affects the damage
-    public Transform markerPrefab; // optional visualization
+    public float distDamageFactor = 0.5f;
+    public Transform markerPrefab;
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
     public AnimalAI animalAI;
@@ -17,7 +17,7 @@ public class Animal : NetworkBehaviour
     public Transform bottom;
     public GameObject internalContainer;
     private bool isDead = false;
-    public Internal[] internals; // assign all organs in inspector
+    public Internal[] internals;
     private Dictionary<int, Internal> internalLookup;
     LayerMask layerMask;
     private BalloonAttach balloonAttach;
@@ -52,11 +52,9 @@ public class Animal : NetworkBehaviour
         if (!IsServer)
             return;
 
-        // Dead check
         if (IsDead())
             return;
 
-        // Bleed section
         foreach (var hit in hits)
         {
             if (health <= 0f)
@@ -68,7 +66,6 @@ public class Animal : NetworkBehaviour
                 continue;
             }
 
-            // Apply bleed damage
             float bleedDamage = hit.bleedRate * animalBleedFactor * Time.deltaTime;
             if (health - bleedDamage < 0)
             {
@@ -79,9 +76,7 @@ public class Animal : NetworkBehaviour
                 hit.bleedDamageDone += bleedDamage;
             }
             health = Mathf.Clamp(health - bleedDamage, 0f, maxHealth);
-            
 
-            // Reduce bleed rate by healing
             hit.bleedRate -= hit.healRate * animalHealFactor * Time.deltaTime;
         }
 
@@ -94,41 +89,55 @@ public class Animal : NetworkBehaviour
         Vector3 globalHitPos,
         Vector3 direction,
         int internalId,
+        Vector3 animalPos,
+        Quaternion animalRot,
         float power = 6f,
         float bulletStrength = 1f,
         float bulletBleed = 1f,
         float bulletHeal = 1f,
         ServerRpcParams rpcParams = default)
     {
-        // Get the ClientId of the caller
         ulong senderClientId = rpcParams.Receive.SenderClientId;
 
-        // Get the player's NetworkObject
-        NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[senderClientId].PlayerObject;
-
-        // If you have a Player script on that object
-        var shotOwner = playerObject.GetComponent<FirstPersonController>();
-
-        // Now you can use 'player' as the source of the projectile
-        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), shotOwner, power, bulletStrength, bulletBleed, bulletHeal);
+        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), senderClientId,
+            power, bulletStrength, bulletBleed, bulletHeal);
     }
 
-    public void ProjectileHit(Vector3 globalHitPos, Vector3 direction, Internal internalHit, FirstPersonController shotOwner,
-        float power = 6f, float bulletStrength = 1f, float bulletBleed = 1f, float bulletHeal = 1f)
+    public void ApplyProjectileHit(
+        Vector3 globalHitPos,
+        Vector3 direction,
+        int internalId,
+        ulong playerClientId,
+        float power = 6f,
+        float bulletStrength = 1f,
+        float bulletBleed = 1f,
+        float bulletHeal = 1f)
+    {
+        ProjectileHit(globalHitPos, direction, GetInternalById(internalId), playerClientId,
+            power, bulletStrength, bulletBleed, bulletHeal);
+    }
+
+    public void ProjectileHit(
+        Vector3 globalHitPos,
+        Vector3 direction,
+        Internal internalHit,
+        ulong playerClientId,
+        float power = 6f,
+        float bulletStrength = 1f,
+        float bulletBleed = 1f,
+        float bulletHeal = 1f)
     {
         Debug.Log("Projectile hit!");
 
-        // Check if scale is uniform
         Vector3 scale = transform.localScale;
         if (!Mathf.Approximately(scale.x, scale.y) || !Mathf.Approximately(scale.x, scale.z))
         {
             Debug.LogWarning("Animal scale not uniform, internal distance calculations may be off.");
         }
 
-        // Create new HitData
         HitData hitData = new HitData
         {
-            player = shotOwner,
+            playerClientId = playerClientId,
             bulletStrength = bulletStrength,
             bulletBleed = bulletBleed,
             healRate = bulletHeal
@@ -138,39 +147,29 @@ public class Animal : NetworkBehaviour
         List<Internal> internalStack = new List<Internal>();
         List<Internal> internalsHit = new List<Internal>();
 
-        Debug.Log("Adding " + internalHit.name + " from internal stack");
         internalStack.Add(internalHit);
         internalsHit.Add(internalHit);
+        hitData.AddInternalHitData(new HitData.InternalHitData(internalHit, power));
 
-        HitData.InternalHitData internalHitData = new HitData.InternalHitData(internalHit, power);
-        hitData.AddInternalHitData(internalHitData);
-
-        // Place marker at hit
         Vector3 localHitPos = transform.InverseTransformPoint(globalHitPos);
         PlaceMarker(localHitPos);
         hitData.AddIntersectionPoint(localHitPos);
 
-        // Start raycast simulation
-        float rayCastDist = 100f; // adjust as needed
+        float rayCastDist = 100f;
         Vector3 globalRayOrigin = globalHitPos;
         Vector3 globalRayDir = direction.normalized;
-
         Internal newInternal = internalHit;
 
         while (newInternal != null)
         {
-            // Offset the next ray origin slightly along the ray direction to avoid hitting the same collider
             float epsilon = 0.001f;
             globalRayOrigin += globalRayDir * epsilon;
-            // Debug.DrawRay(globalRayOrigin, globalRayDir * rayCastDist, Color.red, 0.1f);
-            // Debug.Log(globalRayOrigin + " | " + globalRayDir);
+
             if (Physics.Raycast(globalRayOrigin, globalRayDir, out RaycastHit hitInfo, rayCastDist, layerMask))
             {
-                // Debug.Log("Next hit: " + hitInfo.collider);
                 newInternal = hitInfo.collider.GetComponent<Internal>();
                 if (newInternal != null)
                 {
-                    // Debug.Log("Internal stack: " + internalStack);
                     Vector3 nextHitPos = transform.InverseTransformPoint(hitInfo.point);
                     float internalDist = Vector3.Distance(transform.InverseTransformPoint(globalRayOrigin), nextHitPos) * scale.x;
                     float strength = internalStack[internalStack.Count - 1].strength;
@@ -181,11 +180,10 @@ public class Animal : NetworkBehaviour
                     if (remainingPower <= 0)
                     {
                         finalPoint = transform.InverseTransformPoint(globalRayOrigin) + (transform.InverseTransformDirection(globalRayDir) * (power / strength));
-                        PlaceMarker(transform.TransformPoint(finalPoint));
+                        PlaceMarker(finalPoint);
                         hitData.AddIntersectionPoint(finalPoint);
                         AddHit(hitData);
                         power = 0f;
-                        Debug.Log("Projectile stopped at point: " + finalPoint);
                         break;
                     }
 
@@ -195,49 +193,40 @@ public class Animal : NetworkBehaviour
 
                     if (internalStack.Contains(newInternal))
                     {
-                        Debug.Log("Removing " + newInternal.name + " from internal stack");
                         internalStack.RemoveAt(internalStack.Count - 1);
                     }
                     else
                     {
-                        Debug.Log("Adding " + newInternal.name + " from internal stack");
                         internalStack.Add(newInternal);
                         if (!internalsHit.Contains(newInternal))
                         {
                             internalsHit.Add(newInternal);
-                            HitData.InternalHitData newInternalHitData = new HitData.InternalHitData(newInternal, power);
-                            hitData.AddInternalHitData(newInternalHitData);
+                            hitData.AddInternalHitData(new HitData.InternalHitData(newInternal, power));
                         }
                     }
 
                     if (internalStack.Count == 0)
                         break;
 
-                    globalRayOrigin = transform.TransformPoint(nextHitPos);
-                    // rayDir = rayDir; // unchanged; handle ricochet logic if needed
+                    globalRayOrigin = hitInfo.point;
                 }
                 else
                 {
-                    break; // exit if raycast did not hit an Internal
+                    break;
                 }
             }
             else
             {
-                break; // exit if raycast misses
+                break;
             }
         }
 
         if (finalPoint == Vector3.zero)
         {
-            Debug.Log("Projectile exited internals with power: " + power);
             AddHit(hitData);
         }
 
-        if (animalAI != null)
-        {
-            // Make animal flee if hit
-            animalAI.OnHit(direction.normalized);
-        }
+        animalAI?.OnHit(direction.normalized);
     }
 
     public bool IsDead()
@@ -355,12 +344,11 @@ public class Animal : NetworkBehaviour
         if (hits == null || hits.Count == 0)
             return null;
 
-        // Dictionary to accumulate total damage per player
-        Dictionary<FirstPersonController, float> playerDamage = new Dictionary<FirstPersonController, float>();
+        Dictionary<ulong, float> playerDamage = new Dictionary<ulong, float>();
 
         foreach (HitData hit in hits)
         {
-            if (hit == null || hit.player == null)
+            if (hit == null)
                 continue;
 
             float totalDamage = 0f;
@@ -369,13 +357,12 @@ public class Animal : NetworkBehaviour
                 totalDamage += internalHit.hitWithPower;
             }
 
-            if (playerDamage.ContainsKey(hit.player))
-                playerDamage[hit.player] += totalDamage;
+            if (playerDamage.ContainsKey(hit.playerClientId))
+                playerDamage[hit.playerClientId] += totalDamage;
             else
-                playerDamage[hit.player] = totalDamage;
+                playerDamage[hit.playerClientId] = totalDamage;
         }
 
-        // Find the player with the highest total damage
         FirstPersonController topPlayer = null;
         float maxDamage = 0f;
 
@@ -383,7 +370,8 @@ public class Animal : NetworkBehaviour
         {
             if (kvp.Value > maxDamage)
             {
-                topPlayer = kvp.Key;
+                NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[kvp.Key].PlayerObject;
+                topPlayer = playerObject.GetComponent<FirstPersonController>();
                 maxDamage = kvp.Value;
             }
         }
@@ -412,7 +400,12 @@ public class Animal : NetworkBehaviour
         foreach (HitData hit in hits)
         {
             HitDataStrings hitDataStrings = new HitDataStrings();
-            hitDataStrings.string1 = "Shot by " + hit.player.PlayerName.Value;
+            NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[hit.playerClientId].PlayerObject;
+            FirstPersonController player = playerObject.GetComponent<FirstPersonController>();
+            if (player != null)
+                hitDataStrings.string1 = "Shot by " + player.PlayerName.Value;
+            else
+                hitDataStrings.string1 = "Shot by null";
             hitDataStrings.string2 = Math.Round((hit.initialDamageDone + hit.bleedDamageDone) / maxHealth * 100) + "% - " + Math.Round(hit.initialDamageDone) + " initial - " + Math.Round(hit.bleedDamageDone) + " bleed";
             string internalHitDataString = "Hit:";
             foreach (HitData.InternalHitData internalHit in hit.internalsHit)

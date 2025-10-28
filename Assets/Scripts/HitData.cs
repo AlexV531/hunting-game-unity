@@ -20,8 +20,8 @@ public class HitData
     public float initialDamageDone = 0f;
     public float bleedDamageDone = 0f;
 
-    // Player who made the shot
-    public FirstPersonController player;
+    // ID of the player who made the shot
+    public ulong playerClientId;
 
     // Nested class for internal hits
     [System.Serializable]

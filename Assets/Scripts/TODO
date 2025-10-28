@@ -10,7 +10,6 @@ Spell system framework
 BUGS:
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
-Corpses dropped by balloons do not fall
 
 DONE:
 Player footstep noise

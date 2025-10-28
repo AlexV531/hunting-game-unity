@@ -2,24 +2,25 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 320f;           // Bullet speed
-    public float lifetime = 5f;         // How long the bullet exists
-    public float gravity = 9.81f;       // Gravity strength
+    public float speed = 320f; // Bullet speed
+    public float lifetime = 5f; // How long the bullet exists
+    public float gravity = 9.81f; // Gravity strength
     public float power_factor = 1.0f;
     public float bleed_factor = 1.0f;
     public float heal_prevention = 1.0f;
+    public ulong playerClientId;
 
     private Vector3 velocity;
     private int layerMask;
 
-    private void Start()
+    void Start()
     {
         velocity = transform.forward * speed;
         layerMask = ~LayerMask.GetMask("Interactable", "AnimalPhysics");
         Destroy(gameObject, lifetime);
     }
 
-    private void Update()
+    void Update()
     {
         float delta = Time.deltaTime;
 
@@ -29,6 +30,9 @@ public class Bullet : MonoBehaviour
         // Calculate distance to move this frame
         Vector3 move = velocity * delta;
 
+        // VERY IMPORTANT LINE DO NOT REMOVE
+        Physics.SyncTransforms();
+
         // Raycast to detect collision
         if (Physics.Raycast(transform.position, move.normalized, out RaycastHit hit, move.magnitude, layerMask))
         {
@@ -36,14 +40,17 @@ public class Bullet : MonoBehaviour
             Internal internalHit = hit.collider.GetComponent<Internal>();
             if (internalHit != null)
             {
+                Debug.Log($"[Bullet] Hit at time: {Time.time}, frame: {Time.frameCount}");
+                Debug.Log($"[Bullet] Calling ApplyProjectileHit immediately");
+
                 Animal animal = internalHit.animal;
                 if (animal != null)
                 {
-                    // Call the ProjectileHit method
-                    animal.ApplyProjectileHitServerRpc(
+                    animal.ApplyProjectileHit(
                         globalHitPos: hit.point,
                         direction: velocity.normalized,
                         internalId: internalHit.internalId,
+                        playerClientId: playerClientId,
                         power: 6.0f,
                         bulletStrength: power_factor,
                         bulletBleed: bleed_factor,
@@ -55,7 +62,6 @@ public class Bullet : MonoBehaviour
             else
             {
                 Debug.Log("Hit point: " + hit.point);
-                // GlobalVariables.debugTarget = hit.point;
             }
 
             // Destroy bullet on impact
