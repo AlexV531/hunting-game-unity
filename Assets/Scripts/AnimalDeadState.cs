@@ -49,4 +49,9 @@ public class AnimalDeadState : AnimalBaseState
 
         lastPosition = animal.transform.position;
     }
+
+    public override void ExitState(AnimalStateManager animal)
+    {
+
+    }
 }

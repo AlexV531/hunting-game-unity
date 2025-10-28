@@ -7,7 +7,6 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
     private AudioSource audio;
     public override AlertnessLevel Alertness => AlertnessLevel.Alert;
 
-
     public override void EnterState(AnimalStateManager animal)
     {
         Debug.Log("Listening state entered.");
@@ -15,10 +14,10 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
         audio = animal.GetComponent<AudioSource>();
         if (audio != null)
         {
-            if (Random.value < 0.3f)
-            {
+            // if (Random.value < 0.3f)
+            // {
                 audio.Play();
-            }
+            // }
         }
     }
 
@@ -53,5 +52,10 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
         // Rotate the actor around the Y axis
         // Debug.Log("rotating to face sound");
         actor.transform.Rotate(Vector3.up, step);
+    }
+
+    public override void ExitState(AnimalStateManager animal)
+    {
+
     }
 }

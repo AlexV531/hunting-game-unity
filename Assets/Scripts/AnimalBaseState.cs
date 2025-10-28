@@ -9,5 +9,7 @@ public abstract class AnimalBaseState
 
     public abstract void UpdateState(AnimalStateManager animal);
 
+    public abstract void ExitState(AnimalStateManager animal);
+
     public void SetNextState(AnimalBaseState next) => nextState = next;
 }

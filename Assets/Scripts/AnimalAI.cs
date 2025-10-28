@@ -55,6 +55,8 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         // Dead check
         if (animal.IsDead())
             return;
+        
+        // Debug.Log(name + " is in state " + fsm.GetCurrentState().GetType().ToString());
 
         animator.SetFloat("speed", GetCurrentVelocity());
 
@@ -73,7 +75,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         {
             StopCoroutine(sightPanicRoutine);
             sightPanicRoutine = null;
-            Debug.Log("Calmed before panicking");
+            // Debug.Log("Calmed before panicking");
         }
     }
 
@@ -130,8 +132,9 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
     public void BecomeAlert()
     {
-        if (fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked)
+        if (IsPanicked())
             return;
+        Debug.Log("Animal Listening");
         fsm.ChangeState(fsm.ListeningState);
     }
 
@@ -157,10 +160,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         if (animal.IsDead())
             return;
         fsm.FleeingState.ClearTargets();
-        for (int i = 0; i < target_list.Count; i++)
-        {
-            fsm.FleeingState.AddTarget(target_list[i]);
-        }
+        fsm.FleeingState.AddTargets(target_list);
         fsm.ChangeState(fsm.FleeingState);
     }
 
@@ -285,6 +285,12 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
 
         return visiblePlayers;
+    }
+
+    public bool IsPanicked()
+    {
+        // Debug.Log(fsm.GetCurrentState().GetType().ToString());
+        return fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked;
     }
 
     public float GetCurrentVelocity()

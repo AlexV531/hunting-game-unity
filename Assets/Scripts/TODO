@@ -10,6 +10,7 @@ Spell system framework
 BUGS:
 Butcher knife does not appear for clients
 Butcher knife is not put away if table range is exited
+Deer are incorrectly turned when moving
 
 DONE:
 Player footstep noise

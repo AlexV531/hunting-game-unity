@@ -38,4 +38,9 @@ public class AnimalTimerState : AnimalBaseState
             }
         }
     }
+
+    public override void ExitState(AnimalStateManager animal)
+    {
+
+    }
 }

@@ -11,5 +11,6 @@ public class AnimalFleeingState : AnimalMovingState
         agent = animal.GetComponent<NavMeshAgent>();
         agent.speed = fleeingSpeed;
         Debug.Log("Fleeing state entered.");
+        Debug.Log("Num targets: " + targetQueue.Count);
     }
 }

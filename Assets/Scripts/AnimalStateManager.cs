@@ -40,6 +40,7 @@ public class AnimalStateManager : MonoBehaviour
 
     public void ChangeState(AnimalBaseState state)
     {
+        currentState.ExitState(this);
         currentState = state;
         state.EnterState(this);
     }
