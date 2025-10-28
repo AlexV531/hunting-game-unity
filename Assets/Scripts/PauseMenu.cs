@@ -56,6 +56,15 @@ public class PauseMenu : MonoBehaviour
         return isPaused;
     }
 
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && IsPaused())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     private void OnApplicationQuit()
     {
         SaveGame(); // Auto-save when player closes the game

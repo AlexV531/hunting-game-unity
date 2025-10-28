@@ -118,4 +118,13 @@ public class AnimalInspectUI : MonoBehaviour
     }
 
     public void SetPlayerInput(PlayerInputs inputs) => this.inputs = inputs;
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && IsInspectOpen())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 }

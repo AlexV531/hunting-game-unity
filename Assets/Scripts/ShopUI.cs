@@ -62,4 +62,13 @@ public class ShopUI : MonoBehaviour
     {
         return shopOpen;
     }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && IsShopOpen())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 }

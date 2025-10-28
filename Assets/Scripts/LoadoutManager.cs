@@ -191,4 +191,13 @@ public class LoadoutManager : MonoBehaviour
             FirstPersonController.LocalPlayer.GetWeaponManager().SetUpLoadout(currentLoadout);
         }
     }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && IsLoadoutOpen())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 }
