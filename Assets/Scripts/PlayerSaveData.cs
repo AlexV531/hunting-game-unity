@@ -5,6 +5,7 @@ public class PlayerSaveData
 {
     public int money;
     public List<int> unlockedWeaponKeys = new List<int>();
+    public Inventory inventory = new Inventory();
     public Loadout loadout = new Loadout();
-    public int equippedWeaponKey = -1; // -1 means nothing equipped
+    public int equippedWeaponKey = -1;
 }

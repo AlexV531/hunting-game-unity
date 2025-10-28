@@ -8,11 +8,6 @@ public class WeaponDefinition : ItemDefinition
     public bool contextual;
     public WeaponClass weaponClass;
 
-    public override void Acquire(FirstPersonController player)
-    {
-        player.GetWeaponManager().UnlockWeapon(key);
-    }
-
     public override string ToString()
     {
         return $"WeaponDefinition [Key={key}, Name={itemName}, Price={price}, Class={weaponClass}, " +

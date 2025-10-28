@@ -69,7 +69,11 @@ public class ShopButton : MonoBehaviour
         Debug.Log(nameText.text + " acquired");
         if (item != null)
         {
-            item.Acquire(FirstPersonController.LocalPlayer);
+            // item.Acquire(FirstPersonController.LocalPlayer);
+            if (item is WeaponDefinition)
+            {
+                FirstPersonController.LocalPlayer.GetWeaponManager().UnlockWeapon(item.key);
+            }
         }
     }
 }

@@ -114,8 +114,6 @@ public class FirstPersonController : NetworkBehaviour
 
     public event Action<int> OnMoneyChanged;
 
-	public List<string> Inventory;
-
 	// interactables
 	private InteractableBase currentInteractable;
 
@@ -163,6 +161,9 @@ public class FirstPersonController : NetworkBehaviour
 	// weapon manager
 	private WeaponManager _weaponManager;
 	public Transform weaponContainer;
+
+	// inventory
+	private Inventory inventory = new Inventory();
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -301,8 +302,12 @@ public class FirstPersonController : NetworkBehaviour
 			DropAnimalServerRpc();
 		}
 		else if (attachedCart != null && _input.interact)
-        {
+		{
 			attachedCart.ReleaseCartServerRpc(OwnerClientId);
+		}
+		else if (_input.interact)
+		{
+			// Put thing you want to debug here
         }
 		_input.interact = false;
 	}
@@ -420,7 +425,6 @@ public class FirstPersonController : NetworkBehaviour
 				_input.loadout = false;
 			}
 		}
-		
 	}
 
 	private void Move()
@@ -583,6 +587,17 @@ public class FirstPersonController : NetworkBehaviour
 		}
 	}
 
+	public void TestAddPeltToInventory()
+    {
+		PeltItem pelt = new PeltItem
+		{
+			key = 20,
+			furColor = Color.brown,
+			quality = 0.9f
+		};
+		inventory.items.Add(pelt);
+    }
+
 	[ServerRpc(RequireOwnership = false)]
 	public void PickUpAnimalServerRpc(NetworkObjectReference animalRef)
 	{
@@ -735,6 +750,7 @@ public class FirstPersonController : NetworkBehaviour
 		PlayerSaveData data = new PlayerSaveData();
 		data.money = Money;
 		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
+		data.inventory = inventory;
 		data.loadout = _loadoutManager.GetCurrentLoadout();
 		data.equippedWeaponKey = _weaponManager.GetEquippedWeaponKey();
 		SaveSystem.SavePlayer(data);
@@ -746,7 +762,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (data == null) return;
 
 		Money = data.money;
-		Inventory.Clear();
+		inventory = data.inventory;
 	}
 
 	public bool IsPlayerInMenu()

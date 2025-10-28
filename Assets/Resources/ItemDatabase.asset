@@ -13,24 +13,25 @@ MonoBehaviour:
   m_Name: ItemDatabase
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
   allItems:
-  - rid: 2233891300149559394
-  - rid: 2233891300149559399
-  - rid: 2233891300149559400
+  - rid: 2233891618022752604
+  - rid: 2233891618022752605
+  - rid: 2233891618022752606
+  - rid: 2233891618022752609
   references:
     version: 2
     RefIds:
-    - rid: 2233891300149559394
+    - rid: 2233891618022752604
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
         key: 0
         itemName: Muskette
         icon: {fileID: 21300000, guid: 4ed61ba2fbc616548b311169afdb6e27, type: 3}
-        price: 100
+        price: 0
         prefab: {fileID: 1631708624346822267, guid: c057193311e8be749b24ed949125d9be, type: 3}
         unlockedByDefault: 1
         contextual: 0
         weaponClass: 2
-    - rid: 2233891300149559399
+    - rid: 2233891618022752605
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
         key: 5
@@ -41,7 +42,7 @@ MonoBehaviour:
         unlockedByDefault: 0
         contextual: 0
         weaponClass: 0
-    - rid: 2233891300149559400
+    - rid: 2233891618022752606
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
         key: 10
@@ -52,3 +53,10 @@ MonoBehaviour:
         unlockedByDefault: 1
         contextual: 1
         weaponClass: 0
+    - rid: 2233891618022752609
+      type: {class: ItemDefinition, ns: , asm: Assembly-CSharp}
+      data:
+        key: 20
+        itemName: Deer Pelt
+        icon: {fileID: 21300000, guid: 57fbc558567b0744098f41980351abee, type: 3}
+        price: 0

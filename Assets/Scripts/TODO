@@ -1,5 +1,7 @@
 TODO:
 Balance basic gameplay to a playable degree
+Inventory and butchering item rewards
+Large item system using rigidbodys, replace the animal with this when it dies
 Audio effects
 Animal corpse inspection screen
 Tracking system (footsteps, blood, feces)
@@ -16,3 +18,11 @@ DONE:
 Player footstep noise
 Reaction time to animal vision before fleeing
 Animal flee on bullet hit
+
+ADDING ITEMS TO INVENTORY:
+Need to make an item instance with the key of the item, that represents the item.
+If it is a more complicated item with more information than just the item's identity such as a pelt,
+a custom ItemInstance child class is needed and the properties added there.
+ItemDatabase holds UI needs like a display name and icon.
+The most important part is the item instance key needs to match the item definition key.
+The crutial step then is creating the item instance and making sure it makes sense.
