@@ -7,6 +7,8 @@ public class ItemDefinition
     public string itemName; // display name
     public Sprite icon;
     public int price;
+    public ItemSize itemSize;
+    public bool stackable;
 
     public override string ToString()
     {

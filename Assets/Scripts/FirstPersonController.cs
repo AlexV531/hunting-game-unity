@@ -157,6 +157,7 @@ public class FirstPersonController : NetworkBehaviour
 	private LoadoutManager _loadoutManager;
 	private ShopUI _shopUI;
 	private AnimalInspectUI _inspectUI;
+	private PlayerInventoryMenu _playerInventoryMenu;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -213,6 +214,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_inspectUI == null)
 		{
 			_inspectUI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<AnimalInspectUI>();
+		}
+		if (_playerInventoryMenu == null)
+		{
+			_playerInventoryMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<PlayerInventoryMenu>();
 		}
 		if (_interactText == null)
 		{
@@ -404,6 +409,15 @@ public class FirstPersonController : NetworkBehaviour
 				_input.loadout = false;
 			}
         }
+		else if (_playerInventoryMenu.IsPlayerInventoryOpen())
+        {
+            if (_input.loadout || _input.pause)
+			{
+				_playerInventoryMenu.ClosePlayerInventoryMenu();
+				_input.pause = false;
+				_input.loadout = false;
+			}
+        }
 		else if (PauseMenu.IsPaused()) // Pause menu open
 		{
 			if (_input.pause)
@@ -423,6 +437,11 @@ public class FirstPersonController : NetworkBehaviour
 			{
 				_loadoutManager.OpenLoadoutScreen();
 				_input.loadout = false;
+			}
+			else if (_input.inventory)
+			{
+				_playerInventoryMenu.OpenPlayerInventoryMenu();
+				_input.inventory = false;
 			}
 		}
 	}
@@ -595,7 +614,7 @@ public class FirstPersonController : NetworkBehaviour
 			furColor = Color.brown,
 			quality = 0.9f
 		};
-		inventory.items.Add(pelt);
+		inventory.AddItem(pelt);
     }
 
 	[ServerRpc(RequireOwnership = false)]
@@ -726,10 +745,9 @@ public class FirstPersonController : NetworkBehaviour
 		return null;
 	}
 
-	public InteractableBase GetCurrentInteractable()
-	{
-		return currentInteractable;
-	}
+	public InteractableBase GetCurrentInteractable() => currentInteractable;
+
+	public Inventory GetInventory() => inventory;
 
 	[ServerRpc(RequireOwnership = false)]
 	private void SubmitNameServerRpc(string newName)
@@ -767,23 +785,16 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen() || _inspectUI.IsInspectOpen();
+		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen() || _inspectUI.IsInspectOpen() || _playerInventoryMenu.IsPlayerInventoryOpen();
 	}
 
-	public WeaponManager GetWeaponManager()
-	{
-		return _weaponManager;
-	}
+	public WeaponManager GetWeaponManager() => _weaponManager;
 
-	public LoadoutManager GetLoadoutManager()
-	{
-		return _loadoutManager;
-	}
+	public LoadoutManager GetLoadoutManager() => _loadoutManager;
 
-	public ShopUI GetShopUI()
-	{
-		return _shopUI;
-	}
+	public ShopUI GetShopUI() => _shopUI;
+
+	public PlayerInventoryMenu GetPlayerInventoryMenu() => _playerInventoryMenu;
 
     public void RequestOpenInspect(ulong animalId)
     {

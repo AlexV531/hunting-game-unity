@@ -27,6 +27,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool inspect;
 	public bool pause;
 	public bool loadout;
+	public bool inventory;
 	public bool toggleShader;
 	public bool leftMouseHeld;
 	public Vector2 dragInUI;
@@ -156,6 +157,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnLoadout(InputValue value)
 	{
 		LoadoutInput(value.isPressed);
+	}
+
+	public void OnInventory(InputValue value)
+	{
+		InventoryInput(value.isPressed);
 	}
 
 	public void OnToggleShader(InputValue value)
@@ -306,6 +312,11 @@ public class PlayerInputs : MonoBehaviour
 	public void LoadoutInput(bool newLoadoutState)
 	{
 		loadout = newLoadoutState;
+	}
+
+	public void InventoryInput(bool newInventoryState)
+	{
+		inventory = newInventoryState;
 	}
 
 	public void ToggleShaderInput(bool newToggleShaderState)
