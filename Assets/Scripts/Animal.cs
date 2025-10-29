@@ -21,7 +21,6 @@ public class Animal : NetworkBehaviour
     private Dictionary<int, Internal> internalLookup;
     LayerMask layerMask;
     private BalloonAttach balloonAttach;
-    public int antlerSeed;
     public Antler antler;
 
     void Awake()
@@ -40,11 +39,11 @@ public class Animal : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (IsServer && antler != null)
-        {
-            antlerSeed = UnityEngine.Random.Range(0, 100000);
-            GenerateAntlersClientRpc(antlerSeed);
-        }
+        // if (IsServer && antler != null)
+        // {
+        //     antlerSeed = UnityEngine.Random.Range(0, 100000);
+        //     GenerateAntlersClientRpc(antlerSeed);
+        // }
     }
 
     private void Update()
@@ -380,19 +379,6 @@ public class Animal : NetworkBehaviour
     }
 
     public BalloonAttach GetBalloonAttach() => balloonAttach;
-
-    [ClientRpc]
-    public void GenerateAntlersClientRpc(int antlerSeed)
-    {
-        if (UnityEngine.Random.value < 0.5)
-            return;
-
-        if (antler != null)
-        {
-            this.antlerSeed = antlerSeed;
-            antler.Initialize(antlerSeed);
-        }
-    }
 
     public List<HitDataStrings> GetHitData()
     {

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 [RequireComponent(typeof(AntlerMeshGenerator))]
 public class Antler : MonoBehaviour

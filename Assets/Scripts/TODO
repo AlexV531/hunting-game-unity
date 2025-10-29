@@ -1,6 +1,7 @@
 TODO:
 Balance basic gameplay to a playable degree
-Inventory and butchering item rewards
+Butchering item rewards
+Change Weapons to ItemInstances
 Large item system using rigidbodys, replace the animal with this when it dies
 Audio effects
 Animal corpse inspection screen
