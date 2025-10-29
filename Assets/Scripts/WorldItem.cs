@@ -2,13 +2,9 @@ using UnityEngine;
 using Unity.Netcode;
 
 [RequireComponent(typeof(Rigidbody))]
-public class WorldItem : NetworkBehaviour
+public class WorldItem : InteractableBase
 {
-    [SerializeField] private MeshFilter meshFilter;
-    [SerializeField] private MeshRenderer meshRenderer;
-
     private Rigidbody rb;
-    private ItemInstance itemData;
 
     // Networked representation of the item
     private NetworkVariable<ItemInstance> netItemInstance = new(
@@ -20,8 +16,10 @@ public class WorldItem : NetworkBehaviour
     private bool isPickedUp = false;
     private GameObject visualInstance;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
@@ -86,4 +84,16 @@ public class WorldItem : NetworkBehaviour
     }
 
     public ItemInstance GetItemData() => netItemInstance.Value;
+
+    public override void Interact(FirstPersonController player)
+    {
+        // Tell server to give the item to this player
+        RequestPickupServerRpc(player.OwnerClientId);
+    }
+
+    public override string GetPrompt(FirstPersonController player)
+    {
+        // Can show the item name or stack size
+        return $"Pick up {netItemInstance.Value.stackSize}x {ItemDatabase.Instance.GetItem(netItemInstance.Value.key).itemName}";
+    }
 }

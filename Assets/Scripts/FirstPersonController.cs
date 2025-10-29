@@ -360,7 +360,13 @@ public class FirstPersonController : NetworkBehaviour
 
 		if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
 		{
+			// Debug.Log(hit.collider.name);
 			InteractableBase interactable = hit.collider.GetComponent<InteractableBase>();
+
+			if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<InteractableBase>();
+            }
 
 			if (interactable != null && interactable.IsInteractionEnabled())
 			{

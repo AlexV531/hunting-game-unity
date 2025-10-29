@@ -862,11 +862,11 @@
                 },
                 {
                     "name": "",
-                    "id": "837b7a9f-ee76-467a-84bb-b1bedd80ae29",
-                    "path": "<Keyboard>/e",
+                    "id": "def14062-8c7b-4606-9c9d-21ea37927ac7",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";KeyboardMouse",
+                    "groups": "",
                     "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
