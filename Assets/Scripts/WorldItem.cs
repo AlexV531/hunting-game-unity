@@ -77,12 +77,23 @@ public class WorldItem : InteractableBase
         isPickedUp = true;
         Debug.Log("Item picked up");
 
-        // Send the item to the player (you handle actual inventory logic)
-        // if (PlayerManager.TryGetPlayerInventory(playerId, out var inv))
-        //     inv.AddItem(netItemInstance.Value);
+        AddItemToClientRpc(playerId);
 
         // Remove from world
         NetworkObject.Despawn();
+    }
+
+    [ClientRpc]
+    void AddItemToClientRpc(ulong playerId)
+    {
+        if (NetworkManager.Singleton.LocalClientId != playerId)
+            return;
+
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var client))
+        {
+            var player = client.PlayerObject.GetComponent<FirstPersonController>();
+            player.GetInventory().AddItem(netItemInstance.Value);
+        }
     }
 
     public ItemInstance GetItemData() => netItemInstance.Value;

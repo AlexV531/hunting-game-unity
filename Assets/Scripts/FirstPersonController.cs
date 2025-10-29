@@ -417,11 +417,12 @@ public class FirstPersonController : NetworkBehaviour
         }
 		else if (_playerInventoryMenu.IsPlayerInventoryOpen())
         {
-            if (_input.loadout || _input.pause)
+            if (_input.loadout || _input.pause || _input.inventory)
 			{
 				_playerInventoryMenu.ClosePlayerInventoryMenu();
 				_input.pause = false;
 				_input.loadout = false;
+				_input.inventory = false;
 			}
         }
 		else if (PauseMenu.IsPaused()) // Pause menu open

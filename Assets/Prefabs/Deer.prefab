@@ -901,7 +901,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   rend: {fileID: 6845581437615129266}
   antler: {fileID: 2789237748827086075}
-  albinoChance: 0.7
+  albinoChance: 0.005
 --- !u!82 &2580321422776480406
 AudioSource:
   m_ObjectHideFlags: 0
