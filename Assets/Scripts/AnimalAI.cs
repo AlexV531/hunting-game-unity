@@ -82,6 +82,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public void InitializeAnimalAI()
     {
         fsm = GetComponent<AnimalStateManager>();
+        fsm.InitializeFSM();
         NoiseManager.Instance.RegisterListener(this);
         if (herd != null)
         {

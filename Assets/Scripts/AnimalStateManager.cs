@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,7 +22,7 @@ public class AnimalStateManager : MonoBehaviour
         DeadState = new AnimalDeadState();
     }
 
-    void Start()
+    public void InitializeFSM()
     {
         InitializeStates();
         // Set up states
@@ -36,7 +37,10 @@ public class AnimalStateManager : MonoBehaviour
 
     void Update()
     {
-        currentState.UpdateState(this);
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
+        {
+            currentState.UpdateState(this);
+        }
     }
 
     public void ChangeState(AnimalBaseState state)
