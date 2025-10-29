@@ -6,7 +6,7 @@ public class Corpse : InteractableBase
 
     public override void Interact(FirstPersonController player)
     {
-        if (player.IsCarryingAnimal.Value)
+        if (player.IsShoulderCarrying.Value)
         {
             return;
         }

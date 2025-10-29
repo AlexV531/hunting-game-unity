@@ -33,7 +33,7 @@ public class HandCart : AttachInteractable
         Debug.Log(playerId);
 
         // If the player is carrying an animal,
-        if (player.IsCarryingAnimal.Value)
+        if (player.GetCarriedAnimal() != null)
         {
             Animal animalToAttach = player.GetCarriedAnimal();
             if (animalToAttach != null)
@@ -65,7 +65,7 @@ public class HandCart : AttachInteractable
 
     public override string GetPrompt(FirstPersonController player)
     {
-        if (player.IsCarryingAnimal.Value)
+        if (player.GetCarriedAnimal() != null)
         {
             return "Press \"e\" to place animal";
         }

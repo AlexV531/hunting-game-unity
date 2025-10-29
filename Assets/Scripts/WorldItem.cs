@@ -77,10 +77,23 @@ public class WorldItem : InteractableBase
         isPickedUp = true;
         Debug.Log("Item picked up");
 
-        AddItemToClientRpc(playerId);
+        ItemDefinition def = ItemDatabase.Instance.GetItem(netItemInstance.Value.key);
 
-        // Remove from world
-        NetworkObject.Despawn();
+        if (def.itemSize == ItemSize.Small) // If item is small, add to inventory
+        {
+            AddItemToClientRpc(playerId);
+            NetworkObject.Despawn();
+        }
+        else if (def.itemSize == ItemSize.Large) // If item is large, shoulder carry
+        {
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var client))
+            {
+                var player = client.PlayerObject.GetComponent<FirstPersonController>();
+                player.PickUpWorldItem(this);
+                SetInteractionEnabled(false);
+            }
+            isPickedUp = false;
+        }
     }
 
     [ClientRpc]
@@ -108,5 +121,27 @@ public class WorldItem : InteractableBase
     {
         // Can show the item name or stack size
         return $"Pick up {netItemInstance.Value.stackSize}x {ItemDatabase.Instance.GetItem(netItemInstance.Value.key).itemName}";
+    }
+
+    [ClientRpc]
+    public void EnableCollidersClientRpc()
+    {
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = true;
+        }
+        rb.isKinematic = false;
+    }
+
+    [ClientRpc]
+    public void DisableCollidersClientRpc()
+    {
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = false;
+        }
+        rb.isKinematic = true;
     }
 }

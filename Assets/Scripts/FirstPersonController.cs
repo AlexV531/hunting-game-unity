@@ -119,7 +119,8 @@ public class FirstPersonController : NetworkBehaviour
 
 	// shoulder carry
 	private Animal carriedAnimal;
-	public NetworkVariable<bool> IsCarryingAnimal = new NetworkVariable<bool>(false,
+	private WorldItem carriedWorldItem;
+	public NetworkVariable<bool> IsShoulderCarrying = new NetworkVariable<bool>(false,
 		NetworkVariableReadPermission.Everyone,
 		NetworkVariableWritePermission.Server);
 
@@ -289,6 +290,12 @@ public class FirstPersonController : NetworkBehaviour
 			carriedAnimal.transform.rotation = shoulderCarryPoint.rotation;
 		}
 
+		if (carriedWorldItem != null)
+		{
+			carriedWorldItem.transform.position = shoulderCarryPoint.position;
+			carriedWorldItem.transform.rotation = shoulderCarryPoint.rotation;
+		}
+
 		// If current interactable is an Animal and player presses inspect
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && currentInteractable is Corpse && _input.inspect)
 		{
@@ -302,9 +309,12 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			currentInteractable.Interact(this);
 		}
-		else if (IsCarryingAnimal.Value && _input.interact)
+		else if (IsShoulderCarrying.Value && _input.interact)
 		{
-			DropAnimalServerRpc();
+			if (carriedAnimal != null)
+				DropAnimalServerRpc();
+			if (carriedWorldItem != null)
+				DropWorldItemServerRpc();
 		}
 		else if (attachedCart != null && _input.interact)
 		{
@@ -614,7 +624,7 @@ public class FirstPersonController : NetworkBehaviour
 	}
 
 	public void TestAddPeltToInventory()
-    {
+	{
 		ItemInstance pelt = new ItemInstance
 		{
 			key = 20,
@@ -625,7 +635,92 @@ public class FirstPersonController : NetworkBehaviour
 			}
 		};
 		inventory.AddItem(pelt);
-    }
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	public void PickUpWorldItemServerRpc(NetworkObjectReference worldItemRef)
+	{
+		if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
+
+		worldItem.SetInteractionEnabled(false);
+
+		worldItem.DisableCollidersClientRpc();
+
+		worldItem.NetworkObject.ChangeOwnership(OwnerClientId);
+
+		Debug.Log("Hello");
+
+		BalloonAttach animalAttach = worldItem.GetComponent<BalloonAttach>();
+		if (animalAttach != null)
+			animalAttach.Release();
+
+		IsShoulderCarrying.Value = true;
+		Debug.Log("Hello");
+
+		OnPickupWorldItemClientRpc(worldItemRef);
+	}
+
+	public void PickUpWorldItem(WorldItem worldItem)
+	{
+		// if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
+		// if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
+
+		worldItem.SetInteractionEnabled(false);
+
+		worldItem.DisableCollidersClientRpc();
+
+		worldItem.NetworkObject.ChangeOwnership(OwnerClientId);
+
+		Debug.Log("Hello");
+
+		BalloonAttach animalAttach = worldItem.GetComponent<BalloonAttach>();
+		if (animalAttach != null)
+			animalAttach.Release();
+
+		IsShoulderCarrying.Value = true;
+		Debug.Log("Hello");
+
+		OnPickupWorldItemClientRpc(worldItem.NetworkObject);
+	}
+
+	[ClientRpc]
+	private void OnPickupWorldItemClientRpc(NetworkObjectReference worldItemRef)
+	{
+		if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
+
+		carriedWorldItem = worldItem;
+	}
+	
+	[ServerRpc(RequireOwnership = false)]
+	public void DropWorldItemServerRpc(bool enableCollidersOnDrop = true)
+	{
+		// Make sure the player is carrying a world item
+		if (carriedWorldItem == null) return;
+
+		var worldItem = carriedWorldItem;
+
+		worldItem.NetworkObject.RemoveOwnership();
+
+		if (enableCollidersOnDrop)
+			worldItem.EnableCollidersClientRpc();
+
+		worldItem.SetInteractionEnabled(true);
+
+		worldItem.transform.position -= new Vector3(0f, 0.75f, 0f);
+
+		IsShoulderCarrying.Value = false;
+		carriedWorldItem = null;
+
+		OnDropWorldItemClientRpc(worldItem.NetworkObject);
+	}
+
+	[ClientRpc]
+	private void OnDropWorldItemClientRpc(NetworkObjectReference worldItemRef)
+	{
+		carriedWorldItem = null;
+	}
 
 	[ServerRpc(RequireOwnership = false)]
 	public void PickUpAnimalServerRpc(NetworkObjectReference animalRef)
@@ -647,7 +742,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (animal.animalAI != null)
 				animal.animalAI.animator.SetTrigger("carry");
 
-		IsCarryingAnimal.Value = true;
+		IsShoulderCarrying.Value = true;
 
 		OnPickupAnimalClientRpc(animalRef);
 	}
@@ -688,7 +783,7 @@ public class FirstPersonController : NetworkBehaviour
 			animal.animalAI.animator.SetTrigger("drop");
 
 		// Update player state
-		IsCarryingAnimal.Value = false;
+		IsShoulderCarrying.Value = false;
 		carriedAnimal = null;
 
 		// Notify clients
@@ -724,7 +819,7 @@ public class FirstPersonController : NetworkBehaviour
 		if (animal.animalAI != null)
 			animal.animalAI.animator.SetTrigger("drop");
 
-		IsCarryingAnimal.Value = false;
+		IsShoulderCarrying.Value = false;
 
 		// Clear carried animal state
 		carriedAnimal = null;

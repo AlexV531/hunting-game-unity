@@ -8,11 +8,11 @@ public class ButcherTable : AnimalStoringInteractableBase
 
     public override void Interact(FirstPersonController player)
     {
-        if (player.IsCarryingAnimal.Value && GetPlacedAnimal() == null)
+        if (player.GetCarriedAnimal() != null && GetPlacedAnimal() == null)
         {
             player.PlaceAnimalServerRpc(NetworkObject);
         }
-        else if (!player.IsCarryingAnimal.Value && GetPlacedAnimal() != null)
+        else if (!player.IsShoulderCarrying.Value && GetPlacedAnimal() != null)
         {
             player.PickUpAnimalServerRpc(GetPlacedAnimal().NetworkObject);
             ClearPlacedAnimal();
@@ -21,7 +21,7 @@ public class ButcherTable : AnimalStoringInteractableBase
 
     public override string GetPrompt(FirstPersonController player)
     {
-        if (player.IsCarryingAnimal.Value)
+        if (player.GetCarriedAnimal() != null)
         {
             return "Press \"e\" to place animal";
         }
