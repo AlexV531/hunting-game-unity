@@ -4,6 +4,7 @@ using Unity.Netcode;
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : InteractableBase
 {
+    [SerializeField] private int interactableLayer = 11;
     private Rigidbody rb;
 
     // Networked representation of the item
@@ -49,6 +50,7 @@ public class WorldItem : InteractableBase
         if (def.worldAppearancePrefab)
         {
             visualInstance = Instantiate(def.worldAppearancePrefab, transform);
+            LayerUtils.SetLayerRecursively(visualInstance, interactableLayer);
             visualInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
     }
