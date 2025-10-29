@@ -689,7 +689,6 @@ MonoBehaviour:
   - {fileID: 3059501407448965983}
   - {fileID: 5654134943453056567}
   - {fileID: 3933260348875552164}
-  antlerSeed: 0
   antler: {fileID: 2789237748827086075}
 --- !u!114 &6834382181995577058
 MonoBehaviour:
@@ -709,7 +708,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   agent: {fileID: 0}
   fleeAngleSpread: 45
-  fleeDistance: 75
+  fleeDistance: 10
   fleeSegments: 3
   herd: {fileID: 0}
   MostRecentSoundPosition: {x: 0, y: 0, z: 0}
@@ -901,6 +900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimalVariator
   ShowTopMostFoldoutHeaderGroup: 1
   rend: {fileID: 6845581437615129266}
+  antler: {fileID: 2789237748827086075}
+  albinoChance: 0.7
 --- !u!82 &2580321422776480406
 AudioSource:
   m_ObjectHideFlags: 0

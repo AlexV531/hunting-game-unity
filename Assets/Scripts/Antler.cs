@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static RandomUtil;
 
 [RequireComponent(typeof(AntlerMeshGenerator))]
 public class Antler : MonoBehaviour
@@ -169,34 +170,5 @@ public class Antler : MonoBehaviour
         }
 
         return RandomRangeInt(rng, 1, totalPoints - 2);
-    }
-
-    // --- Deterministic Random Helpers ---
-
-    int RandomRangeInt(System.Random rng, int min, int max)
-    {
-        return rng.Next(min, max); // upper bound exclusive
-    }
-
-    float RandomRangeFloat(System.Random rng, float min, float max)
-    {
-        return (float)(rng.NextDouble() * (max - min) + min);
-    }
-
-    Vector3 RandomInsideUnitSphere(System.Random rng)
-    {
-        // Uniformly random vector inside a unit sphere
-        float u = (float)rng.NextDouble();
-        float v = (float)rng.NextDouble();
-        float theta = 2f * Mathf.PI * u;
-        float phi = Mathf.Acos(2f * v - 1f);
-        float r = Mathf.Pow((float)rng.NextDouble(), 1f / 3f);
-        float sinPhi = Mathf.Sin(phi);
-
-        return new Vector3(
-            r * sinPhi * Mathf.Cos(theta),
-            r * sinPhi * Mathf.Sin(theta),
-            r * Mathf.Cos(phi)
-        );
     }
 }
