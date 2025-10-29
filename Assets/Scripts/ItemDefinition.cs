@@ -1,14 +1,24 @@
 using UnityEngine;
 
+public enum ItemType
+{
+    Potion,
+    AnimalPelt,
+    Weapon,
+    Consumable
+}
+
 [System.Serializable]
 public class ItemDefinition
 {
-    public int key; // unique identifier
-    public string itemName; // display name
+    public int key;
+    public string itemName;
     public Sprite icon;
     public int price;
     public ItemSize itemSize;
+    public ItemType itemType;
     public bool stackable;
+    public GameObject worldAppearancePrefab;
 
     public override string ToString()
     {

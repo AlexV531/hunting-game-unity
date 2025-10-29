@@ -1,6 +1,7 @@
 TODO:
 Balance basic gameplay to a playable degree
 Butchering item rewards
+Herd Movement and animal need zones
 Change Weapons to ItemInstances
 Large item system using rigidbodys, replace the animal with this when it dies
 Audio effects

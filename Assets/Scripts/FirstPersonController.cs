@@ -608,11 +608,14 @@ public class FirstPersonController : NetworkBehaviour
 
 	public void TestAddPeltToInventory()
     {
-		PeltItem pelt = new PeltItem
+		ItemInstance pelt = new ItemInstance
 		{
 			key = 20,
-			furColor = Color.brown,
-			quality = 0.9f
+			customData = new ItemCustomData
+			{
+				quality = 0.85f,
+				color = Color.brown
+			}
 		};
 		inventory.AddItem(pelt);
     }

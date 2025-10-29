@@ -25,6 +25,7 @@ public class AnimalStateManager : MonoBehaviour
     {
         InitializeStates();
         // Set up states
+        GrazingState.SetNextState(MovingState);
         MovingState.SetNextState(GrazingState);
         FleeingState.SetNextState(GrazingState);
         ListeningState.SetNextState(GrazingState);

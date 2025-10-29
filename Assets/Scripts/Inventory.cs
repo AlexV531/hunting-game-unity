@@ -4,17 +4,24 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    [SerializeReference]
+    [SerializeField]
     private List<ItemInstance> items = new List<ItemInstance>();
 
     public void AddItem(ItemInstance newItem)
     {
-        foreach (var existing in items)
+        var def = ItemDatabase.Instance.GetItem(newItem.key);
+        if (def != null && def.stackable)
         {
-            if (existing.Compare(newItem))
+            // Use index-based loop so we can modify the list element directly
+            for (int i = 0; i < items.Count; i++)
             {
-                existing.stackSize += newItem.stackSize;
-                return;
+                if (items[i].Compare(newItem))
+                {
+                    ItemInstance updated = items[i];
+                    updated.stackSize += newItem.stackSize;
+                    items[i] = updated; // write back the modified struct
+                    return;
+                }
             }
         }
 
@@ -25,13 +32,19 @@ public class Inventory
     {
         for (int i = 0; i < items.Count; i++)
         {
-            // Check if this is the exact instance
-            if (items[i] == target)
+            if (items[i].Equals(target))
             {
-                items[i].stackSize -= amount;
+                ItemInstance updated = items[i];
+                updated.stackSize -= amount;
 
-                if (items[i].stackSize <= 0)
+                if (updated.stackSize <= 0)
+                {
                     items.RemoveAt(i);
+                }
+                else
+                {
+                    items[i] = updated; // write-back mutated struct
+                }
 
                 return true;
             }

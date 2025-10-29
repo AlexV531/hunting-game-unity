@@ -15,7 +15,7 @@ public class ItemSlot : MonoBehaviour
     {
         item = newItem;
 
-        if (item == null)
+        if (item.Equals(default))
         {
             icon.sprite = null;
             icon.enabled = false;

@@ -34,7 +34,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     void Awake()
     {
         animal = GetComponent<Animal>();
-        fsm = GetComponent<AnimalStateManager>();
+        // fsm = GetComponent<AnimalStateManager>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
     }
