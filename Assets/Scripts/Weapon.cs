@@ -1,7 +1,6 @@
 using UnityEngine;
 using Cinemachine;
 using Unity.Netcode;
-using System.Collections;
 
 public enum WeaponClass
 {
@@ -54,6 +53,9 @@ public class Weapon : NetworkBehaviour
 
     [Tooltip("Time in seconds between shots")]
     public float fireRate = 1f;
+    public float recoilPitch = 50f;
+    public float recoilYaw = 1f;
+    public float loudness = 50f;
 
     [Tooltip("If true, holding the fire button will shoot automatically")]
     public bool automaticFire = true;
@@ -203,9 +205,9 @@ public class Weapon : NetworkBehaviour
                 return;
             }
             Shoot();
-            EmitNoiseServerRpc(transform.position, 20f, "gunshot");
+            EmitNoiseServerRpc(transform.position, loudness, "gunshot");
             if (recoilEnabled)
-                _recoil.AddRecoil(50f, 1f);
+                _recoil.AddRecoil(recoilPitch, recoilYaw);
             currentAmmo--;
             _fireCooldown = fireRate;
 
