@@ -22,6 +22,7 @@ public class Animal : NetworkBehaviour
     LayerMask layerMask;
     private BalloonAttach balloonAttach;
     public Antler antler;
+    public bool butcherable = false;
 
     void Awake()
     {

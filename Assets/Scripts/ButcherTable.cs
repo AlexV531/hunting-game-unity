@@ -1,21 +1,24 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class ButcherTable : AnimalStoringInteractableBase
+public class ButcherTable : AttachInteractable
 {
     public float tableRange;
     public int autoEquipKey = 10;
 
     public override void Interact(FirstPersonController player)
     {
-        if (player.GetCarriedAnimal() != null && GetPlacedAnimal() == null)
+        if (player.GetCarriedAnimal() != null)
         {
-            player.PlaceAnimalServerRpc(NetworkObject);
-        }
-        else if (!player.IsShoulderCarrying.Value && GetPlacedAnimal() != null)
-        {
-            player.PickUpAnimalServerRpc(GetPlacedAnimal().NetworkObject);
-            ClearPlacedAnimal();
+            Animal animalToAttach = player.GetCarriedAnimal();
+            if (animalToAttach != null)
+            {
+                player.DropAnimalServerRpc();
+                AttachAnimalServerRpc(animalToAttach.NetworkObject);
+            }
+            else
+                Debug.Log("player.GetCarriedAnimal() failed");
+            return;
         }
     }
 
@@ -25,10 +28,6 @@ public class ButcherTable : AnimalStoringInteractableBase
         {
             return "Press \"e\" to place animal";
         }
-        else if (GetPlacedAnimal() != null)
-        {
-            return "Press \"e\" to pick up animal";
-        }
         else
         {
             return "No animal to place";
@@ -36,43 +35,23 @@ public class ButcherTable : AnimalStoringInteractableBase
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ButcherServerRpc(ulong clientId)
+    public void AttachAnimalServerRpc(NetworkObjectReference animalRef)
     {
-        // Destroy the animal
-        var animal = GetPlacedAnimal();
-        if (animal != null)
+        if (!animalRef.TryGet(out NetworkObject netObj)) return;
+		if (!netObj.TryGetComponent<Animal>(out var animalToAttach)) return;
+
+        BalloonAttach animalAttach = animalToAttach.GetComponent<BalloonAttach>();
+        if (animalAttach != null)
         {
-            var netObj = animal.GetComponent<NetworkObject>();
-            if (netObj != null && netObj.IsSpawned)
+            AttachTarget(animalAttach);
+            var animalReward = animalToAttach.GetComponent<AnimalReward>();
+            if (animalReward != null)
             {
-                if (netObj.IsSceneObject == true)
-                {
-                    // For in-scene objects — unspawn but keep the GameObject
-                    netObj.Despawn(false);
-                    animal.gameObject.SetActive(false);
-                }
-                else
-                {
-                    // For runtime-spawned animals — despawn and destroy completely
-                    netObj.Despawn(true);
-                }
+                animalReward.butcherable = true;
             }
-            else
-            {
-                Destroy(animal.gameObject); // fallback safety
-            }
-
-            ClearPlacedAnimal();
-
-            // Reward the player who did the butchering
-            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
-            {
-                var player = client.PlayerObject.GetComponent<FirstPersonController>();
-                player.Money += 5;
-            }
-
-            Debug.Log($"Animal butchered by client {clientId}");
         }
+        else
+            Debug.Log("animalToAttach.GetComponent<BalloonAttach>() failed");
     }
 
     private void OnTriggerEnter(Collider other)

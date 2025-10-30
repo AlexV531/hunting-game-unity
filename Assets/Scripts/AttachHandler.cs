@@ -14,8 +14,18 @@ public class AttachHandler
         attachTargets = new BalloonAttach[capacity];
         this.attachmentPoints = attachmentPoints;
 
-        Debug.Log("Attachment points length: " + attachmentPoints.Length);
-        Debug.Log("Attachment point index 0 position: " + attachmentPoints[0].position);
+        // Debug.Log("Attachment points length: " + attachmentPoints.Length);
+        // Debug.Log("Attachment point index 0 position: " + attachmentPoints[0].position);
+    }
+
+    public AttachHandler(Transform attachmentPoint)
+    {
+        capacity = 1;
+        isAttachmentPointOccupied = new bool[capacity];
+        attachTargets = new BalloonAttach[capacity];
+        Transform[] attachmentPoints = new Transform[1];
+        attachmentPoints[0] = attachmentPoint;
+        this.attachmentPoints = attachmentPoints;
     }
 
     public bool AttachTarget(BalloonAttach attachTarget)
@@ -63,6 +73,14 @@ public class AttachHandler
                 attachTargets[i] = null;
             }
         }
+    }
+
+    public BalloonAttach GetAttached(int index)
+    {
+        if (index < 0 || index >= capacity)
+            return null;
+
+        return attachTargets[index];
     }
 
     private int GetFreeAttachmentPointIndex()

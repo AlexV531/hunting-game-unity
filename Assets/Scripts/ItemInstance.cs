@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using Unity.Collections;
 
 [System.Serializable]
 public struct ItemCustomData : INetworkSerializable
@@ -12,6 +13,7 @@ public struct ItemCustomData : INetworkSerializable
     // Pelt fields
     public float quality;
     public Color color;
+    public FixedString64Bytes description;
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
@@ -20,6 +22,7 @@ public struct ItemCustomData : INetworkSerializable
         serializer.SerializeValue(ref duration);
         serializer.SerializeValue(ref quality);
         serializer.SerializeValue(ref color);
+        serializer.SerializeValue(ref description);
     }
 
     public bool Equals(ItemCustomData other)

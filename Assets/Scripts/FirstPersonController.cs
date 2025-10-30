@@ -735,6 +735,10 @@ public class FirstPersonController : NetworkBehaviour
 
 		animal.NetworkObject.ChangeOwnership(OwnerClientId);
 
+		AnimalReward animalReward = animal.GetComponent<AnimalReward>();
+		if (animalReward != null)
+			animalReward.butcherable = false; // If picking up from butcher table it must not be butcherable anymore
+
 		BalloonAttach animalAttach = animal.GetComponent<BalloonAttach>();
 		if (animalAttach != null)
 			animalAttach.Release();

@@ -608,6 +608,8 @@ GameObject:
   - component: {fileID: 6699711025765793950}
   - component: {fileID: 5113355362509187546}
   - component: {fileID: 2580321422776480406}
+  - component: {fileID: 6382887862599354495}
+  - component: {fileID: 7873749642964430041}
   m_Layer: 13
   m_Name: Deer
   m_TagString: Untagged
@@ -690,6 +692,7 @@ MonoBehaviour:
   - {fileID: 5654134943453056567}
   - {fileID: 3933260348875552164}
   antler: {fileID: 2789237748827086075}
+  butcherable: 0
 --- !u!114 &6834382181995577058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +905,77 @@ MonoBehaviour:
   rend: {fileID: 6845581437615129266}
   antler: {fileID: 2789237748827086075}
   albinoChance: 0.005
+  pelt:
+    Color: {r: 0, g: 0, b: 0, a: 0}
+    Description:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0016:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0032:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0048: 0
+        byte0049: 0
+        byte0050: 0
+        byte0051: 0
+        byte0052: 0
+        byte0053: 0
+        byte0054: 0
+        byte0055: 0
+        byte0056: 0
+        byte0057: 0
+        byte0058: 0
+        byte0059: 0
+        byte0060: 0
+        byte0061: 0
+  male: 0
 --- !u!82 &2580321422776480406
 AudioSource:
   m_ObjectHideFlags: 0
@@ -999,6 +1073,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6382887862599354495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406503103205657411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9135b60b3e972484f809127d4264ba17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
+  worldItemPrefab: {fileID: 4138297248094142292, guid: d1a2642f9e3cb48469a396548a75ef00, type: 3}
+--- !u!114 &7873749642964430041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406503103205657411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d6d4571e164ce4497609da892371d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalReward
+  ShowTopMostFoldoutHeaderGroup: 1
+  butcherable: 0
+  skinned: 0
+  animalVariator: {fileID: 5113355362509187546}
+  itemSpawner: {fileID: 6382887862599354495}
 --- !u!1 &4837697612702868702
 GameObject:
   m_ObjectHideFlags: 0
