@@ -10,7 +10,7 @@ public class KnifeRack : InteractableBase
         true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     private FirstPersonController currentHolder;
-    private int previousWeaponKey = -1;
+    private ItemInstance previousWeaponInstance = default;
 
     private void Start()
     {
@@ -31,16 +31,16 @@ public class KnifeRack : InteractableBase
                 return;
 
             // Save their currently equipped weapon before giving knife
-            previousWeaponKey = wm.GetEquippedWeaponKey();
+            previousWeaponInstance = wm.GetEquippedWeaponInstance();
 
             RequestPickupKnifeServerRpc(player.OwnerClientId);
         }
         // Case 2: knife already taken and player is holding it → return it
-        else if (wm.GetEquippedWeaponKey() == autoEquipKey)
+        else if (wm.GetEquippedWeaponInstance().key == autoEquipKey)
         {
             // Re-equip old weapon and notify server
-            if (previousWeaponKey != -1)
-                wm.EquipWeapon(previousWeaponKey);
+            if (!previousWeaponInstance.Equals(default))
+                wm.EquipWeapon(previousWeaponInstance);
 
             NotifyKnifeReturnedServerRpc();
         }
@@ -69,21 +69,22 @@ public class KnifeRack : InteractableBase
         if (wm == null)
             return;
 
-        wm.EquipWeapon(autoEquipKey);
+        // wm.EquipWeapon(autoEquipKey);
         wm.OnWeaponChanged += OnWeaponChanged;
         currentHolder = player;
     }
 
-    private void OnWeaponChanged(int? currentWeaponKey)
+    private void OnWeaponChanged(ItemInstance? currentWeaponInstance)
     {
         if (currentHolder == null)
             return;
 
         var wm = currentHolder.GetComponent<WeaponManager>();
 
-        // If they unequip the knife without returning it to the rack
-        if (currentWeaponKey != autoEquipKey)
+        // Check if the nullable has a value
+        if (!currentWeaponInstance.HasValue || currentWeaponInstance.Value.key != autoEquipKey)
         {
+            // Player unequipped the knife
             wm.OnWeaponChanged -= OnWeaponChanged;
             currentHolder = null;
             NotifyKnifeReturnedServerRpc();
@@ -110,7 +111,7 @@ public class KnifeRack : InteractableBase
 
         if (knifeAvailable.Value)
             return "Press \"E\" to take Knife";
-        else if (wm.GetEquippedWeaponKey() == autoEquipKey)
+        else if (wm.GetEquippedWeaponInstance().key == autoEquipKey)
             return "Press \"E\" to return Knife";
         else
             return "No knife available";

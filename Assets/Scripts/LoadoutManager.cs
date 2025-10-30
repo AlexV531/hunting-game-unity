@@ -70,13 +70,15 @@ public class LoadoutManager : MonoBehaviour
         }
 
         // Rebuild from current weapon list
-        foreach (var weaponKey in FirstPersonController.LocalPlayer.GetWeaponManager().GetUnlockedWeaponKeys())
+        foreach (ItemInstance weaponItem in FirstPersonController.LocalPlayer.GetInventory().GetWeapons())
         {
-            if (WeaponDatabase.GetWeapon(weaponKey).contextual)
+            if (WeaponDatabase.GetWeapon(weaponItem.key).contextual)
                 continue;
             GameObject btnObj = Instantiate(weaponButtonPrefab, weaponListContainer);
             WeaponButton btn = btnObj.GetComponent<WeaponButton>();
-            btn.Initialize(WeaponDatabase.GetWeapon(weaponKey), this);
+            btn.Initialize(weaponItem, this);
+
+            // Change this to incorporate elements of the specific instance of the weapon as well
         }
     }
 
@@ -94,26 +96,28 @@ public class LoadoutManager : MonoBehaviour
         {
             slot.ClearSlot();
         }
-        foreach (WeaponDefinition weaponDef in initialLoadout.largeWeapons)
+        foreach (ItemInstance weaponInstance in initialLoadout.largeWeapons)
         {
-            OnWeaponSelected(weaponDef);
+            OnWeaponSelected(weaponInstance);
         }
-        foreach (WeaponDefinition weaponDef in initialLoadout.smallWeapons)
+        foreach (ItemInstance weaponInstance in initialLoadout.smallWeapons)
         {
-            OnWeaponSelected(weaponDef);
+            OnWeaponSelected(weaponInstance);
         }
-        foreach (WeaponDefinition weaponDef in initialLoadout.tools)
+        foreach (ItemInstance weaponInstance in initialLoadout.tools)
         {
-            OnWeaponSelected(weaponDef);
+            OnWeaponSelected(weaponInstance);
         }
     }
 
-    public void OnWeaponSelected(WeaponDefinition weapon)
+    public void OnWeaponSelected(ItemInstance weapon)
     {
-        var targetList = GetListForClass(weapon.weaponClass);
-        foreach (WeaponDefinition def in targetList)
+        WeaponDefinition weaponDef = WeaponDatabase.GetWeapon(weapon.key);
+
+        var targetList = GetListForClass(weaponDef.weaponClass);
+        foreach (ItemInstance item in targetList)
         {
-            Debug.Log(def.key);
+            Debug.Log(item.key);
         }
         Debug.Log(targetList);
         int maxSlots = targetList.Capacity;
@@ -122,15 +126,15 @@ public class LoadoutManager : MonoBehaviour
 
         if (targetList.Count >= maxSlots)
         {
-            Debug.Log($"No free slot for {weapon.weaponClass} (likely list capacities in Loadout object are messed up)");
+            Debug.Log($"No free slot for {weaponDef.weaponClass} (likely list capacities in Loadout object are messed up)");
             return;
         }
 
         // Find a free slot in the appropriate group
-        var slot = GetFreeSlotForClass(weapon.weaponClass);
+        var slot = GetFreeSlotForClass(weaponDef.weaponClass);
         if (slot == null)
         {
-            Debug.Log("All slots are filled for " + weapon.weaponClass);
+            Debug.Log("All slots are filled for " + weaponDef.weaponClass);
             return;
         }
 
@@ -138,14 +142,14 @@ public class LoadoutManager : MonoBehaviour
         targetList.Add(weapon);
     }
 
-    private List<WeaponDefinition> GetListForClass(WeaponClass wClass)
+    private List<ItemInstance> GetListForClass(WeaponClass wClass)
     {
         return wClass switch
         {
             WeaponClass.Large => currentLoadout.largeWeapons,
             WeaponClass.Small => currentLoadout.smallWeapons,
             WeaponClass.Tool => currentLoadout.tools,
-            _ => null
+            _ => default
         };
     }
 
@@ -175,11 +179,13 @@ public class LoadoutManager : MonoBehaviour
         return currentLoadout;
     }
 
-    public void RemoveWeaponFromLoadout(WeaponDefinition weapon)
+    public void RemoveWeaponFromLoadout(ItemInstance weapon)
     {
-        var list = GetListForClass(weapon.weaponClass);
+        WeaponDefinition weaponDef = WeaponDatabase.GetWeapon(weapon.key);
+
+        var list = GetListForClass(weaponDef.weaponClass);
         list.Remove(weapon);
-        Debug.Log($"Removed {weapon.itemName} from {weapon.weaponClass} loadout");
+        Debug.Log($"Removed {weaponDef.itemName} from {weaponDef.weaponClass} loadout");
     }
 
     private void OnLoadoutConfirmed()

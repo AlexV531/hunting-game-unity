@@ -6,7 +6,7 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
 {
     public WeaponClass allowedClass;
     private LoadoutManager manager;
-    private WeaponDefinition assignedWeapon;
+    private ItemInstance assignedWeaponInstance;
     private Image icon;
 
     private void Awake()
@@ -20,23 +20,23 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
         this.manager = manager;
     }
 
-    public bool IsEmpty => assignedWeapon == null;
+    public bool IsEmpty => assignedWeaponInstance.Equals(default);
 
-    public void AssignWeapon(WeaponDefinition weapon)
+    public void AssignWeapon(ItemInstance weapon)
     {
         Debug.Log("Weapon assigned: " + weapon);
-        assignedWeapon = weapon;
+        assignedWeaponInstance = weapon;
         icon.sprite = ItemDatabase.Instance.GetItem(weapon.key).icon;
     }
 
     public void ClearSlot()
     {
-        if (assignedWeapon == null)
+        if (assignedWeaponInstance.Equals(default))
             return;
 
         // Remove from the manager’s loadout list
-        manager.RemoveWeaponFromLoadout(assignedWeapon);
-        assignedWeapon = null;
+        manager.RemoveWeaponFromLoadout(assignedWeaponInstance);
+        assignedWeaponInstance = default;
         icon.sprite = null;
     }
 
@@ -47,5 +47,5 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
             ClearSlot();
     }
 
-    public WeaponDefinition GetAssignedWeapon() => assignedWeapon;
+    public ItemInstance GetAssignedWeapon() => assignedWeaponInstance;
 }

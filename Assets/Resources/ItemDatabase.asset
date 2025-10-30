@@ -23,7 +23,7 @@ MonoBehaviour:
     - rid: 2233891618022752604
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
-        key: 0
+        key: 1
         itemName: Muskette
         icon: {fileID: 21300000, guid: 4ed61ba2fbc616548b311169afdb6e27, type: 3}
         price: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
         price: 60
         itemSize: 0
         itemType: 2
-        stackable: 0
+        stackable: 1
         worldAppearancePrefab: {fileID: 0}
         prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
         unlockedByDefault: 0

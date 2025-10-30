@@ -7,5 +7,5 @@ public class PlayerSaveData
     public List<int> unlockedWeaponKeys = new List<int>();
     public Inventory inventory = new Inventory();
     public Loadout loadout = new Loadout();
-    public int equippedWeaponKey = -1;
+    public ItemInstance equippedWeaponInstance = default;
 }

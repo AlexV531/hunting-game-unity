@@ -882,7 +882,7 @@ public class FirstPersonController : NetworkBehaviour
 		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
 		data.inventory = inventory;
 		data.loadout = _loadoutManager.GetCurrentLoadout();
-		data.equippedWeaponKey = _weaponManager.GetEquippedWeaponKey();
+		data.equippedWeaponInstance = _weaponManager.GetEquippedWeaponInstance();
 		SaveSystem.SavePlayer(data);
 	}
 
@@ -893,6 +893,7 @@ public class FirstPersonController : NetworkBehaviour
 
 		Money = data.money;
 		inventory = data.inventory;
+		// inventory = new Inventory();
 	}
 
 	public bool IsPlayerInMenu()

@@ -8,21 +8,23 @@ public class WeaponButton : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private Button button;
 
-    private WeaponDefinition weapon;
+    private ItemInstance weaponInstance;
     private LoadoutManager manager;
 
-    public void Initialize(WeaponDefinition weapon, LoadoutManager manager)
+    public void Initialize(ItemInstance weaponInstance, LoadoutManager manager)
     {
-        this.weapon = weapon;
+        this.weaponInstance = weaponInstance;
         this.manager = manager;
 
-        icon.sprite = weapon.icon;
-        nameText.text = weapon.itemName;
+        WeaponDefinition def = WeaponDatabase.GetWeapon(weaponInstance.key);
+
+        icon.sprite = def.icon;
+        nameText.text = def.itemName;
         button.onClick.AddListener(OnClicked);
     }
 
     private void OnClicked()
     {
-        manager.OnWeaponSelected(weapon);
+        manager.OnWeaponSelected(weaponInstance);
     }
 }

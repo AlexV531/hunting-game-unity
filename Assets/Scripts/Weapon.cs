@@ -33,8 +33,15 @@ public class Weapon : NetworkBehaviour
     public WeaponClass weaponClass = WeaponClass.Large; // This is for loadouts
 
     public int weaponKey;
+    // public ItemInstance weaponInstance;
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(
         false,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner
+    );
+
+    public NetworkVariable<ItemInstance> weaponInstance = new NetworkVariable<ItemInstance>(
+        default,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
@@ -77,7 +84,7 @@ public class Weapon : NetworkBehaviour
         {
             GameObject playerObj = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
             _owner = playerObj.GetComponent<FirstPersonController>();
-            _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponKey, this);
+            _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponInstance.Value, this);
             _input = _owner.GetComponent<PlayerInputs>();
             _input.fire = false;
             _recoil = _owner.GetComponent<CameraRecoil>();
