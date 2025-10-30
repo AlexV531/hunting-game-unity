@@ -118,6 +118,9 @@ MonoBehaviour:
   scopedFOV: 20
   zoomSpeed: 10
   fireRate: 1
+  recoilPitch: 50
+  recoilYaw: 1
+  loudness: 80
   automaticFire: 1
   maxAmmo: 3
   reserveAmmo: 100

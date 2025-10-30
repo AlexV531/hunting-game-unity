@@ -640,6 +640,7 @@ public class FirstPersonController : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	public void PickUpWorldItemServerRpc(NetworkObjectReference worldItemRef)
 	{
+		// if (carriedAnimal != null) return;
 		if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
 		if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
 
@@ -665,6 +666,7 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		// if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
 		// if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
+		// if (carriedAnimal != null) return;
 
 		worldItem.SetInteractionEnabled(false);
 
@@ -725,6 +727,7 @@ public class FirstPersonController : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	public void PickUpAnimalServerRpc(NetworkObjectReference animalRef)
 	{
+		// if (carriedWorldItem != null) return;
 		if (!animalRef.TryGet(out NetworkObject netObj)) return;
 		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
@@ -800,50 +803,50 @@ public class FirstPersonController : NetworkBehaviour
 		carriedAnimal = null;
 	}
 
-	[ServerRpc(RequireOwnership = false)]
-	public void PlaceAnimalServerRpc(NetworkObjectReference tableRef)
-	{
-		// Make sure player is carrying an animal
-		if (carriedAnimal == null) return;
+	// [ServerRpc(RequireOwnership = false)]
+	// public void PlaceAnimalServerRpc(NetworkObjectReference tableRef)
+	// {
+	// 	// Make sure player is carrying an animal
+	// 	if (carriedAnimal == null) return;
 
-		var animal = carriedAnimal;
+	// 	var animal = carriedAnimal;
 
-		if (!tableRef.TryGet(out NetworkObject tableObj)) return;
-		if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
+	// 	if (!tableRef.TryGet(out NetworkObject tableObj)) return;
+	// 	if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
 
-		// Release ownership from player
-		animal.NetworkObject.RemoveOwnership();
+	// 	// Release ownership from player
+	// 	animal.NetworkObject.RemoveOwnership();
 
-		// Place animal (NetworkTransform handles syncing position/rotation)
-		animal.transform.SetPositionAndRotation(table.placementPoint.position, table.placementPoint.rotation);
+	// 	// Place animal (NetworkTransform handles syncing position/rotation)
+	// 	animal.transform.SetPositionAndRotation(table.placementPoint.position, table.placementPoint.rotation);
 
-		// Track animal server-side
-		table.SetPlacedAnimal(animal);
+	// 	// Track animal server-side
+	// 	table.SetPlacedAnimal(animal);
 
-		if (animal.animalAI != null)
-			animal.animalAI.animator.SetTrigger("drop");
+	// 	if (animal.animalAI != null)
+	// 		animal.animalAI.animator.SetTrigger("drop");
 
-		IsShoulderCarrying.Value = false;
+	// 	IsShoulderCarrying.Value = false;
 
-		// Clear carried animal state
-		carriedAnimal = null;
+	// 	// Clear carried animal state
+	// 	carriedAnimal = null;
 
-		// Tell clients to update
-		OnPlaceAnimalClientRpc(animal.NetworkObject, tableRef);
-	}
+	// 	// Tell clients to update
+	// 	OnPlaceAnimalClientRpc(animal.NetworkObject, tableRef);
+	// }
 
-	[ClientRpc]
-	private void OnPlaceAnimalClientRpc(NetworkObjectReference animalRef, NetworkObjectReference tableRef)
-	{
-		if (!animalRef.TryGet(out NetworkObject netObj)) return;
-		if (!netObj.TryGetComponent<Animal>(out var animal)) return;
+	// [ClientRpc]
+	// private void OnPlaceAnimalClientRpc(NetworkObjectReference animalRef, NetworkObjectReference tableRef)
+	// {
+	// 	if (!animalRef.TryGet(out NetworkObject netObj)) return;
+	// 	if (!netObj.TryGetComponent<Animal>(out var animal)) return;
 
-		if (!tableRef.TryGet(out NetworkObject tableObj)) return;
-		if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
+	// 	if (!tableRef.TryGet(out NetworkObject tableObj)) return;
+	// 	if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
 
-		table.SetPlacedAnimal(animal);
-		carriedAnimal = null;
-	}
+	// 	table.SetPlacedAnimal(animal);
+	// 	carriedAnimal = null;
+	// }
 
 	public Animal GetCarriedAnimal()
 	{

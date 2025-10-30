@@ -86,9 +86,15 @@ public class WorldItem : InteractableBase
         }
         else if (def.itemSize == ItemSize.Large) // If item is large, shoulder carry
         {
+            
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerId, out var client))
             {
                 var player = client.PlayerObject.GetComponent<FirstPersonController>();
+                if (player.IsShoulderCarrying.Value)
+                {
+                    isPickedUp = false;
+                    return;
+                }
                 player.PickUpWorldItem(this);
                 SetInteractionEnabled(false);
             }

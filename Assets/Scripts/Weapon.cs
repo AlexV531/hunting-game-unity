@@ -55,7 +55,7 @@ public class Weapon : NetworkBehaviour
     public float fireRate = 1f;
     public float recoilPitch = 50f;
     public float recoilYaw = 1f;
-    public float loudness = 50f;
+    public float loudness = 80f;
 
     [Tooltip("If true, holding the fire button will shoot automatically")]
     public bool automaticFire = true;
