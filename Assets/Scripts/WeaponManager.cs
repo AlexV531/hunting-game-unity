@@ -19,6 +19,8 @@ public class WeaponManager : NetworkBehaviour
     private PlayerInputs _input;
     private FirstPersonController _player;
 
+    public event System.Action<int?> OnWeaponChanged;
+
     public override void OnNetworkSpawn()
     {
         // equippedWeaponKey.OnValueChanged += OnWeaponChanged;
@@ -177,6 +179,8 @@ public class WeaponManager : NetworkBehaviour
         currentWeapon.OnEquip();
 
         equippedWeaponKey = key;
+
+        OnWeaponChanged?.Invoke(equippedWeaponKey);
     }
 
     public void EquipWeaponInSlot(int slot)

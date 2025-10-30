@@ -54,31 +54,31 @@ public class ButcherTable : AttachInteractable
             Debug.Log("animalToAttach.GetComponent<BalloonAttach>() failed");
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!IsServer) return;
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (!IsServer) return;
 
-        if (other.CompareTag("Player"))
-        {
-            var wm = other.GetComponent<WeaponManager>();
-            if (wm != null && other.TryGetComponent<FirstPersonController>(out var player))
-            {
-                wm.EquipWeapon(autoEquipKey); // NEEDS CLIENT RPC
-            }
-        }
-    }
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         var wm = other.GetComponent<WeaponManager>();
+    //         if (wm != null && other.TryGetComponent<FirstPersonController>(out var player))
+    //         {
+    //             wm.EquipWeapon(autoEquipKey); // NEEDS CLIENT RPC
+    //         }
+    //     }
+    // }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (!IsServer) return;
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (!IsServer) return;
 
-        if (other.CompareTag("Player"))
-        {
-            var wm = other.GetComponent<WeaponManager>();
-            if (wm != null)
-            {
-                // wm.AutoUnequipWeapon();
-            }
-        }
-    }
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         var wm = other.GetComponent<WeaponManager>();
+    //         if (wm != null)
+    //         {
+    //             // wm.AutoUnequipWeapon();
+    //         }
+    //     }
+    // }
 }
