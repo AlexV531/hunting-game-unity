@@ -1,25 +1,24 @@
 TODO:
-Fix contextual weapons
 Balance basic gameplay to a playable degree
-Butchering item rewards
 Herd Movement and animal need zones
-Change Weapons to ItemInstances
-Large item system using rigidbodys, replace the animal with this when it dies
 Audio effects
-Animal corpse inspection screen
 Tracking system (footsteps, blood, feces)
 Foliage and rocks
 Partidge fly movement when fleeing
 Spell system framework
 
 BUGS:
-Butcher knife does not appear for clients
-Butcher knife is not put away if table range is exited
+
+IN PROGRESS:
+Animal corpse inspection screen
+Butchering item rewards
 
 DONE:
 Player footstep noise
 Reaction time to animal vision before fleeing
 Animal flee on bullet hit
+Change Weapons to ItemInstances
+Large item system using rigidbodys
 
 ADDING ITEMS TO INVENTORY:
 Need to make an item instance with the key of the item, that represents the item.

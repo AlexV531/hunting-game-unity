@@ -296,21 +296,11 @@ public class FirstPersonController : NetworkBehaviour
 			carriedWorldItem.transform.rotation = shoulderCarryPoint.rotation;
 		}
 
-		if (_input.inspect)
-		{
-			Debug.Log("hello");
-		}
-		
-		if (_input.interact)
-        {
-			Debug.Log("hello 2");
-        }
-
 		// If current interactable is an Animal and player presses inspect
 		if (currentInteractable != null && currentInteractable.IsInteractionEnabled() && currentInteractable is Corpse && _input.inspect)
 		{
 			// _inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, ((Corpse)currentInteractable).animal.hits);
-			Debug.Log("Requesting open inspect");
+			// Debug.Log("Requesting open inspect");
 			RequestOpenInspect(((Corpse)currentInteractable).animal.NetworkObjectId);
 			_input.inspect = false;
 			return;
@@ -924,7 +914,7 @@ public class FirstPersonController : NetworkBehaviour
     {
         if (IsOwner)
 		{
-			Debug.Log("Requesting hit data");
+			// Debug.Log("Requesting hit data");
             RequestHitDataServerRpc(animalId, NetworkManager.Singleton.LocalClientId);
         }
     }
@@ -959,7 +949,7 @@ public class FirstPersonController : NetworkBehaviour
 		Debug.Log("Received animal info from server: " + hitData);
 		if (currentInteractable != null && currentInteractable is Corpse)
 		{
-			Debug.Log("Going to open inspect UI");
+			// Debug.Log("Going to open inspect UI");
 			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData);
 		}
     }
