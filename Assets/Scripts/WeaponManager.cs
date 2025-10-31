@@ -67,8 +67,8 @@ public class WeaponManager : NetworkBehaviour
             {
                 if (def.contextual)
                 {
-                    // if (!spawnedWeapons.ContainsKey(def.key))
-                    //     RequestSpawnContextualWeapon(def.key);
+                    if (!spawnedContextual.ContainsKey(def.key))
+                        RequestSpawnContextualWeapon(def.key);
 
                     // DO WE EVEN NEED TO CHECK SPAWNED WEAPONS HERE?
                 }
@@ -182,7 +182,26 @@ public class WeaponManager : NetworkBehaviour
         currentWeapon.OnEquip();
 
         equippedWeaponInstance = weaponInstance;
-        Debug.Log(equippedWeaponInstance.stackSize);
+
+        OnWeaponChanged?.Invoke(equippedWeaponInstance);
+    }
+
+    public void EquipContextualWeapon(int key)
+    {
+        if (!IsOwner)
+        {
+            Debug.Log("Attempting to equip a player's weapon without being the player's owner client");
+        }
+
+        if (!spawnedContextual.ContainsKey(key) || currentWeapon == spawnedContextual[key]) return;
+
+        // previousWeaponInstance = currentWeapon != null ? currentWeapon.weaponKey : default;
+
+        currentWeapon?.OnUnequip();
+        currentWeapon = spawnedContextual[key];
+        currentWeapon.OnEquip();
+
+        equippedWeaponInstance = spawnedContextual[key].weaponInstance.Value;
 
         OnWeaponChanged?.Invoke(equippedWeaponInstance);
     }
@@ -287,19 +306,24 @@ public class WeaponManager : NetworkBehaviour
         DespawnWeaponServerRpc(spawnedWeapons[weaponInstance].NetworkObjectId);
     }
 
-    // public void RequestSpawnContextualWeapon(int key)
-    // {
-    //     if (!IsOwner)
-    //         return;
-    //     SpawnWeaponServerRpc(key);
-    // }
+    public void RequestSpawnContextualWeapon(int key)
+    {
+        if (!IsOwner)
+            return;
+        ItemInstance contextualInstance = new ItemInstance()
+        {
+            key = key,
+            stackSize = 1
+        };
+        SpawnWeaponServerRpc(contextualInstance);
+    }
 
-    // public void RequestDespawnContextualWeapon(ItemInstance key)
-    // {
-    //     if (!IsOwner)
-    //         return;
-    //     DespawnWeaponServerRpc(spawnedWeapons[key].NetworkObjectId);
-    // }
+    public void RequestDespawnContextualWeapon(int key)
+    {
+        if (!IsOwner)
+            return;
+        DespawnWeaponServerRpc(spawnedContextual[key].NetworkObjectId);
+    }
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnWeaponServerRpc(ItemInstance weaponInstance, ServerRpcParams rpcParams = default)
@@ -345,6 +369,18 @@ public class WeaponManager : NetworkBehaviour
             return;
         Debug.Log("Weapon unregistered");
         spawnedWeapons.Remove(weaponInstance);
+    }
+
+    public void RegisterSpawnedContextualWeapon(int key, Weapon weapon)
+    {
+        Debug.Log("Contextual Weapon registered");
+        spawnedContextual[key] = weapon;
+    }
+
+    public void UnregisterSpawnedContextualWeapon(int key)
+    {
+        Debug.Log("Contextual Weapon unregistered");
+        spawnedContextual.Remove(key);
     }
 
     [ServerRpc(RequireOwnership = false)]

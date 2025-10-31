@@ -84,7 +84,10 @@ public class Weapon : NetworkBehaviour
         {
             GameObject playerObj = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
             _owner = playerObj.GetComponent<FirstPersonController>();
-            _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponInstance.Value, this);
+            if (WeaponDatabase.GetWeapon(weaponInstance.Value.key).contextual)
+                _owner.GetComponent<WeaponManager>().RegisterSpawnedContextualWeapon(weaponInstance.Value.key, this);
+            else
+                _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponInstance.Value, this);
             _input = _owner.GetComponent<PlayerInputs>();
             _input.fire = false;
             _recoil = _owner.GetComponent<CameraRecoil>();

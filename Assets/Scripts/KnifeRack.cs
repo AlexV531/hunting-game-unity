@@ -70,6 +70,7 @@ public class KnifeRack : InteractableBase
             return;
 
         // wm.EquipWeapon(autoEquipKey);
+        wm.EquipContextualWeapon(autoEquipKey);
         wm.OnWeaponChanged += OnWeaponChanged;
         currentHolder = player;
     }
