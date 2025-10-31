@@ -39,7 +39,8 @@ public class AnimalStateManager : MonoBehaviour
     {
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
         {
-            currentState.UpdateState(this);
+            if (currentState != null)
+                currentState.UpdateState(this);
         }
     }
 

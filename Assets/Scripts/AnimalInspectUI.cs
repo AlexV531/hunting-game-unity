@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class AnimalInspectUI : MonoBehaviour
 {
     public GameObject inspectScreen;
-    public Transform modelTransform;
+    public InspectRoom inspectRoom;
     public Transform hitDataContainer;
     public GameObject hitDataPrefab;
     public float rotationSpeed = 1f;
@@ -37,16 +37,16 @@ public class AnimalInspectUI : MonoBehaviour
     public void OpenInspectScreen(GameObject inspectTarget, HitDataStrings[] hits)
     {
         // Remove old model
-        foreach (Transform child in modelTransform)
-        {
-            Destroy(child.gameObject);
-        }
+        // foreach (Transform child in modelTransform)
+        // {
+        //     Destroy(child.gameObject);
+        // }
         this.inspectTarget = null;
         // Add model
-        GameObject targetClone = Instantiate(inspectTarget, modelTransform);
-        targetClone.transform.localPosition = Vector3.zero;
-        targetClone.transform.rotation = Quaternion.identity;
-        this.inspectTarget = targetClone;
+        // GameObject targetClone = Instantiate(inspectTarget, modelTransform);
+        // targetClone.transform.localPosition = Vector3.zero;
+        // targetClone.transform.rotation = Quaternion.identity;
+        this.inspectTarget = inspectRoom.ReplaceInspectTarget(inspectTarget);
         // Remove old hit data entries
         foreach (Transform child in hitDataContainer)
         {
@@ -81,35 +81,38 @@ public class AnimalInspectUI : MonoBehaviour
 
     void Update()
     {
-        if (inputs == null)
-            return;
+        if (inspectOpen)
+            inspectRoom.UpdateModelRotation(inputs);
 
-        if (!inspectOpen)
-            return;
+        // if (inputs == null)
+        //     return;
 
-        if (inputs.leftMouseHeld)
-        {
-            Vector2 delta = inputs.dragInUI - lastMousePosition;
+        // if (!inspectOpen)
+        //     return;
 
-            float deltaX = Mathf.Sign(delta.x) * Mathf.Pow(Mathf.Abs(delta.x), exponent);
-            float deltaY = Mathf.Sign(delta.y) * Mathf.Pow(Mathf.Abs(delta.y), exponent);
+        // if (inputs.leftMouseHeld)
+        // {
+        //     Vector2 delta = inputs.dragInUI - lastMousePosition;
 
-            // Horizontal rotation around up vector
-            modelTransform.Rotate(Vector3.up, -deltaX * rotationSpeed * sensitivity * Time.deltaTime, Space.World);
+        //     float deltaX = Mathf.Sign(delta.x) * Mathf.Pow(Mathf.Abs(delta.x), exponent);
+        //     float deltaY = Mathf.Sign(delta.y) * Mathf.Pow(Mathf.Abs(delta.y), exponent);
 
-            // Vertical rotation around right vector
-            modelTransform.Rotate(Vector3.right, deltaY * rotationSpeed * sensitivity * Time.deltaTime, Space.World);
-        }
-        if (inputs.inspect)
-        {
-            if (inspectTarget != null && inspectTarget.GetComponent<ShaderSwitcher>() != null)
-            {
-                inspectTarget.GetComponent<ShaderSwitcher>().ToggleShader();
-            }
-            inputs.inspect = false;
-        }
+        //     // Horizontal rotation around up vector
+        //     modelTransform.Rotate(Vector3.up, -deltaX * rotationSpeed * sensitivity * Time.deltaTime, Space.World);
 
-        lastMousePosition = inputs.dragInUI;
+        //     // Vertical rotation around right vector
+        //     modelTransform.Rotate(Vector3.right, deltaY * rotationSpeed * sensitivity * Time.deltaTime, Space.World);
+        // }
+        // if (inputs.inspect)
+        // {
+        //     if (inspectTarget != null && inspectTarget.GetComponent<ShaderSwitcher>() != null)
+        //     {
+        //         inspectTarget.GetComponent<ShaderSwitcher>().ToggleShader();
+        //     }
+        //     inputs.inspect = false;
+        // }
+
+        // lastMousePosition = inputs.dragInUI;
     }
 
     public bool IsInspectOpen()
