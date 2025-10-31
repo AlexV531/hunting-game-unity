@@ -1,29 +1,7 @@
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : UIMenu
 {
-    public GameObject pauseMenuUI;
-    private static bool isPaused = false;
-
-    private void Awake()
-    {
-        pauseMenuUI.SetActive(false);
-    }
-
-    public void Resume()
-    {
-        pauseMenuUI.SetActive(false);
-        CursorManager.SetCursorActive(false);
-        isPaused = false;
-    }
-
-    public void Pause()
-    {
-        pauseMenuUI.SetActive(true);
-        CursorManager.SetCursorActive(true);
-        isPaused = true;
-    }
-
     public void SaveGame()
     {
         if (FirstPersonController.LocalPlayer != null)
@@ -46,20 +24,6 @@ public class PauseMenu : MonoBehaviour
 #else
         Application.Quit();
 #endif
-    }
-
-    public static bool IsPaused()
-    {
-        return isPaused;
-    }
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && IsPaused())
-        {
-            Debug.Log("Hello from app focus pause");
-            CursorManager.SetCursorActive(true);
-        }
     }
 
     private void OnApplicationQuit()

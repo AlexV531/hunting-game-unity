@@ -399,48 +399,48 @@ public class FirstPersonController : NetworkBehaviour
 
 	private void HandleMenus()
 	{
-		if (_loadoutManager.IsLoadoutOpen()) // Loadout menu open
+		if (_loadoutManager.IsMenuOpen()) // Loadout menu open
 		{
 			if (_input.loadout || _input.pause)
 			{
-				_loadoutManager.CloseLoadoutScreen();
+				_loadoutManager.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 			}
 		}
-		else if (_shopUI.IsShopOpen())
+		else if (_shopUI.IsMenuOpen())
 		{
 			if (_input.loadout || _input.pause)
 			{
-				_shopUI.CloseShopScreen();
+				_shopUI.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 			}
 		}
-		else if (_inspectUI.IsInspectOpen())
+		else if (_inspectUI.IsMenuOpen())
 		{
             if (_input.loadout || _input.pause)
 			{
-				_inspectUI.CloseInspectScreen();
+				_inspectUI.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 			}
         }
-		else if (_playerInventoryMenu.IsPlayerInventoryOpen())
+		else if (_playerInventoryMenu.IsMenuOpen())
         {
             if (_input.loadout || _input.pause || _input.inventory)
 			{
-				_playerInventoryMenu.ClosePlayerInventoryMenu();
+				_playerInventoryMenu.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 				_input.inventory = false;
 			}
         }
-		else if (PauseMenu.IsPaused()) // Pause menu open
+		else if (_pauseMenu.IsMenuOpen()) // Pause menu open
 		{
 			if (_input.pause)
 			{
-				_pauseMenu.Resume();
+				_pauseMenu.CloseMenu();
 				_input.pause = false;
 			}
 		}
@@ -448,17 +448,17 @@ public class FirstPersonController : NetworkBehaviour
 		{
 			if (_input.pause)
 			{
-				_pauseMenu.Pause();
+				_pauseMenu.OpenMenu();
 				_input.pause = false;
 			}
 			else if (_input.loadout)
 			{
-				_loadoutManager.OpenLoadoutScreen();
+				_loadoutManager.OpenMenu();
 				_input.loadout = false;
 			}
 			else if (_input.inventory)
 			{
-				_playerInventoryMenu.OpenPlayerInventoryMenu();
+				_playerInventoryMenu.OpenMenu();
 				_input.inventory = false;
 			}
 		}
@@ -908,7 +908,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return PauseMenu.IsPaused() || _loadoutManager.IsLoadoutOpen() || _shopUI.IsShopOpen() || _inspectUI.IsInspectOpen() || _playerInventoryMenu.IsPlayerInventoryOpen();
+		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen();
 	}
 
 	public WeaponManager GetWeaponManager() => _weaponManager;

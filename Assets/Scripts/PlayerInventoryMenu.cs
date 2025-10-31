@@ -2,33 +2,19 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
-public class PlayerInventoryMenu : MonoBehaviour
+public class PlayerInventoryMenu : UIMenu
 {
-    public GameObject playerInventoryMenu;
     public InventoryPanelUI inventoryPanel;
     public InventoryPanelUI onShoulderInventoryPanel;
     public TMP_Text itemInfoTitleText;
     public Transform itemInfoContent;
     public InspectRoom inspectRoom;
     public GameObject itemCustomTextPrefab;
-    private static bool playerInventoryOpen = false;
 
-    private void Awake()
+    public override void OpenMenu()
     {
-        playerInventoryMenu.SetActive(false);
-    }
+        base.OpenMenu();
 
-    public void ClosePlayerInventoryMenu()
-    {
-        playerInventoryMenu.SetActive(false);
-        CursorManager.SetCursorActive(false);
-        playerInventoryOpen = false;
-    }
-
-    public void OpenPlayerInventoryMenu()
-    {
-        playerInventoryMenu.SetActive(true);
-        // inventoryPanel.PopulateInventory(FirstPersonController.LocalPlayer.GetInventory().GetItems());
         inventoryPanel.PopulateInventory(
             FirstPersonController.LocalPlayer.GetInventory().GetItems(),
             (clickedItem) =>
@@ -63,23 +49,6 @@ public class PlayerInventoryMenu : MonoBehaviour
         }
 
         ClearItemInfo();
-
-        CursorManager.SetCursorActive(true);
-        playerInventoryOpen = true;
-    }
-
-    public bool IsPlayerInventoryOpen()
-    {
-        return playerInventoryOpen;
-    }
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && IsPlayerInventoryOpen())
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
     }
 
     public void OnItemSelected(ItemInstance item)

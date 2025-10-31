@@ -8,6 +8,6 @@ public class Shop : InteractableBase
 
     public override void Interact(FirstPersonController player)
     {
-        player.GetShopUI().OpenShopScreen(this);
+        player.GetShopUI().OpenShopMenu(this);
     }
 }

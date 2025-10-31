@@ -4,11 +4,12 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using Unity.VisualScripting;
 
-public class LoadoutManager : MonoBehaviour
+public class LoadoutManager : UIMenu
 {
     [Header("UI References (assign in Inspector)")]
-    public GameObject loadoutScreen;
+    // public GameObject loadoutScreen;
     public Transform weaponListContainer;
     public GameObject weaponButtonPrefab;
     public Button confirmButton;
@@ -19,10 +20,12 @@ public class LoadoutManager : MonoBehaviour
     public List<LoadoutSlot> toolSlots;
 
     private Loadout currentLoadout = new Loadout();
-    private bool loadoutOpen = true;
+    // private bool loadoutOpen = true;
 
-    private void Start()
+    protected override void Start()
     {
+        OpenMenu();
+
         // Initialize each slot with its type
         foreach (var s in largeSlots) s.Initialize(WeaponClass.Large, this);
         foreach (var s in smallSlots) s.Initialize(WeaponClass.Small, this);
@@ -30,29 +33,15 @@ public class LoadoutManager : MonoBehaviour
 
         confirmButton.onClick.AddListener(OnLoadoutConfirmed);
 
-        CloseLoadoutScreen();
-        CursorManager.SetCursorActive(true);
+        base.Start();
     }
 
     // This should be called when the player opens the loadout screen
-    public void OpenLoadoutScreen()
+    public override void OpenMenu()
     {
-        loadoutScreen.SetActive(true);
+        base.OpenMenu();
+
         RefreshWeaponList();
-        CursorManager.SetCursorActive(true);
-        loadoutOpen = true;
-    }
-
-    public void CloseLoadoutScreen()
-    {
-        loadoutScreen.SetActive(false);
-        CursorManager.SetCursorActive(false);
-        loadoutOpen = false;
-    }
-
-    public bool IsLoadoutOpen()
-    {
-        return loadoutOpen;
     }
 
     private void RefreshWeaponList()
@@ -135,6 +124,7 @@ public class LoadoutManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("Assigning weapon key: " + weapon.key);
         slot.AssignWeapon(weapon);
         targetList.Add(weapon);
     }
@@ -187,20 +177,11 @@ public class LoadoutManager : MonoBehaviour
 
     private void OnLoadoutConfirmed()
     {
-        CloseLoadoutScreen();
+        CloseMenu();
 
         if (FirstPersonController.LocalPlayer != null)
         {
             FirstPersonController.LocalPlayer.GetWeaponManager().SetUpLoadout(currentLoadout);
-        }
-    }
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && IsLoadoutOpen())
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
     }
 }

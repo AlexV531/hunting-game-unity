@@ -1,38 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopUI : MonoBehaviour
+public class ShopUI : UIMenu
 {
-    public GameObject shopScreen;
     public Transform shopListContainer;
     public GameObject shopOptionPrefab;
     public Button closeButton;
     private Shop currentShop;
-    private bool shopOpen = true;
     
-    private void Start()
+    protected override void Start()
     {
-        closeButton.onClick.AddListener(CloseShopScreen);
+        base.Start();
 
-        CloseShopScreen();
-        CursorManager.SetCursorActive(true);
+        closeButton.onClick.AddListener(CloseMenu);
     }
 
-    public void OpenShopScreen(Shop shop)
+    public void OpenShopMenu(Shop shop)
     {
-        shopScreen.SetActive(true);
+        base.OpenMenu();
+
         currentShop = shop;
         SetShopList(shop);
-        CursorManager.SetCursorActive(true);
-        shopOpen = true;
     }
 
-    public void CloseShopScreen()
+    public override void CloseMenu()
     {
-        shopScreen.SetActive(false);
+        base.CloseMenu();
+
         currentShop = null;
-        CursorManager.SetCursorActive(false);
-        shopOpen = false;
     }
 
     private void SetShopList(Shop shop)
@@ -52,19 +47,6 @@ public class ShopUI : MonoBehaviour
             GameObject btnObj = Instantiate(shopOptionPrefab, shopListContainer);
             ShopButton btn = btnObj.GetComponent<ShopButton>();
             btn.Initialize(ItemDatabase.Instance.GetItem(purchasableItemKey), shop);
-        }
-    }
-
-    public bool IsShopOpen()
-    {
-        return shopOpen;
-    }
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && IsShopOpen())
-        {
-            CursorManager.SetCursorActive(true);
         }
     }
 }

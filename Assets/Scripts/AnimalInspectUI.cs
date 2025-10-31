@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AnimalInspectUI : MonoBehaviour
+public class AnimalInspectUI : UIMenu
 {
     public GameObject inspectScreen;
     public InspectRoom inspectRoom;
@@ -12,19 +11,11 @@ public class AnimalInspectUI : MonoBehaviour
     private bool inspectOpen = true;
     private PlayerInputs inputs;
     
-    private void Start()
+    protected override void Start()
     {
-        closeButton.onClick.AddListener(CloseInspectScreen);
+        base.Start();
 
-        CloseInspectScreen();
-        CursorManager.SetCursorActive(true);
-    }
-
-    public void OpenInspectScreen()
-    {
-        inspectScreen.SetActive(true);
-        CursorManager.SetCursorActive(true);
-        inspectOpen = true;
+        closeButton.onClick.AddListener(CloseMenu);
     }
 
     public void OpenInspectScreen(GameObject inspectTarget, HitDataStrings[] hits)
@@ -49,16 +40,8 @@ public class AnimalInspectUI : MonoBehaviour
                 hitDataEntry.InternalsHitText.text = hitDataStrings.string3.ToString();
             }
         }
-        inspectScreen.SetActive(true);
-        CursorManager.SetCursorActive(true);
-        inspectOpen = true;
-    }
 
-    public void CloseInspectScreen()
-    {
-        inspectScreen.SetActive(false);
-        CursorManager.SetCursorActive(false);
-        inspectOpen = false;
+        OpenMenu();
     }
 
     void Update()
@@ -67,18 +50,5 @@ public class AnimalInspectUI : MonoBehaviour
             inspectRoom.UpdateModelRotation(inputs);
     }
 
-    public bool IsInspectOpen()
-    {
-        return inspectOpen;
-    }
-
     public void SetPlayerInput(PlayerInputs inputs) => this.inputs = inputs;
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && IsInspectOpen())
-        {
-            CursorManager.SetCursorActive(true);
-        }
-    }
 }
