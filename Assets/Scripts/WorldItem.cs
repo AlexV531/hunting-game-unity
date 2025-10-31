@@ -47,7 +47,7 @@ public class WorldItem : InteractableBase
 
         ItemDefinition def = ItemDatabase.Instance.GetItem(newItem.key);
 
-        if (def.worldAppearancePrefab)
+        if (def != null && def.worldAppearancePrefab)
         {
             visualInstance = Instantiate(def.worldAppearancePrefab, transform);
             LayerUtils.SetLayerRecursively(visualInstance, interactableLayer);

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // if you’re using TextMeshPro (recommended)
+using UnityEngine.Events;
+using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -8,12 +9,18 @@ public class ItemSlot : MonoBehaviour
     public Image icon;
     public TMP_Text countText;
     public TMP_Text nameText;
-
+    public Button button;
     private ItemInstance item;
 
-    public void SetItem(ItemInstance newItem)
+    public void SetItem(ItemInstance newItem, UnityAction<ItemInstance> onClickAction)
     {
         item = newItem;
+
+        button.onClick.RemoveAllListeners();
+
+        // Add the new listener
+        if (onClickAction != null)
+            button.onClick.AddListener(() => onClickAction(item));
 
         if (item.Equals(default))
         {

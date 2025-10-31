@@ -334,7 +334,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7305763891506936133}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6499593259960407770}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7638234081379237743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +362,7 @@ MonoBehaviour:
   icon: {fileID: 5380318325380023075}
   countText: {fileID: 6197464342975069771}
   nameText: {fileID: 2319320307411466993}
+  button: {fileID: 5372459913779203479}
 --- !u!1 &7954703912965933809
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +397,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.1, y: 36.2}
+  m_AnchoredPosition: {x: 15.8, y: 36.3}
   m_SizeDelta: {x: 58.0435, y: 20.2886}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3039103542780624423

@@ -39,7 +39,7 @@ public class HandCart : AttachInteractable
             if (animalToAttach != null)
             {
                 player.DropAnimalServerRpc();
-                AttachAnimalToCartServerRpc(animalToAttach.NetworkObject);
+                AttachToCartServerRpc(animalToAttach.NetworkObject);
             }
             else
                 Debug.Log("player.GetCarriedAnimal() failed");
@@ -210,12 +210,12 @@ public class HandCart : AttachInteractable
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AttachAnimalToCartServerRpc(NetworkObjectReference animalRef)
+    public void AttachToCartServerRpc(NetworkObjectReference animalRef)
     {
         if (!animalRef.TryGet(out NetworkObject netObj)) return;
-		if (!netObj.TryGetComponent<Animal>(out var animalToAttach)) return;
+		// if (!netObj.TryGetComponent<Animal>(out var animalToAttach)) return;
 
-        BalloonAttach animalAttach = animalToAttach.GetComponent<BalloonAttach>();
+        BalloonAttach animalAttach = netObj.GetComponent<BalloonAttach>();
         if (animalAttach != null)
         {
             AttachTarget(animalAttach);

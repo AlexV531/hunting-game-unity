@@ -28,9 +28,9 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 4ed61ba2fbc616548b311169afdb6e27, type: 3}
         price: 0
         itemSize: 0
-        itemType: 2
+        itemType: 3
         stackable: 0
-        worldAppearancePrefab: {fileID: 0}
+        worldAppearancePrefab: {fileID: 135744340133765553, guid: 73b92a2669b54b34db7fb5f7626b315b, type: 3}
         prefab: {fileID: 1631708624346822267, guid: c057193311e8be749b24ed949125d9be, type: 3}
         unlockedByDefault: 1
         contextual: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: b00d031c043494841824c019623c957c, type: 3}
         price: 60
         itemSize: 0
-        itemType: 2
+        itemType: 3
         stackable: 1
         worldAppearancePrefab: {fileID: 0}
         prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
@@ -58,7 +58,7 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 54ca687667a96bd4e84af54b3c335b7c, type: 3}
         price: 0
         itemSize: 0
-        itemType: 2
+        itemType: 3
         stackable: 0
         worldAppearancePrefab: {fileID: 0}
         prefab: {fileID: 5986808091100910953, guid: 8b1006b4195617a42930f7f353569201, type: 3}
@@ -73,6 +73,6 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 57fbc558567b0744098f41980351abee, type: 3}
         price: 0
         itemSize: 1
-        itemType: 1
+        itemType: 2
         stackable: 0
         worldAppearancePrefab: {fileID: 394832437077672102, guid: 99ab0f4d3a3938a44b2440390a62d444, type: 3}

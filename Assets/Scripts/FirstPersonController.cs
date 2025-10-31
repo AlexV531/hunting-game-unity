@@ -858,6 +858,15 @@ public class FirstPersonController : NetworkBehaviour
 		return null;
 	}
 
+	public WorldItem GetCarriedWorldItem()
+	{
+		if (IsOwner)
+		{
+			return carriedWorldItem;
+		}
+		return null;
+	}
+
 	public InteractableBase GetCurrentInteractable() => currentInteractable;
 
 	public Inventory GetInventory() => inventory;

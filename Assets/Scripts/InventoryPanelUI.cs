@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class InventoryPanelUI : MonoBehaviour
 {
     [SerializeField] private GameObject itemSlotPrefab;
     [SerializeField] private Transform contentParent;
 
-    public void PopulateInventory(List<ItemInstance> items)
+    public void PopulateInventory(List<ItemInstance> items, UnityAction<ItemInstance> onClickAction)
     {
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
@@ -15,7 +16,13 @@ public class InventoryPanelUI : MonoBehaviour
         {
             var slotObj = Instantiate(itemSlotPrefab, contentParent);
             var slot = slotObj.GetComponent<ItemSlot>();
-            slot.SetItem(item);
+            slot.SetItem(item, onClickAction);
         }
+    }
+
+    public void ClearInventory()
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
     }
 }
