@@ -14,8 +14,7 @@ public class PlayerInventoryMenu : MonoBehaviour
     public void ClosePlayerInventoryMenu()
     {
         playerInventoryMenu.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.SetCursorActive(false);
         playerInventoryOpen = false;
     }
 
@@ -23,8 +22,7 @@ public class PlayerInventoryMenu : MonoBehaviour
     {
         playerInventoryMenu.SetActive(true);
         inventoryPanel.PopulateInventory(FirstPersonController.LocalPlayer.GetInventory().GetItems());
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         playerInventoryOpen = true;
     }
 

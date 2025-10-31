@@ -31,8 +31,7 @@ public class LoadoutManager : MonoBehaviour
         confirmButton.onClick.AddListener(OnLoadoutConfirmed);
 
         CloseLoadoutScreen();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
     }
 
     // This should be called when the player opens the loadout screen
@@ -40,16 +39,14 @@ public class LoadoutManager : MonoBehaviour
     {
         loadoutScreen.SetActive(true);
         RefreshWeaponList();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         loadoutOpen = true;
     }
 
     public void CloseLoadoutScreen()
     {
         loadoutScreen.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.SetCursorActive(false);
         loadoutOpen = false;
     }
 

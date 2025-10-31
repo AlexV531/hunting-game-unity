@@ -17,15 +17,13 @@ public class AnimalInspectUI : MonoBehaviour
         closeButton.onClick.AddListener(CloseInspectScreen);
 
         CloseInspectScreen();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
     }
 
     public void OpenInspectScreen()
     {
         inspectScreen.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         inspectOpen = true;
     }
 
@@ -52,16 +50,14 @@ public class AnimalInspectUI : MonoBehaviour
             }
         }
         inspectScreen.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         inspectOpen = true;
     }
 
     public void CloseInspectScreen()
     {
         inspectScreen.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.SetCursorActive(false);
         inspectOpen = false;
     }
 
@@ -82,8 +78,7 @@ public class AnimalInspectUI : MonoBehaviour
     {
         if (hasFocus && IsInspectOpen())
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            CursorManager.SetCursorActive(true);
         }
     }
 }

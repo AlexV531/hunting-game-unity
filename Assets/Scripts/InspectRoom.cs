@@ -14,21 +14,26 @@ public class InspectRoom : MonoBehaviour
     public GameObject ReplaceInspectTarget(GameObject inspectTarget, Vector3 inspectPointOffset)
     {
         // Remove old model
-        foreach (Transform child in modelTransform)
-        {
-            Destroy(child.gameObject);
-        }
-        this.inspectTarget = null;
-        inspectPoint.transform.localPosition = Vector3.zero;
+        ClearInspectTarget();
         // Add model
         inspectPoint.transform.localPosition = inspectPointOffset;
         GameObject targetClone = Instantiate(inspectTarget, modelTransform);
         targetClone.transform.localPosition = Vector3.zero;
         targetClone.transform.rotation = Quaternion.identity;
         this.inspectTarget = targetClone;
-        
+
 
         return targetClone;
+    }
+    
+    public void ClearInspectTarget()
+    {
+        foreach (Transform child in modelTransform)
+        {
+            Destroy(child.gameObject);
+        }
+        inspectTarget = null;
+        inspectPoint.transform.localPosition = Vector3.zero;
     }
 
     public void UpdateModelRotation(PlayerInputs inputs)
@@ -84,13 +89,13 @@ public class InspectRoom : MonoBehaviour
         }
     }
 
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus)
-        {
-            // Reset to avoid massive delta when returning to the window
-            lastMousePosition = Vector2.zero;
-            wasMouseHeldLastFrame = false;
-        }
-    }
+    // private void OnApplicationFocus(bool hasFocus)
+    // {
+    //     if (hasFocus)
+    //     {
+    //         // Reset to avoid massive delta when returning to the window
+    //         lastMousePosition = Vector2.zero;
+    //         wasMouseHeldLastFrame = false;
+    //     }
+    // }
 }

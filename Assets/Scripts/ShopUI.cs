@@ -15,8 +15,7 @@ public class ShopUI : MonoBehaviour
         closeButton.onClick.AddListener(CloseShopScreen);
 
         CloseShopScreen();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
     }
 
     public void OpenShopScreen(Shop shop)
@@ -24,8 +23,7 @@ public class ShopUI : MonoBehaviour
         shopScreen.SetActive(true);
         currentShop = shop;
         SetShopList(shop);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         shopOpen = true;
     }
 
@@ -33,8 +31,7 @@ public class ShopUI : MonoBehaviour
     {
         shopScreen.SetActive(false);
         currentShop = null;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.SetCursorActive(false);
         shopOpen = false;
     }
 
@@ -67,8 +64,7 @@ public class ShopUI : MonoBehaviour
     {
         if (hasFocus && IsShopOpen())
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            CursorManager.SetCursorActive(true);
         }
     }
 }

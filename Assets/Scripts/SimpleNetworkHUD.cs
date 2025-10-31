@@ -30,6 +30,7 @@ public class SimpleNetworkHUD : MonoBehaviour
                 SavePlayerName();
                 SetConnectionData();
                 NetworkManager.Singleton.StartHost();
+                CursorManager.SetCursorActive(false);
             }
             if (GUILayout.Button("Server"))
             {
@@ -42,6 +43,7 @@ public class SimpleNetworkHUD : MonoBehaviour
                 SavePlayerName();
                 SetConnectionData();
                 NetworkManager.Singleton.StartClient();
+                CursorManager.SetCursorActive(false);
             }
         }
         else

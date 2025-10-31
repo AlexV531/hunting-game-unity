@@ -13,16 +13,14 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.SetCursorActive(false);
         isPaused = false;
     }
 
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.SetCursorActive(true);
         isPaused = true;
     }
 
@@ -59,8 +57,8 @@ public class PauseMenu : MonoBehaviour
     {
         if (hasFocus && IsPaused())
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            Debug.Log("Hello from app focus pause");
+            CursorManager.SetCursorActive(true);
         }
     }
 
