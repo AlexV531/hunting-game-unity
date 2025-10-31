@@ -46,7 +46,7 @@ public class AnimalInspectUI : MonoBehaviour
         // GameObject targetClone = Instantiate(inspectTarget, modelTransform);
         // targetClone.transform.localPosition = Vector3.zero;
         // targetClone.transform.rotation = Quaternion.identity;
-        this.inspectTarget = inspectRoom.ReplaceInspectTarget(inspectTarget);
+        this.inspectTarget = inspectRoom.ReplaceInspectTarget(inspectTarget, new Vector3(0, -0.4f, -7));
         // Remove old hit data entries
         foreach (Transform child in hitDataContainer)
         {

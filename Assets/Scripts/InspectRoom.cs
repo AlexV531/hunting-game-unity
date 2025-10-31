@@ -4,13 +4,13 @@ public class InspectRoom : MonoBehaviour
 {
     public Transform inspectPoint;
     public Transform modelTransform;
-    public float rotationSpeed = 10f;
+    public float rotationSpeed = 1f;
     public float sensitivity = 1f;
     public float exponent = 1.5f;
     private Vector2 lastMousePosition;
     private GameObject inspectTarget;
 
-    public GameObject ReplaceInspectTarget(GameObject inspectTarget)
+    public GameObject ReplaceInspectTarget(GameObject inspectTarget, Vector3 inspectPointOffset)
     {
         // Remove old model
         foreach (Transform child in modelTransform)
@@ -18,11 +18,13 @@ public class InspectRoom : MonoBehaviour
             Destroy(child.gameObject);
         }
         this.inspectTarget = null;
+        inspectPoint.transform.position = Vector3.zero;
         // Add model
         GameObject targetClone = Instantiate(inspectTarget, modelTransform);
         targetClone.transform.localPosition = Vector3.zero;
         targetClone.transform.rotation = Quaternion.identity;
         this.inspectTarget = targetClone;
+        inspectPoint.transform.position = inspectPointOffset;
 
         return targetClone;
     }
