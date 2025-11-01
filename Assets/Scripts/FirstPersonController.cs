@@ -159,6 +159,7 @@ public class FirstPersonController : NetworkBehaviour
 	private ShopUI _shopUI;
 	private AnimalInspectUI _inspectUI;
 	private PlayerInventoryMenu _playerInventoryMenu;
+	private StorageMenu _storageMenu;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -166,6 +167,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	// inventory
 	private Inventory inventory = new Inventory();
+	private Inventory storageInventory = new Inventory();
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -219,6 +221,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_playerInventoryMenu == null)
 		{
 			_playerInventoryMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<PlayerInventoryMenu>();
+		}
+		if (_storageMenu == null)
+		{
+			_storageMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<StorageMenu>();
 		}
 		if (_interactText == null)
 		{
@@ -419,18 +425,28 @@ public class FirstPersonController : NetworkBehaviour
 		}
 		else if (_inspectUI.IsMenuOpen())
 		{
-            if (_input.loadout || _input.pause)
+			if (_input.loadout || _input.pause)
 			{
 				_inspectUI.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 			}
-        }
+		}
 		else if (_playerInventoryMenu.IsMenuOpen())
+		{
+			if (_input.loadout || _input.pause || _input.inventory)
+			{
+				_playerInventoryMenu.CloseMenu();
+				_input.pause = false;
+				_input.loadout = false;
+				_input.inventory = false;
+			}
+		}
+		else if (_storageMenu.IsMenuOpen())
         {
             if (_input.loadout || _input.pause || _input.inventory)
 			{
-				_playerInventoryMenu.CloseMenu();
+				_storageMenu.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 				_input.inventory = false;
@@ -804,51 +820,6 @@ public class FirstPersonController : NetworkBehaviour
 		carriedAnimal = null;
 	}
 
-	// [ServerRpc(RequireOwnership = false)]
-	// public void PlaceAnimalServerRpc(NetworkObjectReference tableRef)
-	// {
-	// 	// Make sure player is carrying an animal
-	// 	if (carriedAnimal == null) return;
-
-	// 	var animal = carriedAnimal;
-
-	// 	if (!tableRef.TryGet(out NetworkObject tableObj)) return;
-	// 	if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
-
-	// 	// Release ownership from player
-	// 	animal.NetworkObject.RemoveOwnership();
-
-	// 	// Place animal (NetworkTransform handles syncing position/rotation)
-	// 	animal.transform.SetPositionAndRotation(table.placementPoint.position, table.placementPoint.rotation);
-
-	// 	// Track animal server-side
-	// 	table.SetPlacedAnimal(animal);
-
-	// 	if (animal.animalAI != null)
-	// 		animal.animalAI.animator.SetTrigger("drop");
-
-	// 	IsShoulderCarrying.Value = false;
-
-	// 	// Clear carried animal state
-	// 	carriedAnimal = null;
-
-	// 	// Tell clients to update
-	// 	OnPlaceAnimalClientRpc(animal.NetworkObject, tableRef);
-	// }
-
-	// [ClientRpc]
-	// private void OnPlaceAnimalClientRpc(NetworkObjectReference animalRef, NetworkObjectReference tableRef)
-	// {
-	// 	if (!animalRef.TryGet(out NetworkObject netObj)) return;
-	// 	if (!netObj.TryGetComponent<Animal>(out var animal)) return;
-
-	// 	if (!tableRef.TryGet(out NetworkObject tableObj)) return;
-	// 	if (!tableObj.TryGetComponent<AnimalStoringInteractableBase>(out var table)) return;
-
-	// 	table.SetPlacedAnimal(animal);
-	// 	carriedAnimal = null;
-	// }
-
 	public Animal GetCarriedAnimal()
 	{
 		if (IsOwner)
@@ -871,6 +842,8 @@ public class FirstPersonController : NetworkBehaviour
 
 	public Inventory GetInventory() => inventory;
 
+	public Inventory GetStorageInventory() => storageInventory;
+
 	[ServerRpc(RequireOwnership = false)]
 	private void SubmitNameServerRpc(string newName)
 	{
@@ -891,6 +864,7 @@ public class FirstPersonController : NetworkBehaviour
 		data.money = Money;
 		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
 		data.inventory = inventory;
+		data.storageInventory = storageInventory;
 		data.loadout = _loadoutManager.GetCurrentLoadout();
 		data.equippedWeaponInstance = _weaponManager.GetEquippedWeaponInstance();
 		SaveSystem.SavePlayer(data);
@@ -903,12 +877,13 @@ public class FirstPersonController : NetworkBehaviour
 
 		Money = data.money;
 		inventory = data.inventory;
+		storageInventory = data.storageInventory;
 		// inventory = new Inventory();
 	}
 
 	public bool IsPlayerInMenu()
 	{
-		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen();
+		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen() || _storageMenu.IsMenuOpen();
 	}
 
 	public WeaponManager GetWeaponManager() => _weaponManager;
@@ -918,6 +893,8 @@ public class FirstPersonController : NetworkBehaviour
 	public ShopUI GetShopUI() => _shopUI;
 
 	public PlayerInventoryMenu GetPlayerInventoryMenu() => _playerInventoryMenu;
+
+	public StorageMenu GetStorageMenu() => _storageMenu;
 
     public void RequestOpenInspect(ulong animalId)
     {

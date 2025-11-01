@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class HouseStorageInteractable : InteractableBase
 {
-    public Inventory houseStorageInventory;
-
     public override void Interact(FirstPersonController player)
     {
-        
+        player.GetStorageMenu().OpenStorageMenu(player.GetInventory(), player.GetStorageInventory());
     }
 }
