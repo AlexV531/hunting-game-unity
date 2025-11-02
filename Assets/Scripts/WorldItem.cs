@@ -22,7 +22,6 @@ public class WorldItem : InteractableBase
         base.Awake();
 
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     public override void OnNetworkSpawn()
@@ -95,7 +94,8 @@ public class WorldItem : InteractableBase
                     isPickedUp = false;
                     return;
                 }
-                player.PickUpWorldItem(this);
+                // player.PickUpWorldItem(this);
+                player.PickUpWorldItemServerRpc(NetworkObject);
                 SetInteractionEnabled(false);
             }
             isPickedUp = false;
@@ -115,6 +115,8 @@ public class WorldItem : InteractableBase
         }
     }
 
+    public Rigidbody GetRigidbody() => rb;
+
     public ItemInstance GetItemData() => netItemInstance.Value;
 
     public override void Interact(FirstPersonController player)
@@ -129,8 +131,7 @@ public class WorldItem : InteractableBase
         return $"Pick up {netItemInstance.Value.stackSize}x {ItemDatabase.Instance.GetItem(netItemInstance.Value.key).itemName}";
     }
 
-    [ClientRpc]
-    public void EnableCollidersClientRpc()
+    public void EnableColliders()
     {
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (var col in colliders)
@@ -138,10 +139,10 @@ public class WorldItem : InteractableBase
             col.enabled = true;
         }
         rb.isKinematic = false;
+        rb.useGravity = true;
     }
 
-    [ClientRpc]
-    public void DisableCollidersClientRpc()
+    public void DisableColliders()
     {
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (var col in colliders)
@@ -149,5 +150,18 @@ public class WorldItem : InteractableBase
             col.enabled = false;
         }
         rb.isKinematic = true;
+        rb.useGravity = false;
+    }
+
+    [ClientRpc]
+    public void EnableCollidersClientRpc()
+    {
+        EnableColliders();
+    }
+
+    [ClientRpc]
+    public void DisableCollidersClientRpc()
+    {
+        DisableColliders();
     }
 }

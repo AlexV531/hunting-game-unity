@@ -8,6 +8,7 @@ Partidge fly movement when fleeing
 Spell system framework
 
 BUGS:
+Weapons are not unequipped from loadout if not in player's inventory
 
 IN PROGRESS:
 Animal corpse inspection screen

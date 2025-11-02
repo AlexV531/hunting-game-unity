@@ -43,7 +43,7 @@ public class Weapon : NetworkBehaviour
     public NetworkVariable<ItemInstance> weaponInstance = new NetworkVariable<ItemInstance>(
         default,
         NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner
+        NetworkVariableWritePermission.Server
     );
 
     [Header("Zoom Settings")]

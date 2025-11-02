@@ -302,6 +302,7 @@ public class FirstPersonController : NetworkBehaviour
 
 		if (carriedWorldItem != null)
 		{
+			Debug.Log("Owned by: " + carriedWorldItem.NetworkObject.OwnerClientId);
 			carriedWorldItem.transform.position = shoulderCarryPoint.position;
 			carriedWorldItem.transform.rotation = shoulderCarryPoint.rotation;
 		}
@@ -325,7 +326,7 @@ public class FirstPersonController : NetworkBehaviour
 			if (carriedAnimal != null)
 				DropAnimalServerRpc();
 			if (carriedWorldItem != null)
-				DropWorldItemServerRpc();
+				DropWorldItemServerRpc(true);
 		}
 		else if (attachedCart != null && _input.interact)
 		{
@@ -691,7 +692,10 @@ public class FirstPersonController : NetworkBehaviour
 
 		worldItem.SetInteractionEnabled(false);
 
+		worldItem.DisableColliders();
 		worldItem.DisableCollidersClientRpc();
+
+		Debug.Log("Attempting to change ownership of world item");
 
 		worldItem.NetworkObject.ChangeOwnership(OwnerClientId);
 
@@ -704,6 +708,8 @@ public class FirstPersonController : NetworkBehaviour
 		IsShoulderCarrying.Value = true;
 		Debug.Log("Hello");
 
+		carriedWorldItem = worldItem;
+
 		OnPickupWorldItemClientRpc(worldItem.NetworkObject);
 	}
 
@@ -712,6 +718,8 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		if (!worldItemRef.TryGet(out NetworkObject netObj)) return;
 		if (!netObj.TryGetComponent<WorldItem>(out var worldItem)) return;
+
+		Debug.Log("Client registered world item pickup");
 
 		carriedWorldItem = worldItem;
 	}
@@ -727,7 +735,10 @@ public class FirstPersonController : NetworkBehaviour
 		worldItem.NetworkObject.RemoveOwnership();
 
 		if (enableCollidersOnDrop)
+        {
+			worldItem.EnableColliders();
 			worldItem.EnableCollidersClientRpc();
+        }
 
 		worldItem.SetInteractionEnabled(true);
 
@@ -742,6 +753,8 @@ public class FirstPersonController : NetworkBehaviour
 	[ClientRpc]
 	private void OnDropWorldItemClientRpc(NetworkObjectReference worldItemRef)
 	{
+		Debug.Log("Client registered world item drop");
+
 		carriedWorldItem = null;
 	}
 
