@@ -3,12 +3,10 @@ using UnityEngine.UI;
 
 public class AnimalInspectUI : UIMenu
 {
-    public GameObject inspectScreen;
     public InspectRoom inspectRoom;
     public Transform hitDataContainer;
     public GameObject hitDataPrefab;
     public Button closeButton;
-    private bool inspectOpen = true;
     private PlayerInputs inputs;
     
     protected override void Start()
@@ -46,7 +44,7 @@ public class AnimalInspectUI : UIMenu
 
     void Update()
     {
-        if (inspectOpen)
+        if (IsMenuOpen())
             inspectRoom.UpdateModelRotation(inputs);
     }
 

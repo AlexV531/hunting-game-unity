@@ -84,6 +84,9 @@ public class FirstPersonController : NetworkBehaviour
 	[Header("Cart Pulling")]
 	public Transform grabPoint;
 
+	[Header("Item dropping")]
+	public ItemSpawner itemSpawner;
+
 	[Header("Multiplayer")]
 	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(
 		"Player",
@@ -238,6 +241,7 @@ public class FirstPersonController : NetworkBehaviour
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
 		_inspectUI.SetPlayerInput(_input);
+		_playerInventoryMenu.SetPlayerInput(_input);
 		// GlobalVariables.RegisterPlayerInputs(_input);
 #if ENABLE_INPUT_SYSTEM
 		_playerInput = GetComponent<PlayerInput>();
