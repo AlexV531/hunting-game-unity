@@ -870,6 +870,7 @@ public class FirstPersonController : NetworkBehaviour
 	public void AddKillServerRpc()
 	{
 		// Only the server can update authoritative stats
+		Debug.Log(OwnerClientId + " got kill credit");
 		KillCount.Value += 1;
 	}
 

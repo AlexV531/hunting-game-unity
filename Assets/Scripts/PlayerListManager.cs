@@ -5,14 +5,19 @@ using Unity.Collections;
 public class PlayerListManager : NetworkBehaviour
 {
     public static PlayerListManager Instance;
+    public NetworkList<PlayerData> playerList;
 
-    public NetworkList<PlayerData> playerList = new NetworkList<PlayerData>();
-
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
         if (Instance == null)
             Instance = this;
 
+        // Create list
+        playerList = new NetworkList<PlayerData>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -31,7 +36,6 @@ public class PlayerListManager : NetworkBehaviour
         base.OnDestroy();
     }
 
-    // SERVER ONLY: Add new player to the NetworkList
     private void OnClientConnected(ulong clientId)
     {
         if (!IsServer) return;
@@ -42,12 +46,12 @@ public class PlayerListManager : NetworkBehaviour
         var player = playerObj.GetComponent<FirstPersonController>();
         if (player == null) return;
 
-        playerList.Add(new PlayerData
+        playerList.Add(new PlayerData(clientId, player.PlayerName.Value, player.KillCount.Value));
+
+        player.KillCount.OnValueChanged += (oldVal, newVal) =>
         {
-            ClientId = clientId,
-            Name = player.PlayerName.Value,
-            Kills = player.KillCount.Value
-        });
+            UpdatePlayerKills(clientId, newVal);
+        };
     }
 
     private void OnClientDisconnected(ulong clientId)
@@ -59,6 +63,20 @@ public class PlayerListManager : NetworkBehaviour
             if (playerList[i].ClientId == clientId)
             {
                 playerList.RemoveAt(i);
+                break;
+            }
+        }
+    }
+
+    private void UpdatePlayerKills(ulong clientId, int newKills)
+    {
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            if (playerList[i].ClientId == clientId)
+            {
+                var pd = playerList[i];
+                pd.Kills = newKills;
+                playerList[i] = pd;
                 break;
             }
         }

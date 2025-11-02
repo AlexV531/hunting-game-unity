@@ -134,7 +134,7 @@ public class Animal : NetworkBehaviour
         {
             Debug.LogWarning("Animal scale not uniform, internal distance calculations may be off.");
         }
-
+        Debug.Log("Whose shot hit: " + playerClientId);
         HitData hitData = new HitData
         {
             playerClientId = playerClientId,
@@ -370,9 +370,11 @@ public class Animal : NetworkBehaviour
         {
             if (kvp.Value > maxDamage)
             {
-                NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[kvp.Key].PlayerObject;
-                topPlayer = playerObject.GetComponent<FirstPersonController>();
-                maxDamage = kvp.Value;
+                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(kvp.Key, out var client))
+                {
+                    topPlayer = client.PlayerObject.GetComponent<FirstPersonController>();
+                    maxDamage = kvp.Value;
+                }
             }
         }
 
