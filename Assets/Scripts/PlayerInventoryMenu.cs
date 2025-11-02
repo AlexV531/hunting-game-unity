@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System;
+using Unity.Netcode;
 
 public class PlayerInventoryMenu : UIMenu
 {
@@ -21,11 +22,11 @@ public class PlayerInventoryMenu : UIMenu
         {
             if (inputs.dropItem)
             {
+                inputs.dropItem = false;
                 if (!selectedItem.Equals(default))
                 {
                     TryDropItem(selectedItem);
                 }
-                inputs.dropItem = false;
             }
         }
     }
@@ -131,10 +132,11 @@ public class PlayerInventoryMenu : UIMenu
         droppedItem.stackSize = droppableAmount;
 
         FirstPersonController.LocalPlayer.GetInventory().RemoveItem(item, amount);
-        FirstPersonController.LocalPlayer.itemSpawner.DropItem(droppedItem, FirstPersonController.LocalPlayer.itemSpawner.transform.position, Vector3.zero);
+        FirstPersonController.LocalPlayer.DropItemServerRpc(droppedItem);
+
         PopulateInventory();
     }
-    
+
     public void AddCustomItemText(string customItemText)
     {
         if (itemCustomTextPrefab != null && itemInfoContent != null)

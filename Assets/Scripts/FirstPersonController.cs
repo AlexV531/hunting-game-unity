@@ -302,7 +302,6 @@ public class FirstPersonController : NetworkBehaviour
 
 		if (carriedWorldItem != null)
 		{
-			Debug.Log("Owned by: " + carriedWorldItem.NetworkObject.OwnerClientId);
 			carriedWorldItem.transform.position = shoulderCarryPoint.position;
 			carriedWorldItem.transform.rotation = shoulderCarryPoint.rotation;
 		}
@@ -946,15 +945,21 @@ public class FirstPersonController : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void SendAnimalInfoClientRpc(HitDataStrings[] hitData, ClientRpcParams rpcParams = default)
-    {
+	[ClientRpc]
+	private void SendAnimalInfoClientRpc(HitDataStrings[] hitData, ClientRpcParams rpcParams = default)
+	{
 		Debug.Log("Received animal info from server: " + hitData);
 		if (currentInteractable != null && currentInteractable is Corpse)
 		{
 			// Debug.Log("Going to open inspect UI");
 			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData);
 		}
+	}
+	
+	[ServerRpc(RequireOwnership = false)]
+    public void DropItemServerRpc(ItemInstance droppedItem)
+    {
+		itemSpawner.DropItem(droppedItem, itemSpawner.transform.position, Vector3.zero);
     }
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
