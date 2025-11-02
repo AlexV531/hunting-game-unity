@@ -711,13 +711,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   agent: {fileID: 0}
   fleeAngleSpread: 45
-  fleeDistance: 10
+  fleeDistance: 75
   fleeSegments: 3
   herd: {fileID: 0}
   MostRecentSoundPosition: {x: 0, y: 0, z: 0}
   soundHeard: 0
   alertTolerance: 3
-  panicTolerance: 10
+  panicTolerance: 8
   soundForgetRate: 0.3
   sightRange: 30
   sightAngle: 160

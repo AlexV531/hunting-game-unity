@@ -152,7 +152,8 @@ public class Animal : NetworkBehaviour
         hitData.AddInternalHitData(new HitData.InternalHitData(internalHit, power));
 
         Vector3 localHitPos = transform.InverseTransformPoint(globalHitPos);
-        PlaceMarker(localHitPos);
+        // PlaceMarker(localHitPos);
+        PlaceMarkerClientRpc(localHitPos);
         hitData.AddIntersectionPoint(localHitPos);
 
         float rayCastDist = 100f;
@@ -180,7 +181,8 @@ public class Animal : NetworkBehaviour
                     if (remainingPower <= 0)
                     {
                         finalPoint = transform.InverseTransformPoint(globalRayOrigin) + (transform.InverseTransformDirection(globalRayDir) * (power / strength));
-                        PlaceMarker(finalPoint);
+                        // PlaceMarker(finalPoint);
+                        PlaceMarkerClientRpc(finalPoint);
                         hitData.AddIntersectionPoint(finalPoint);
                         AddHit(hitData);
                         power = 0f;
@@ -188,7 +190,8 @@ public class Animal : NetworkBehaviour
                     }
 
                     power = remainingPower;
-                    PlaceMarker(nextHitPos);
+                    // PlaceMarker(nextHitPos);
+                    PlaceMarkerClientRpc(nextHitPos);
                     hitData.AddIntersectionPoint(nextHitPos);
 
                     if (internalStack.Contains(newInternal))
@@ -311,6 +314,13 @@ public class Animal : NetworkBehaviour
     }
 
     private void PlaceMarker(Vector3 localPosition)
+    {
+        if (markerPrefab != null)
+            Instantiate(markerPrefab, transform.TransformPoint(localPosition), Quaternion.identity, internalContainer.transform);
+    }
+
+    [ClientRpc]
+    private void PlaceMarkerClientRpc(Vector3 localPosition)
     {
         if (markerPrefab != null)
             Instantiate(markerPrefab, transform.TransformPoint(localPosition), Quaternion.identity, internalContainer.transform);
