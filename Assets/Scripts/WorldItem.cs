@@ -24,37 +24,30 @@ public class WorldItem : InteractableBase
         rb = GetComponent<Rigidbody>();
     }
 
-    public override void OnNetworkSpawn()
+    private void ApplyCustomVisualData(GameObject visual, ItemInstance itemInstance)
     {
-        base.OnNetworkSpawn();
-        netItemInstance.OnValueChanged += OnItemChanged;
-
-        if (IsClient)
-            OnItemChanged(default, netItemInstance.Value);
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
-        netItemInstance.OnValueChanged -= OnItemChanged;
-    }
-
-    private void OnItemChanged(ItemInstance oldItem, ItemInstance newItem)
-    {
-        if (visualInstance)
-            Destroy(visualInstance);
-
-        ItemDefinition def = ItemDatabase.Instance.GetItem(newItem.key);
-
-        if (def != null && def.worldAppearancePrefab)
+        ItemDefinition def = ItemDatabase.Instance.GetItem(itemInstance.key);
+        if (def.itemType == ItemType.AnimalPelt)
         {
-            visualInstance = Instantiate(def.worldAppearancePrefab, transform);
-            LayerUtils.SetLayerRecursively(visualInstance, interactableLayer);
-            visualInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            // Get the mesh renderer (adjust the path if needed)
+            MeshRenderer meshRenderer = visual.GetComponentInChildren<MeshRenderer>();
+
+            if (meshRenderer != null && meshRenderer.materials.Length > 0)
+            {
+                // Create a new material instance to avoid modifying the shared material
+                Material mat = meshRenderer.materials[0];
+                mat = new Material(mat); // Clone the material
+
+                mat.color = itemInstance.customData.color;
+
+                // Apply the modified material back
+                Material[] materials = meshRenderer.materials;
+                materials[0] = mat;
+                meshRenderer.materials = materials;
+            }
         }
     }
 
-    // Called only by the server to initialize
     public void Initialize(ItemInstance item, Vector3 position, Quaternion rotation, Vector3 force)
     {
         transform.position = position;
@@ -65,6 +58,36 @@ public class WorldItem : InteractableBase
         rb.AddForce(force, ForceMode.Impulse);
 
         netItemInstance.Value = item;
+        
+        // Initialize visual on server
+        InitializeVisual();
+        
+        // Tell all clients to initialize their visuals
+        InitializeVisualClientRpc(item);
+    }
+
+    [ClientRpc]
+    private void InitializeVisualClientRpc(ItemInstance item)
+    {
+        // Skip on server since we already initialized there
+        if (IsServer) return;
+        
+        InitializeVisual();
+    }
+
+    private void InitializeVisual()
+    {
+        ItemDefinition def = ItemDatabase.Instance.GetItem(netItemInstance.Value.key);
+
+        if (def != null && def.worldAppearancePrefab)
+        {
+            visualInstance = Instantiate(def.worldAppearancePrefab, transform);
+            LayerUtils.SetLayerRecursively(visualInstance, interactableLayer);
+            visualInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            
+            // Apply custom data to the visual
+            ApplyCustomVisualData(visualInstance, netItemInstance.Value);
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
