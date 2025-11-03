@@ -7,14 +7,30 @@ public class Herd : MonoBehaviour
 {
     public readonly List<AnimalAI> animalsInHerd = new List<AnimalAI>();
     public float radius = 10f;
+    public bool manuallyInitialize = false;
+    public GameObject manualPrefab = null;
     private float activationDistance = 400f;
     private float deactivationOffset = 100f;
     private bool herdIsActive = false;
+
+    void Initialize()
+    {
+        if (manualPrefab != null)
+        {
+            InitializeAnimals(2, manualPrefab);
+        }
+    }
 
     void Update()
     {
         if (!NetworkManager.Singleton.IsServer)
             return;
+        
+        if (manuallyInitialize)
+        {
+            Initialize();
+            manuallyInitialize = false;
+        }
 
         HandleActivateDeactivate();
     }
@@ -75,6 +91,16 @@ public class Herd : MonoBehaviour
                 Debug.LogError("Animal prefab must have an AnimalAI component!");
                 Destroy(animal);
                 continue;
+            }
+
+            AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
+            if (animalVariator == null)
+            {
+                Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
+            }
+            else
+            {
+                animalVariator.SetSeed();
             }
 
             RegisterHerdAnimal(animalAI);
