@@ -8,16 +8,22 @@ public class Herd : MonoBehaviour
     public readonly List<AnimalAI> animalsInHerd = new List<AnimalAI>();
     public float radius = 10f;
     public bool manuallyInitialize = false;
-    public GameObject manualPrefab = null;
+    public GameObject animalPrefab = null;
+
+    [Header("Repopulation Settings")]
+    public bool enableRepopulation = true;
+    public int repopulationThreshold = 2; // Repopulate when at or below this number
+    public int repopulationMinSize = 2;
+    public int repopulationMaxSize = 4;
     private float activationDistance = 400f;
     private float deactivationOffset = 100f;
     private bool herdIsActive = false;
 
     void Initialize()
     {
-        if (manualPrefab != null)
+        if (animalPrefab != null)
         {
-            InitializeAnimals(2, manualPrefab);
+            InitializeAnimals(2, animalPrefab);
         }
     }
 
@@ -61,6 +67,12 @@ public class Herd : MonoBehaviour
             return;
         }
 
+        // Store the prefab for future repopulation
+        if (this.animalPrefab == null)
+        {
+            this.animalPrefab = animalPrefab;
+        }
+
         // Randomly determines the number of animals in the herd
         int numAnimals = maxNumAnimals;
         if (maxNumAnimals > 2)
@@ -70,43 +82,72 @@ public class Herd : MonoBehaviour
 
         for (int i = 0; i < numAnimals; i++)
         {
-            Vector3 spawnPos = GetRandomPointInRadius();
-
-            GameObject animal = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
-
-            NetworkObject netObj = animal.GetComponent<NetworkObject>();
-            if (netObj == null)
-            {
-                Debug.LogError("Animal prefab must have a NetworkObject component!");
-                Destroy(animal);
-                continue;
-            }
-
-            // Spawn on the server to sync with clients
-            netObj.Spawn();
-
-            AnimalAI animalAI = animal.GetComponent<AnimalAI>();
-            if (animalAI == null)
-            {
-                Debug.LogError("Animal prefab must have an AnimalAI component!");
-                Destroy(animal);
-                continue;
-            }
-
-            AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
-            if (animalVariator == null)
-            {
-                Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
-            }
-            else
-            {
-                animalVariator.SetSeed();
-            }
-
-            RegisterHerdAnimal(animalAI);
+            SpawnAnimal(animalPrefab);
         }
 
         ActivateAnimals();
+    }
+
+    private void SpawnAnimal(GameObject animalPrefab)
+    {
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+
+        Vector3 spawnPos = GetRandomPointInRadius();
+
+        GameObject animal = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
+
+        NetworkObject netObj = animal.GetComponent<NetworkObject>();
+        if (netObj == null)
+        {
+            Debug.LogError("Animal prefab must have a NetworkObject component!");
+            Destroy(animal);
+            return;
+        }
+
+        // Spawn on the server to sync with clients
+        netObj.Spawn();
+
+        AnimalAI animalAI = animal.GetComponent<AnimalAI>();
+        if (animalAI == null)
+        {
+            Debug.LogError("Animal prefab must have an AnimalAI component!");
+            Destroy(animal);
+            return;
+        }
+
+        AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
+        if (animalVariator == null)
+        {
+            Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
+        }
+        else
+        {
+            animalVariator.SetSeed();
+        }
+
+        RegisterHerdAnimal(animalAI);
+    }
+
+    public void TryRepopulate()
+    {
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+        
+        if (!enableRepopulation || animalPrefab == null)
+            return;
+        
+        if (animalsInHerd.Count <= repopulationThreshold)
+        {
+            int animalsToSpawn = Random.Range(repopulationMinSize, repopulationMaxSize + 1);
+            
+            for (int i = 0; i < animalsToSpawn; i++)
+            {
+                SpawnAnimal(animalPrefab);
+            }
+            
+            Debug.Log($"Herd repopulated with {animalsToSpawn} animals. Total: {animalsInHerd.Count}");
+        }
     }
 
     public void HerdFleeTo(List<Vector3> target_list)
@@ -155,12 +196,15 @@ public class Herd : MonoBehaviour
 
     public void ActivateAnimals()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+
+        TryRepopulate();
 
         herdIsActive = true;
 
         foreach (var animal in animalsInHerd)
-{
+        {
             animal.SetAIEnabled(true);
 
             Vector3 pos = GetRandomPointInRadius();
