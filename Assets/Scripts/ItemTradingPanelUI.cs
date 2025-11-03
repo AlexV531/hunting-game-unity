@@ -69,21 +69,23 @@ public class ItemTradingPanelUI : MonoBehaviour
 
         if (itemDestination.IsItemTooLarge(tradedItem))
         {
-            Debug.Log("Item too large for player inventory, doing unity action");
+            Debug.Log("Item too large for player inventory");
             if (OnItemTooLarge != null)
             {
                 OnItemTooLarge.Invoke(tradedItem);
                 itemSource.RemoveItem(item, tradableAmount);
             }
-            return;
+        }
+        else
+        {
+            // Try adding the item, if inventory at capacity, do not remove item
+            if (itemDestination.TryAddItem(tradedItem))
+            {
+                // Remove only the transferred amount from the source
+                itemSource.RemoveItem(item, amount);
+            }
         }
 
-        // Try adding the item, if inventory at capacity, do not remove item
-        if (itemDestination.TryAddItem(tradedItem))
-        {
-            // Remove only the transferred amount from the source
-            itemSource.RemoveItem(item, amount);
-        }
         PopulateInventories(inventory, otherInventory);
     }
 }

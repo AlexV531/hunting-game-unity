@@ -11,7 +11,6 @@ Spell system framework
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (unknown reason)
 Butcher table will not let a second animal be placed after one taken off
-Large item in storage doesn't disappear from UI when extracted
 
 IN PROGRESS:
 Animal corpse inspection screen
