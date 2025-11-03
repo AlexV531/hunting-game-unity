@@ -37,13 +37,11 @@ public class ItemTradingPanelUI : MonoBehaviour
     public void OnItemSelectedInventory(ItemInstance item)
     {
         TryTradeItem(inventory, otherInventory, item);
-        PopulateInventories(inventory, otherInventory);
     }
 
     public void OnItemSelectedOtherInventory(ItemInstance item)
     {
         TryTradeItem(otherInventory, inventory, item);
-        PopulateInventories(inventory, otherInventory);
     }
 
     public void TryTradeItem(Inventory itemSource, Inventory itemDestination, ItemInstance item)
@@ -86,5 +84,6 @@ public class ItemTradingPanelUI : MonoBehaviour
             // Remove only the transferred amount from the source
             itemSource.RemoveItem(item, amount);
         }
+        PopulateInventories(inventory, otherInventory);
     }
 }

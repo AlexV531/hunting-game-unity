@@ -26,7 +26,7 @@ public class WeaponPickup : InteractableBase
                 stackSize = 1
             };
             Debug.Log("Added item to inventory with key " + weapon.key);
-            inventory.AddItem(weapon);
+            inventory.TryAddItem(weapon);
         }
     }
 }
