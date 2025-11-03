@@ -9,32 +9,33 @@ public class ShopButton : MonoBehaviour
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private Button button;
 
-    private ItemDefinition item;
+    private ItemInstance item;
     private string shopOptionText;
     private int price;
     private Shop shop;
 
-    public void Initialize(Sprite icon, string shopOptionText, int price, Shop shop)
-    {
-        this.shop = shop;
-        this.shopOptionText = shopOptionText;
-        this.price = price;
+    // public void Initialize(Sprite icon, string shopOptionText, int price, Shop shop)
+    // {
+    //     this.shop = shop;
+    //     this.shopOptionText = shopOptionText;
+    //     this.price = price;
 
-        this.icon.sprite = icon;
-        nameText.text = shopOptionText;
-        priceText.text = price.ToString();
-        button.onClick.AddListener(OnClicked);
-    }
+    //     this.icon.sprite = icon;
+    //     nameText.text = shopOptionText;
+    //     priceText.text = price.ToString();
+    //     button.onClick.AddListener(OnClicked);
+    // }
 
-    public void Initialize(ItemDefinition item, Shop shop)
+    public void Initialize(ItemInstance item, Shop shop)
     {
         this.shop = shop;
         this.item = item;
-        
-        shopOptionText = item.itemName;
-        price = item.price;
 
-        icon.sprite = item.icon;
+        ItemDefinition def = ItemDatabase.Instance.GetItem(item.key);
+        shopOptionText = def.itemName;
+        price = def.price;
+
+        icon.sprite = def.icon;
         nameText.text = shopOptionText;
         priceText.text = price.ToString();
         button.onClick.AddListener(OnClicked);
@@ -45,7 +46,6 @@ public class ShopButton : MonoBehaviour
         Debug.Log(nameText.text + " clicked");
         if (FirstPersonController.LocalPlayer.Money >= price)
         {
-            FirstPersonController.LocalPlayer.Money -= price;
             Purchase();
         }
         else
@@ -66,14 +66,19 @@ public class ShopButton : MonoBehaviour
 
     private void Purchase() // Should protect behind server rpc at some point
     {
-        Debug.Log(nameText.text + " acquired");
-        if (item != null)
+        if (item.Equals(default))
         {
-            // item.Acquire(FirstPersonController.LocalPlayer);
-            if (item is WeaponDefinition)
-            {
-                FirstPersonController.LocalPlayer.GetWeaponManager().UnlockWeapon(item.key);
-            }
+            Debug.Log("No item set to purchase");
+        }
+
+        if (FirstPersonController.LocalPlayer.GetInventory().TryAddItem(item))
+        {
+            FirstPersonController.LocalPlayer.Money -= price;
+            Debug.Log(nameText.text + " acquired");
+        }
+        else
+        {
+            Debug.Log("Not enough inventory space for " + nameText.text);
         }
     }
 }

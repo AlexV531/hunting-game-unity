@@ -6,6 +6,41 @@ public class Inventory
 {
     [SerializeField]
     private List<ItemInstance> items = new List<ItemInstance>();
+    private int capacity = 0;
+
+    public bool TryAddItem(ItemInstance newItem)
+    {
+        var def = ItemDatabase.Instance.GetItem(newItem.key);
+        if (def != null && def.stackable)
+        {
+            // Use index-based loop so we can modify the list element directly
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].Compare(newItem))
+                {
+                    ItemInstance updated = items[i];
+                    updated.stackSize += newItem.stackSize;
+                    items[i] = updated; // write back the modified struct
+                    return true;
+                }
+            }
+        }
+
+        if (capacity > 0)
+        {
+            if (items.Count < capacity)
+            {
+                items.Add(newItem);
+                return true;
+            }
+        }
+        else
+        {
+            items.Add(newItem);
+            return true;
+        }
+        return false;
+    }
 
     public void AddItem(ItemInstance newItem)
     {
@@ -73,4 +108,8 @@ public class Inventory
     }
 
     public List<ItemInstance> GetItems() => items;
+
+    public int GetCapacity() => capacity;
+
+    public void SetCapacity(int newCapacity) => capacity = newCapacity;
 }

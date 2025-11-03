@@ -42,11 +42,11 @@ public class ShopUI : UIMenu
         }
 
         // Rebuild from current weapon list
-        foreach (var purchasableItemKey in shop.purchasableItemKeys)
+        foreach (ItemInstance purchasableItemInstance in shop.purchasableItemInstances)
         {
             GameObject btnObj = Instantiate(shopOptionPrefab, shopListContainer);
             ShopButton btn = btnObj.GetComponent<ShopButton>();
-            btn.Initialize(ItemDatabase.Instance.GetItem(purchasableItemKey), shop);
+            btn.Initialize(purchasableItemInstance, shop);
         }
     }
 }

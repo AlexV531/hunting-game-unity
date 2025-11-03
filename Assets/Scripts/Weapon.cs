@@ -18,7 +18,6 @@ public class Weapon : NetworkBehaviour
     protected CinemachineVirtualCamera _vCam;
     protected AudioSource _audioSource;
 
-
     [Header("Weapon Settings")]
     public Transform model;
     public Transform aimPosition;

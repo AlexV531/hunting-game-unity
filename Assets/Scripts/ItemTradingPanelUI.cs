@@ -68,10 +68,11 @@ public class ItemTradingPanelUI : MonoBehaviour
         ItemInstance tradedItem = item;
         tradedItem.stackSize = tradableAmount;
 
-        // Remove only the transferred amount from the source
-        itemSource.RemoveItem(item, amount);
-
-        // Add the correct amount to the destination
-        itemDestination.AddItem(tradedItem);
+        // Try adding the item, if inventory at capacity, do not remove item
+        if (itemDestination.TryAddItem(tradedItem))
+        {
+            // Remove only the transferred amount from the source
+            itemSource.RemoveItem(item, amount);
+        }
     }
 }

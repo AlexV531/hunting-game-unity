@@ -104,7 +104,8 @@ public class PlayerInventoryMenu : UIMenu
                 AddCustomItemText("Quality: " + item.customData.quality);
             }
 
-            inspectRoom.ReplaceInspectTarget(def.worldAppearancePrefab, new Vector3(0, 0, -3));
+            if (def.worldAppearancePrefab != null)
+                inspectRoom.ReplaceInspectTarget(def.worldAppearancePrefab, new Vector3(0, 0, -3));
         }
     }
 
