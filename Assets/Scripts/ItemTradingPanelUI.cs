@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemTradingPanelUI : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class ItemTradingPanelUI : MonoBehaviour
     public Inventory inventory;
     public Inventory otherInventory;
     public AmountUI amountUI;
-    // public int amount;
+    public UnityAction<ItemInstance> OnItemTooLarge;
 
     public void PopulateInventories(Inventory inventory, Inventory otherInventory)
     {
@@ -67,6 +68,17 @@ public class ItemTradingPanelUI : MonoBehaviour
         // Create a copy with the correct stack size for the destination
         ItemInstance tradedItem = item;
         tradedItem.stackSize = tradableAmount;
+
+        if (itemDestination.IsItemTooLarge(tradedItem))
+        {
+            Debug.Log("Item too large for player inventory, doing unity action");
+            if (OnItemTooLarge != null)
+            {
+                OnItemTooLarge.Invoke(tradedItem);
+                itemSource.RemoveItem(item, tradableAmount);
+            }
+            return;
+        }
 
         // Try adding the item, if inventory at capacity, do not remove item
         if (itemDestination.TryAddItem(tradedItem))

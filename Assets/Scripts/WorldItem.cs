@@ -164,4 +164,14 @@ public class WorldItem : InteractableBase
     {
         DisableColliders();
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DespawnItemServerRpc()
+    {
+        // Actually despawn the NetworkObject
+        if (NetworkObject != null && NetworkObject.IsSpawned)
+        {
+            NetworkObject.Despawn();
+        }
+    }
 }

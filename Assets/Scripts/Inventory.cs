@@ -7,11 +7,17 @@ public class Inventory
     [SerializeField]
     private List<ItemInstance> items = new List<ItemInstance>();
     private int capacity = 0;
+    private bool canHoldLargeItems = true;
     private WeaponManager weaponManager = null;
 
     public bool TryAddItem(ItemInstance newItem)
     {
         var def = ItemDatabase.Instance.GetItem(newItem.key);
+        if (!canHoldLargeItems && def.itemSize == ItemSize.Large)
+        {
+            return false;
+        }
+
         if (def != null && def.stackable)
         {
             // Use index-based loop so we can modify the list element directly
@@ -62,6 +68,16 @@ public class Inventory
         }
 
         items.Add(newItem);
+    }
+
+    public bool IsItemTooLarge(ItemInstance newItem)
+    {
+        var def = ItemDatabase.Instance.GetItem(newItem.key);
+        if (!canHoldLargeItems && def.itemSize == ItemSize.Large)
+        {
+            return true;
+        }
+        return false;
     }
 
     public bool RemoveItem(ItemInstance target, int amount = 1)
@@ -117,6 +133,8 @@ public class Inventory
     public int GetCapacity() => capacity;
 
     public void SetCapacity(int newCapacity) => capacity = newCapacity;
+
+    public void SetCanHoldLargeItems(bool canHoldLargeItems) => this.canHoldLargeItems = canHoldLargeItems;
 
     public void SetWeaponManager(WeaponManager weaponManager) => this.weaponManager = weaponManager;
 }

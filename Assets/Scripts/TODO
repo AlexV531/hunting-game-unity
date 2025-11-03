@@ -1,6 +1,5 @@
 TODO:
 Objective board
-Large item storage in house
 Balance basic gameplay to a playable degree
 Herd Movement and animal need zones
 Audio effects
@@ -11,7 +10,6 @@ Spell system framework
 
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (unknown reason)
-Weapons are not unequipped from loadout if not in player's inventory
 
 IN PROGRESS:
 Animal corpse inspection screen
@@ -23,6 +21,7 @@ Reaction time to animal vision before fleeing
 Animal flee on bullet hit
 Change Weapons to ItemInstances
 Large item system using rigidbodys
+Large item storage in house
 
 ADDING ITEMS TO INVENTORY:
 Need to make an item instance with the key of the item, that represents the item.
