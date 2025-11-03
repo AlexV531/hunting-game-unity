@@ -244,7 +244,7 @@ public class FirstPersonController : NetworkBehaviour
 		_inspectUI.SetPlayerInput(_input);
 		inventory.SetWeaponManager(_weaponManager);
 		inventory.SetCanHoldLargeItems(false);
-		inventory.SetCapacity(3);
+		// inventory.SetCapacity(3);
 		_playerInventoryMenu.SetPlayerInput(_input);
 #if ENABLE_INPUT_SYSTEM
 		_playerInput = GetComponent<PlayerInput>();
