@@ -7,6 +7,7 @@ public class Inventory
     [SerializeField]
     private List<ItemInstance> items = new List<ItemInstance>();
     private int capacity = 0;
+    private WeaponManager weaponManager = null;
 
     public bool TryAddItem(ItemInstance newItem)
     {
@@ -67,7 +68,7 @@ public class Inventory
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].Equals(target))
+            if (items[i].Compare(target))
             {
                 ItemInstance updated = items[i];
                 updated.stackSize -= amount;
@@ -75,6 +76,10 @@ public class Inventory
                 if (updated.stackSize <= 0)
                 {
                     items.RemoveAt(i);
+                    if (weaponManager != null)
+                    {
+                        weaponManager.RemoveFromLoadout(target);
+                    }
                 }
                 else
                 {
@@ -112,4 +117,6 @@ public class Inventory
     public int GetCapacity() => capacity;
 
     public void SetCapacity(int newCapacity) => capacity = newCapacity;
+
+    public void SetWeaponManager(WeaponManager weaponManager) => this.weaponManager = weaponManager;
 }

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
 {
     public WeaponClass allowedClass;
-    private LoadoutManager manager;
+    private LoadoutMenu loadoutMenu;
     private ItemInstance assignedWeaponInstance;
     private Image icon;
 
@@ -14,10 +14,10 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
         icon = GetComponent<Image>();
     }
 
-    public void Initialize(WeaponClass allowedClass, LoadoutManager manager)
+    public void Initialize(WeaponClass allowedClass, LoadoutMenu loadoutMenu)
     {
         this.allowedClass = allowedClass;
-        this.manager = manager;
+        this.loadoutMenu = loadoutMenu;
     }
 
     public bool IsEmpty => assignedWeaponInstance.Equals(default);
@@ -35,8 +35,6 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
         if (assignedWeaponInstance.Equals(default))
             return;
 
-        // Remove from the manager’s loadout list
-        manager.RemoveWeaponFromLoadout(assignedWeaponInstance);
         assignedWeaponInstance = default;
         icon.sprite = null;
     }
@@ -45,7 +43,11 @@ public class LoadoutSlot : MonoBehaviour, IPointerClickHandler
     {
         // Simple click removes weapon
         if (!IsEmpty)
+        {
+            loadoutMenu.RemoveWeapon(assignedWeaponInstance);
             ClearSlot();
+        }
+
     }
 
     public ItemInstance GetAssignedWeapon() => assignedWeaponInstance;

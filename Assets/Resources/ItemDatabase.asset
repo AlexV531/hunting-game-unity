@@ -45,7 +45,7 @@ MonoBehaviour:
         itemSize: 0
         itemType: 3
         stackable: 1
-        worldAppearancePrefab: {fileID: 0}
+        worldAppearancePrefab: {fileID: 8474814667349154142, guid: b93e57b7b867fd3439a349696262bc0b, type: 3}
         prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
         unlockedByDefault: 0
         contextual: 0

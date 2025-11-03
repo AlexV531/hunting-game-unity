@@ -13,10 +13,8 @@ public class WeaponManager : NetworkBehaviour
     // private ItemInstance previousWeaponInstance = default;
     private ItemInstance equippedWeaponInstance = default;
 
-    // Uses ItemInstance as the key
-    private Dictionary<ItemInstance, Weapon> spawnedWeapons = new Dictionary<ItemInstance, Weapon>();
+    private Dictionary<ItemInstance, Weapon> spawnedWeapons = new Dictionary<ItemInstance, Weapon>(); // Uses ItemInstance as the key
     private Dictionary<int, Weapon> spawnedContextual = new Dictionary<int, Weapon>();
-    private List<int> unlockedKeys = new List<int>();
     private PlayerInputs _input;
     private FirstPersonController _player;
 
@@ -48,19 +46,7 @@ public class WeaponManager : NetworkBehaviour
         PlayerSaveData data = SaveSystem.LoadPlayer();
         if (data != null)
         {
-            unlockedKeys = new List<int>(data.unlockedWeaponKeys);
-
-            _player.GetLoadoutManager().InitializePlayerLoadout(data.loadout);
             SetUpLoadout(data.loadout);
-
-            // unlock weapons to be unlocked by default
-            // foreach (var def in WeaponDatabase.GetAllWeapons())
-            // {
-            //     if (def.unlockedByDefault)
-            //     {
-            //         UnlockWeapon(def.key);
-            //     }
-            // }
 
             // Spawn contextual weapons
             foreach (var def in WeaponDatabase.GetAllWeapons())
@@ -97,27 +83,21 @@ public class WeaponManager : NetworkBehaviour
         if (_input.equip8) { EquipWeaponInSlot(7); _input.equip8 = false; }
     }
 
-    public void UnlockWeapon(int key)
-    {
-        if (WeaponDatabase.GetWeapon(key).contextual)
-            return;
-        if (!unlockedKeys.Contains(key))
-            unlockedKeys.Add(key);
-    }
-
-    public void AddToLoadout(ItemInstance weaponInstance)
-    {
-        if (spawnedWeapons.ContainsKey(weaponInstance)) return;
-
-        RequestSpawnWeapon(weaponInstance);
-    }
-
     public void RemoveFromLoadout(ItemInstance weaponInstance)
     {
-        if (!spawnedWeapons.ContainsKey(weaponInstance)) return;
+        WeaponDefinition def = WeaponDatabase.GetWeapon(weaponInstance.key);
+        List<ItemInstance> list = currentLoadout.GetListForClass(def.weaponClass);
 
-        RequestDespawnWeapon(weaponInstance);
-        UnregisterSpawnedWeapon(weaponInstance);
+        list.RemoveAll(w =>
+        {
+            if (weaponInstance.Compare(w))
+            {
+                RequestDespawnWeapon(w);
+                UnregisterSpawnedWeapon(w);
+                return true;
+            }
+            return false;
+        });
     }
 
     public void SetUpLoadout(Loadout newLoadout)
@@ -405,9 +385,9 @@ public class WeaponManager : NetworkBehaviour
         weapon.Despawn(true);
     }
 
-    public Weapon GetCurrentWeapon() => currentWeapon;
+    public Loadout GetCurrentLoadout() => currentLoadout;
 
-    public List<int> GetUnlockedWeaponKeys() => unlockedKeys;
+    public Weapon GetCurrentWeapon() => currentWeapon;
 
     public ItemInstance GetEquippedWeaponInstance() => equippedWeaponInstance;
 }

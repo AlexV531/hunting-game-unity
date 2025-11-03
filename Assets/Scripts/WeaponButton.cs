@@ -9,9 +9,9 @@ public class WeaponButton : MonoBehaviour
     [SerializeField] private Button button;
 
     private ItemInstance weaponInstance;
-    private LoadoutManager manager;
+    private LoadoutMenu manager;
 
-    public void Initialize(ItemInstance weaponInstance, LoadoutManager manager)
+    public void Initialize(ItemInstance weaponInstance, LoadoutMenu manager)
     {
         this.weaponInstance = weaponInstance;
         this.manager = manager;

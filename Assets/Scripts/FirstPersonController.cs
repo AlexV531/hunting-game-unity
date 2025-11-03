@@ -158,7 +158,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	// pause
 	private PauseMenu _pauseMenu;
-	private LoadoutManager _loadoutManager;
+	private LoadoutMenu _loadoutManager;
 	private ShopUI _shopUI;
 	private AnimalInspectUI _inspectUI;
 	private PlayerInventoryMenu _playerInventoryMenu;
@@ -211,7 +211,7 @@ public class FirstPersonController : NetworkBehaviour
 		}
 		if (_loadoutManager == null)
 		{
-			_loadoutManager = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<LoadoutManager>();
+			_loadoutManager = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<LoadoutMenu>();
 		}
 		if (_shopUI == null)
 		{
@@ -240,7 +240,9 @@ public class FirstPersonController : NetworkBehaviour
 	{
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<PlayerInputs>();
+		_weaponManager = GetComponent<WeaponManager>();
 		_inspectUI.SetPlayerInput(_input);
+		inventory.SetWeaponManager(_weaponManager);
 		_playerInventoryMenu.SetPlayerInput(_input);
 		// GlobalVariables.RegisterPlayerInputs(_input);
 #if ENABLE_INPUT_SYSTEM
@@ -248,7 +250,6 @@ public class FirstPersonController : NetworkBehaviour
 #else
 		Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
-		_weaponManager = GetComponent<WeaponManager>();
 
 		// crouch setup
 		_cameraStandPos = CinemachineCameraTarget.transform.localPosition;
@@ -879,10 +880,10 @@ public class FirstPersonController : NetworkBehaviour
 		Debug.Log("Saved player data");
 		PlayerSaveData data = new PlayerSaveData();
 		data.money = Money;
-		data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
+		// data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
 		data.inventory = inventory;
 		data.storageInventory = storageInventory;
-		data.loadout = _loadoutManager.GetCurrentLoadout();
+		data.loadout = _weaponManager.GetCurrentLoadout();
 		data.equippedWeaponInstance = _weaponManager.GetEquippedWeaponInstance();
 		SaveSystem.SavePlayer(data);
 	}
@@ -905,7 +906,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public WeaponManager GetWeaponManager() => _weaponManager;
 
-	public LoadoutManager GetLoadoutManager() => _loadoutManager;
+	public LoadoutMenu GetLoadoutManager() => _loadoutManager;
 
 	public ShopUI GetShopUI() => _shopUI;
 

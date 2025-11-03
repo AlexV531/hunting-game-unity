@@ -24,6 +24,8 @@ public class BalloonSpawner : Weapon
                 Vector3 spawnPos = transform.position + transform.forward * spawnDistance;
                 Vector3 targetPos = GlobalVariables.balloonTargetPosition;
 
+                _owner.GetInventory().RemoveItem(weaponInstance.Value, 1);
+
                 // Pass its NetworkObjectId instead of a GameObject
                 SpawnBalloonServerRpc(spawnPos, targetPos, targetObject.NetworkObjectId);
             }
