@@ -9,7 +9,7 @@ public class AnimalGrazingState : AnimalBaseState
 
     public override void EnterState(AnimalStateManager animal)
     {
-        Debug.Log("Grazing state entered.");
+        // Debug.Log("Grazing state entered.");
         // Randomize a time until the animal moves
         timeTilMove = Random.Range(minWaitTime, maxWaitTime);
     }

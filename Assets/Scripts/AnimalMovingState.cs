@@ -40,7 +40,7 @@ public class AnimalMovingState : AnimalBaseState
             SetNextTarget();
         }
 
-        Debug.Log($"{animal.gameObject.name}: Moving state entered with {targetQueue.Count} targets.");
+        // Debug.Log($"{animal.gameObject.name}: Moving state entered with {targetQueue.Count} targets.");
     }
 
     public override void UpdateState(AnimalStateManager animal)
@@ -161,7 +161,7 @@ public class AnimalMovingState : AnimalBaseState
         agent.SetDestination(nextTarget);
         isWaitingForPath = true;
 
-        Debug.Log($"Setting next target: {nextTarget}, remaining targets: {targetQueue.Count}");
+        // Debug.Log($"Setting next target: {nextTarget}, remaining targets: {targetQueue.Count}");
     }
 
     private void AdvanceToNextTarget(AnimalStateManager animal)
@@ -188,7 +188,7 @@ public class AnimalMovingState : AnimalBaseState
             return;
         }
 
-        Debug.Log($"{animal.gameObject.name}: All movement targets depleted");
+        // Debug.Log($"{animal.gameObject.name}: All movement targets depleted");
 
         if (nextState != null)
         {
