@@ -33,6 +33,12 @@ public class BalloonAttach : NetworkBehaviour
         return balloon != null;
     }
 
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        Release();
+    }
+
     private void LateUpdate()
     {
         if (!IsServer || balloon == null)
