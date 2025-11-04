@@ -86,6 +86,9 @@ public class WeaponManager : NetworkBehaviour
     public void RemoveFromLoadout(ItemInstance weaponInstance)
     {
         WeaponDefinition def = WeaponDatabase.GetWeapon(weaponInstance.key);
+        if (def == null)
+            return;
+
         List<ItemInstance> list = currentLoadout.GetListForClass(def.weaponClass);
 
         list.RemoveAll(w =>

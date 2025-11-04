@@ -14,24 +14,30 @@ public class ItemTradingPanelUI : MonoBehaviour
     public void PopulateInventories(Inventory inventory, Inventory otherInventory)
     {
         this.inventory = inventory;
-        inventoryPanel.PopulateInventory(
-            inventory.GetItems(),
-            (clickedItem) =>
-            {
-                Debug.Log("Clicked on item with key: " + clickedItem.key);
-                OnItemSelectedInventory(clickedItem);
-            }
-        );
+        if (inventoryPanel != null)
+        {
+            inventoryPanel.PopulateInventory(
+                inventory.GetItems(),
+                (clickedItem) =>
+                {
+                    Debug.Log("Clicked on item with key: " + clickedItem.key);
+                    OnItemSelectedInventory(clickedItem);
+                }
+            );
+        }
 
         this.otherInventory = otherInventory;
-        otherInventoryPanel.PopulateInventory(
-            otherInventory.GetItems(),
-            (clickedItem) =>
-            {
-                Debug.Log("Clicked on item with key: " + clickedItem.key);
-                OnItemSelectedOtherInventory(clickedItem);
-            }
-        );
+        if (otherInventoryPanel != null)
+        {
+            otherInventoryPanel.PopulateInventory(
+                otherInventory.GetItems(),
+                (clickedItem) =>
+                {
+                    Debug.Log("Clicked on item with key: " + clickedItem.key);
+                    OnItemSelectedOtherInventory(clickedItem);
+                }
+            );
+        }
     }
 
     public void OnItemSelectedInventory(ItemInstance item)

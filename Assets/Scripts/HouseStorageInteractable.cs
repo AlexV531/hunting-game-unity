@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 public class HouseStorageInteractable : InteractableBase
@@ -11,9 +9,12 @@ public class HouseStorageInteractable : InteractableBase
         if (player.GetCarriedWorldItem() != null)
         {
             WorldItem itemToStore = player.GetCarriedWorldItem();
-            player.DropWorldItemServerRpc();
-            player.GetStorageInventory().AddItem(itemToStore.GetItemData());
-            itemToStore.DespawnItemServerRpc();
+
+            if (player.GetStorageInventory().TryAddItem(itemToStore.GetItemData()))
+            {
+                player.DropWorldItemServerRpc();
+                itemToStore.DespawnItemServerRpc();
+            }
         }
         else
         {

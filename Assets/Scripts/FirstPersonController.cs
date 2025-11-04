@@ -163,6 +163,7 @@ public class FirstPersonController : NetworkBehaviour
 	private AnimalInspectUI _inspectUI;
 	private PlayerInventoryMenu _playerInventoryMenu;
 	private StorageMenu _storageMenu;
+	private ObjectiveMenu _objectiveMenu;
 
 	// weapon manager
 	private WeaponManager _weaponManager;
@@ -228,6 +229,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_storageMenu == null)
 		{
 			_storageMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<StorageMenu>();
+		}
+		if (_objectiveMenu == null)
+		{
+			_objectiveMenu = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<ObjectiveMenu>();
 		}
 		if (_interactText == null)
 		{
@@ -449,10 +454,20 @@ public class FirstPersonController : NetworkBehaviour
 			}
 		}
 		else if (_storageMenu.IsMenuOpen())
+		{
+			if (_input.loadout || _input.pause || _input.inventory)
+			{
+				_storageMenu.CloseMenu();
+				_input.pause = false;
+				_input.loadout = false;
+				_input.inventory = false;
+			}
+		}
+		else if (_objectiveMenu.IsMenuOpen())
         {
             if (_input.loadout || _input.pause || _input.inventory)
 			{
-				_storageMenu.CloseMenu();
+				_objectiveMenu.CloseMenu();
 				_input.pause = false;
 				_input.loadout = false;
 				_input.inventory = false;
@@ -881,7 +896,6 @@ public class FirstPersonController : NetworkBehaviour
 		Debug.Log("Saved player data");
 		PlayerSaveData data = new PlayerSaveData();
 		data.money = Money;
-		// data.unlockedWeaponKeys = _weaponManager.GetUnlockedWeaponKeys();
 		data.inventory = inventory;
 		data.storageInventory = storageInventory;
 		data.loadout = _weaponManager.GetCurrentLoadout();
@@ -902,7 +916,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen() || _storageMenu.IsMenuOpen();
+		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen() || _storageMenu.IsMenuOpen() || _objectiveMenu.IsMenuOpen();
 	}
 
 	public WeaponManager GetWeaponManager() => _weaponManager;
@@ -914,6 +928,8 @@ public class FirstPersonController : NetworkBehaviour
 	public PlayerInventoryMenu GetPlayerInventoryMenu() => _playerInventoryMenu;
 
 	public StorageMenu GetStorageMenu() => _storageMenu;
+	
+	public ObjectiveMenu GetObjectiveMenu() => _objectiveMenu;
 
     public void RequestOpenInspect(ulong animalId)
     {

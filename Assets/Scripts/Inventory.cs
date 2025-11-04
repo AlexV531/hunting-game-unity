@@ -109,6 +109,25 @@ public class Inventory
         return false;
     }
 
+    public void Clear()
+    {
+        // If there's a WeaponManager, remove all weapons first
+        if (weaponManager != null)
+        {
+            foreach (var item in items)
+            {
+                var def = ItemDatabase.Instance.GetItem(item.key);
+                if (def is WeaponDefinition)
+                {
+                    weaponManager.RemoveFromLoadout(item);
+                }
+            }
+        }
+
+        // Clear the items list
+        items.Clear();
+    }
+
     public List<ItemInstance> GetWeapons()
     {
         List<ItemInstance> weaponList = new List<ItemInstance>();
