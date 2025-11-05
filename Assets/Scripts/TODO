@@ -11,8 +11,7 @@ Bullet impact effects
 
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
-Players disconnecting are not removed from player list
-Balloons after a certain limit stop moving (reproduction unknown)
+Balloons sometimes do not move after being spawned (reproduction unknown)
 
 IN PROGRESS:
 Animal corpse inspection screen

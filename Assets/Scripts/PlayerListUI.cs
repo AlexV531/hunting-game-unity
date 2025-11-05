@@ -38,16 +38,7 @@ public class PlayerListUI : MonoBehaviour
 
     private void OnListChanged(NetworkListEvent<PlayerData> change)
     {
-        switch (change.Type)
-        {
-            case NetworkListEvent<PlayerData>.EventType.Add:
-            case NetworkListEvent<PlayerData>.EventType.Value:
-                AddOrUpdate(change.Value);
-                break;
-            case NetworkListEvent<PlayerData>.EventType.Remove:
-                Remove(change.Value.ClientId);
-                break;
-        }
+        RebuildAll();
     }
 
     private void AddOrUpdate(PlayerData data)
@@ -69,5 +60,40 @@ public class PlayerListUI : MonoBehaviour
             Destroy(entry);
             entries.Remove(clientId);
         }
+    }
+
+    private void HandleRemove(int index)
+    {
+        var list = PlayerListManager.Instance.GetPlayerList();
+        if (index < 0 || index >= list.Count)
+        {
+            // If we removed the last item, index may now be out of range.
+            // Safest way: rebuild list from scratch.
+            RebuildAll();
+            return;
+        }
+
+        var removedId = list[index].ClientId;
+        Remove(removedId);
+    }
+
+    private void RebuildAll()
+    {
+        // Clear current entries
+        foreach (var kvp in entries)
+            Destroy(kvp.Value);
+        entries.Clear();
+
+        // Rebuild from authoritative list
+        var list = PlayerListManager.Instance.GetPlayerList();
+        foreach (var p in list)
+            AddOrUpdate(p);
+    }
+
+    private void ClearAll()
+    {
+        foreach (var kvp in entries)
+            Destroy(kvp.Value);
+        entries.Clear();
     }
 }
