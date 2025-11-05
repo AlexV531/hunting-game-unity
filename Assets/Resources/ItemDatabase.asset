@@ -44,7 +44,7 @@ MonoBehaviour:
         key: 5
         itemName: Balloons
         icon: {fileID: 21300000, guid: b00d031c043494841824c019623c957c, type: 3}
-        price: 5
+        price: 10
         itemSize: 0
         itemType: 3
         stackable: 1

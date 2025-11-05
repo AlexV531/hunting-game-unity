@@ -7,6 +7,9 @@ public class PeltSpawnerInteractable : InteractableBase
 
     public override void Interact(FirstPersonController player)
     {
+        if (player.PlayerName.Value != "admin")
+            return;
+
         SpawnPeltServerRpc();
     }
     
