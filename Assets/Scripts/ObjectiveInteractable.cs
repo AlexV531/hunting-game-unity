@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ObjectiveInteractable : InteractableBase
@@ -45,7 +46,7 @@ public class ObjectiveInteractable : InteractableBase
             objectiveMenu.OpenObjectiveMenu(player.GetInventory(), submissionBox, title, description, numTargets, requiresPlayerInventory);
             objectiveMenu.inventoryPanel.OnItemTooLarge = (item) =>
             {
-                itemSpawner.DropItem(item, itemSpawner.transform.position, Vector3.zero);
+                DropItemServerRpc(item);
             };
             objectiveMenu.OnItemSubmitted = CheckSubmission;
             objectiveMenu.OnObjectiveComplete = OnObjectiveComplete;
@@ -62,5 +63,11 @@ public class ObjectiveInteractable : InteractableBase
         {
             return "Press \"e\" to see objective";
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DropItemServerRpc(ItemInstance droppedItem)
+    {
+		itemSpawner.DropItem(droppedItem, itemSpawner.transform.position, Vector3.zero);
     }
 }

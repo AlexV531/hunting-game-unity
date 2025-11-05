@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class HouseStorageInteractable : InteractableBase
@@ -21,7 +22,7 @@ public class HouseStorageInteractable : InteractableBase
             player.GetStorageMenu().OpenStorageMenu(player.GetInventory(), player.GetStorageInventory());
             player.GetStorageMenu().inventoryPanel.OnItemTooLarge = (item) =>
             {
-                itemSpawner.DropItem(item, itemSpawner.transform.position, Vector3.zero);
+                DropItemServerRpc(item);
             };
         }
     }
@@ -36,5 +37,11 @@ public class HouseStorageInteractable : InteractableBase
         {
             return "Press \"e\" to store items";
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DropItemServerRpc(ItemInstance droppedItem)
+    {
+		itemSpawner.DropItem(droppedItem, itemSpawner.transform.position, Vector3.zero);
     }
 }
