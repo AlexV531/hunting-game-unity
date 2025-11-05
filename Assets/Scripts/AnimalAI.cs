@@ -10,6 +10,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public AnimalStateManager fsm;
     public Animator animator;
     public NavMeshAgent agent;
+    public AudioSource audioSource;
     public float HearingThreshold => 0.5f;
     public float fleeAngleSpread = 45f; // degrees
     public float fleeDistance = 50f;
@@ -37,6 +38,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         // fsm = GetComponent<AnimalStateManager>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -286,6 +288,15 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
 
         return visiblePlayers;
+    }
+
+    [ClientRpc]
+    public void PlayWarningAudioClientRpc()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
     }
 
     public bool IsPanicked()

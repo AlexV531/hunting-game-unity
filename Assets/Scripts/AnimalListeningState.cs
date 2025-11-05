@@ -4,20 +4,20 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
 {
     public float turnSpeed = 180f;
     private Animal actor;
-    private AudioSource audio;
+    private AnimalAI animalAI;
     public override AlertnessLevel Alertness => AlertnessLevel.Alert;
 
     public override void EnterState(AnimalStateManager animal)
     {
         Debug.Log("Listening state entered.");
         actor = animal.GetComponent<Animal>();
-        audio = animal.GetComponent<AudioSource>();
-        if (audio != null)
+        animalAI = animal.GetComponent<AnimalAI>();
+        if (animalAI != null)
         {
-            // if (Random.value < 0.3f)
-            // {
-                audio.Play();
-            // }
+            if (Random.value < 0.3f)
+            {
+                animalAI.PlayWarningAudioClientRpc();
+            }
         }
     }
 
