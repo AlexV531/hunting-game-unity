@@ -10,6 +10,7 @@ Spell system framework
 
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (unknown reason)
+Players disconnecting are not removed from player list
 
 IN PROGRESS:
 Animal corpse inspection screen

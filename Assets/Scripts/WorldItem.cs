@@ -16,12 +16,27 @@ public class WorldItem : InteractableBase
 
     private bool isPickedUp = false;
     private GameObject visualInstance;
+    private bool visualInitialized = false;
 
     protected override void Awake()
     {
         base.Awake();
 
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (!IsClient || visualInitialized)
+            return;
+
+        // Only initialize once the data is valid
+        var item = netItemInstance.Value;
+        if (!item.Equals(default))
+        {
+            InitializeVisual();
+            visualInitialized = true;
+        }
     }
 
     private void ApplyCustomVisualData(GameObject visual, ItemInstance itemInstance)
@@ -60,7 +75,7 @@ public class WorldItem : InteractableBase
         netItemInstance.Value = item;
         
         // Initialize visual on server
-        InitializeVisual();
+        InitializeVisual(item);
         
         // Tell all clients to initialize their visuals
         InitializeVisualClientRpc(item);
@@ -69,25 +84,31 @@ public class WorldItem : InteractableBase
     [ClientRpc]
     private void InitializeVisualClientRpc(ItemInstance item)
     {
-        // Skip on server since we already initialized there
         if (IsServer) return;
-        
-        InitializeVisual();
+        InitializeVisual(item);
     }
 
-    private void InitializeVisual()
+    private void InitializeVisual(ItemInstance item)
     {
-        ItemDefinition def = ItemDatabase.Instance.GetItem(netItemInstance.Value.key);
+        ItemDefinition def = ItemDatabase.Instance.GetItem(item.key);
 
         if (def != null && def.worldAppearancePrefab)
         {
             visualInstance = Instantiate(def.worldAppearancePrefab, transform);
             LayerUtils.SetLayerRecursively(visualInstance, interactableLayer);
             visualInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            
-            // Apply custom data to the visual
-            ApplyCustomVisualData(visualInstance, netItemInstance.Value);
+
+            ApplyCustomVisualData(visualInstance, item);
         }
+    }
+
+    private void InitializeVisual()
+    {
+        // Avoid duplicates
+        if (visualInstance != null)
+            return;
+
+        InitializeVisual(netItemInstance.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
