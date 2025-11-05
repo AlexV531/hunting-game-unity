@@ -116,15 +116,15 @@ public class Herd : MonoBehaviour
             return;
         }
 
-        AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
-        if (animalVariator == null)
-        {
-            Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
-        }
-        else
-        {
-            animalVariator.SetSeed();
-        }
+        // AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
+        // if (animalVariator == null)
+        // {
+        //     Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
+        // }
+        // else
+        // {
+        //     animalVariator.SetSeed();
+        // }
 
         RegisterHerdAnimal(animalAI);
     }

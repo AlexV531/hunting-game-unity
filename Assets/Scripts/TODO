@@ -12,6 +12,10 @@ BUGS:
 Butcher knife sometimes disappears when taken off the rack (unknown reason)
 Players disconnecting are not removed from player list
 Balloons after a certain limit stop moving
+Clients can't take large items out of storage
+All sounds are global
+Warning noise doesn't work for clients
+Antlers not appearing for clients
 
 IN PROGRESS:
 Animal corpse inspection screen
