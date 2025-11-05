@@ -1,8 +1,6 @@
 TODO:
-Objective board
 Balance basic gameplay to a playable degree
 Herd Movement and animal need zones
-Audio effects
 Tracking system (footsteps, blood, feces)
 Foliage and rocks
 Partidge fly movement when fleeing
@@ -12,10 +10,12 @@ Bullet impact effects
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
 Balloons sometimes do not move after being spawned (reproduction unknown)
+Partridge needs to be looked at again
 
 IN PROGRESS:
 Animal corpse inspection screen
 Butchering item rewards
+Audio effects
 
 DONE:
 Player footstep noise
@@ -24,11 +24,12 @@ Animal flee on bullet hit
 Change Weapons to ItemInstances
 Large item system using rigidbodys
 Large item storage in house
+Objective board
 
-ADDING ITEMS TO INVENTORY:
-Need to make an item instance with the key of the item, that represents the item.
-If it is a more complicated item with more information than just the item's identity such as a pelt,
-a custom ItemInstance child class is needed and the properties added there.
-ItemDatabase holds UI needs like a display name and icon.
-The most important part is the item instance key needs to match the item definition key.
-The crutial step then is creating the item instance and making sure it makes sense.
+ITEM SYSTEM OVERVIEW:
+ItemDatabase: Records a list of "ItemDefinitions" these keep track of names, icons, visual world appearances, etc.
+Real items that exist in the game are "ItemInstances" that have a key that links them to an ItemDefinition, as well as
+custom information like how many items are in the stack and any custom data an item might have (for example pelts have
+a colour and quality).
+Weapons have custom definitions called "WeaponDefinitions" that are extended from the normal "ItemDefinition" class. They
+also need to be represented by an ItemInstance to exist in the world.
