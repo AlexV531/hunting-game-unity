@@ -9,12 +9,10 @@ Partidge fly movement when fleeing
 Spell system framework
 
 BUGS:
-Butcher knife sometimes disappears when taken off the rack (unknown reason)
+Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
 Players disconnecting are not removed from player list
-Balloons after a certain limit stop moving
+Balloons after a certain limit stop moving (reproduction unknown)
 Clients can't take large items out of storage
-All sounds are global
-Warning noise doesn't work for clients
 
 IN PROGRESS:
 Animal corpse inspection screen
