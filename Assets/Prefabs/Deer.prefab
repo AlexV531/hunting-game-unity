@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 744583523
+  GlobalObjectIdHash: 2034573511
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -693,6 +693,7 @@ MonoBehaviour:
   - {fileID: 3933260348875552164}
   antler: {fileID: 2789237748827086075}
   butcherable: 0
+  hitNoiseLoudness: 100
 --- !u!114 &6834382181995577058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,6 +711,7 @@ MonoBehaviour:
   fsm: {fileID: 0}
   animator: {fileID: 0}
   agent: {fileID: 0}
+  audioSource: {fileID: 0}
   fleeAngleSpread: 45
   fleeDistance: 75
   fleeSegments: 3

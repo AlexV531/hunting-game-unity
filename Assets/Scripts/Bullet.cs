@@ -110,7 +110,7 @@ public class Bullet : NetworkBehaviour
 
     void EmitNoise(Vector3 position, float loudness, string name)
     {
-        var noiseEvent = new NoiseEvent(position, loudness, name);
+        NoiseEvent noiseEvent = new NoiseEvent(position, loudness, name);
         NoiseManager.Instance.EmitNoise(noiseEvent);
     }
 

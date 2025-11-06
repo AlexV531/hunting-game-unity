@@ -230,8 +230,8 @@ public class Weapon : NetworkBehaviour
     [ServerRpc]
     void EmitNoiseServerRpc(Vector3 position, float loudness, string name)
     {
-        var noiseEvent = new NoiseEvent(position, loudness, name);
-        NoiseManager.Instance.EmitNoise(noiseEvent);
+        NoiseEvent noiseEvent = new NoiseEvent(position, loudness, name);
+        // NoiseManager.Instance.EmitNoise(noiseEvent);
         PlayShootAudioClientRpc();
     }
 

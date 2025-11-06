@@ -23,6 +23,7 @@ public class Animal : NetworkBehaviour
     private BalloonAttach balloonAttach;
     public Antler antler;
     public bool butcherable = false;
+    public float hitNoiseLoudness = 100;
 
     void Awake()
     {
@@ -128,6 +129,8 @@ public class Animal : NetworkBehaviour
         float bulletHeal = 1f)
     {
         Debug.Log("Projectile hit!");
+
+        EmitAnimalHitNoise();
 
         Vector3 scale = transform.localScale;
         if (!Mathf.Approximately(scale.x, scale.y) || !Mathf.Approximately(scale.x, scale.z))
@@ -313,17 +316,17 @@ public class Animal : NetworkBehaviour
             KillAnimal();
     }
 
-    private void PlaceMarker(Vector3 localPosition)
-    {
-        if (markerPrefab != null)
-            Instantiate(markerPrefab, transform.TransformPoint(localPosition), Quaternion.identity, internalContainer.transform);
-    }
-
     [ClientRpc]
     private void PlaceMarkerClientRpc(Vector3 localPosition)
     {
         if (markerPrefab != null)
             Instantiate(markerPrefab, transform.TransformPoint(localPosition), Quaternion.identity, internalContainer.transform);
+    }
+
+    private void EmitAnimalHitNoise()
+    {
+        NoiseEvent noiseEvent = new NoiseEvent(transform.position, hitNoiseLoudness, "Animal hit noise");
+        NoiseManager.Instance.EmitNoise(noiseEvent);
     }
 
     private void KillAnimal()
