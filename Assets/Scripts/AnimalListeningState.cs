@@ -16,7 +16,7 @@ public class AnimalListeningState : AnimalBaseState //: AnimalTimerState
         {
             if (Random.value < 0.3f)
             {
-                animalAI.PlayWarningAudioClientRpc();
+                // animalAI.PlayWarningAudioClientRpc();
             }
         }
     }
