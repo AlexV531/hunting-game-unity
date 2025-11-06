@@ -12,6 +12,8 @@ public class Bullet : NetworkBehaviour
     public float healPrevention = 1;
     public float impactLoudness = 50;
     public ulong playerClientId;
+    public GameObject bulletDecalPrefab;
+    public float decalLifetime = 100f;
 
     private Vector3 velocity;
     private int layerMask;
@@ -79,6 +81,7 @@ public class Bullet : NetworkBehaviour
                 transform.position = hit.point;
                 EmitNoise(hit.point, impactLoudness, "Bullet impacting the ground");
                 PlayImpactSoundClientRpc();
+                SpawnBulletDecal(hit);
             }
 
             // Destroy bullet on impact
@@ -109,6 +112,25 @@ public class Bullet : NetworkBehaviour
     {
         var noiseEvent = new NoiseEvent(position, loudness, name);
         NoiseManager.Instance.EmitNoise(noiseEvent);
+    }
+
+    private void SpawnBulletDecal(RaycastHit hit)
+    {
+        if (bulletDecalPrefab == null) return;
+
+        GameObject decal = Instantiate(bulletDecalPrefab, hit.point + hit.normal * 0.01f, Quaternion.identity);
+
+        // Align decal perpendicular to surface
+        decal.transform.rotation = Quaternion.LookRotation(-hit.normal);
+
+        // Random rotation around the normal for variation
+        decal.transform.Rotate(hit.normal, Random.Range(0f, 360f), Space.World);
+
+        // Parent to hit object (optional)
+        decal.transform.SetParent(hit.collider.transform);
+
+        // Destroy after some time
+        Destroy(decal, decalLifetime);
     }
 
     private IEnumerator DestroyAfterTrail()

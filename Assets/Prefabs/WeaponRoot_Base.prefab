@@ -249,6 +249,7 @@ MonoBehaviour:
   automaticFire: 1
   maxAmmo: 3
   reserveAmmo: 100
+  bulletDecalPrefab: {fileID: 4446228548660162820, guid: 9d874a01747efde41960c65dc5ed065e, type: 3}
 --- !u!82 &-7579572136297219852
 AudioSource:
   m_ObjectHideFlags: 0

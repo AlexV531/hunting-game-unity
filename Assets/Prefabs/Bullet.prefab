@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1216664178
+  GlobalObjectIdHash: 2712359987
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -77,11 +77,13 @@ MonoBehaviour:
   speed: 50
   lifetime: 5
   gravity: 9.81
-  power_factor: 1
-  bleed_factor: 1
-  heal_prevention: 1
+  powerFactor: 1
+  bleedFactor: 1
+  healPrevention: 1
+  impactLoudness: 50
   playerClientId: 0
-  impactClip: {fileID: 0}
+  bulletDecalPrefab: {fileID: 0}
+  decalLifetime: 100
 --- !u!114 &1793851522527557457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +178,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 0.15
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -193,15 +195,6 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

@@ -69,6 +69,8 @@ public class Weapon : NetworkBehaviour
     public int maxAmmo = 3;
     public int reserveAmmo = 100;
 
+    public GameObject bulletDecalPrefab;
+
     private int currentAmmo = 3;
     private float _fireCooldown = 0f;
     private bool aiming = false;
@@ -266,6 +268,7 @@ public class Weapon : NetworkBehaviour
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.speed = bulletSpeed;
         bullet.playerClientId = rpcParams.Receive.SenderClientId;
+        bullet.bulletDecalPrefab = bulletDecalPrefab;
 
         // Spawn over network
         bulletObj.GetComponent<NetworkObject>().Spawn();
