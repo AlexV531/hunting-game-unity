@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
     public float speed = 320f; // Bullet speed
     public float lifetime = 5f; // How long the bullet exists
@@ -15,6 +16,9 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
+        if (!IsServer)
+            return;
+
         velocity = transform.forward * speed;
         layerMask = ~LayerMask.GetMask("Interactable", "AnimalPhysics");
         Destroy(gameObject, lifetime);
@@ -22,6 +26,9 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        if (!IsServer)
+            return;
+
         float delta = Time.deltaTime;
 
         // Apply gravity

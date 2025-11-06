@@ -11,6 +11,7 @@ BUGS:
 Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
 Balloons sometimes do not move after being spawned (reproduction unknown)
 Partridge needs to be looked at again
+If a deer is killed in one bullet impact, the other deer don't notice, bullet impacts should make noise
 
 IN PROGRESS:
 Animal corpse inspection screen

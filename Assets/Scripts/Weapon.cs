@@ -259,13 +259,17 @@ public class Weapon : NetworkBehaviour
         CreateBulletServerRpc();
     }
 
-    [ServerRpc (RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     public void CreateBulletServerRpc(ServerRpcParams rpcParams = default)
     {
         GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.speed = bulletSpeed;
         bullet.playerClientId = rpcParams.Receive.SenderClientId;
+
+        // Spawn over network
+        bulletObj.GetComponent<NetworkObject>().Spawn();
+        Debug.Log("Bullet spawned with speed " + bullet.speed);
     }
 
     void Reload()
