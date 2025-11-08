@@ -101,7 +101,7 @@ public class AntlerMeshGenerator : MonoBehaviour
             prevForward = forward;
         }
 
-        // Triangles
+        // Triangles for the tube surface
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
             int start = i * radialSegments;
@@ -116,6 +116,19 @@ public class AntlerMeshGenerator : MonoBehaviour
                 tris.Add(a); tris.Add(c); tris.Add(b);
                 tris.Add(b); tris.Add(c); tris.Add(d);
             }
+        }
+
+        // Add end cap at the tip (last ring)
+        int tipCenterIdx = verts.Count;
+        verts.Add(pathPoints[pathPoints.Count - 1]); // Center vertex at tip
+        
+        int lastRingStart = (pathPoints.Count - 1) * radialSegments;
+        for (int j = 0; j < radialSegments; j++)
+        {
+            int a = lastRingStart + j;
+            int b = lastRingStart + (j + 1) % radialSegments;
+            // Triangle pointing inward (normal facing out from tip)
+            tris.Add(tipCenterIdx); tris.Add(b); tris.Add(a);
         }
 
         mesh.SetVertices(verts);
