@@ -73,13 +73,17 @@ public class Herd : MonoBehaviour
             this.animalPrefab = animalPrefab;
         }
 
-        // Randomly determines the number of animals in the herd
-        int numAnimals = maxNumAnimals;
+        // Determine the number of animals (larger herds are rarer)
+        int numAnimals = 2;
+
         if (maxNumAnimals > 2)
         {
-            numAnimals = Random.Range(2, maxNumAnimals + 1);
+            // Bias toward smaller values: Random.value^2 or ^3 makes large numbers rarer
+            float biased = Mathf.Pow(Random.value, 2.5f); // adjust exponent to control rarity (higher = rarer big herds)
+            numAnimals = Mathf.RoundToInt(Mathf.Lerp(2, maxNumAnimals, biased));
         }
 
+        // Spawn the animals
         for (int i = 0; i < numAnimals; i++)
         {
             SpawnAnimal(animalPrefab);
@@ -116,16 +120,6 @@ public class Herd : MonoBehaviour
             return;
         }
 
-        // AnimalVariator animalVariator = animal.GetComponent<AnimalVariator>();
-        // if (animalVariator == null)
-        // {
-        //     Debug.LogWarning("Animal prefab does not have an AnimalVariator component.");
-        // }
-        // else
-        // {
-        //     animalVariator.SetSeed();
-        // }
-
         RegisterHerdAnimal(animalAI);
     }
 
@@ -159,6 +153,60 @@ public class Herd : MonoBehaviour
         }
     }
 
+    public void HerdMoveTo(List<Vector3> target_list)
+    {
+        transform.position = target_list[^1];
+        for (int i = 0; i < animalsInHerd.Count; i++)
+        {
+            animalsInHerd[i].SetMoving(GetRandomPointsInRadiusForArray(target_list));
+        }
+    }
+
+    public bool AreAllAnimalsInRadius()
+    {
+        if (animalsInHerd.Count == 0)
+            return true;
+
+        foreach (var animal in animalsInHerd)
+        {
+            if (animal == null)
+                continue;
+
+            Vector3 herdPos = transform.position;
+            Vector3 animalPos = animal.transform.position;
+
+            // Ignore Y-axis
+            herdPos.y = 0f;
+            animalPos.y = 0f;
+
+            float dist = Vector3.Distance(herdPos, animalPos);
+            if (dist > radius)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool IsHerdFleeing()
+    {
+        if (animalsInHerd.Count == 0 || !IsActive())
+            return false;
+
+        foreach (var animal in animalsInHerd)
+        {
+            if (animal == null)
+                continue;
+
+            AnimalAI animalAI = animal.GetComponent<AnimalAI>();
+            if (animalAI != null && animalAI.fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Vector3 GetRandomPointInRadius()
     {
         // Random polar coordinates
@@ -168,6 +216,12 @@ public class Herd : MonoBehaviour
         Vector3 point = Vector3.zero;
         point.x = transform.position.x + r * Mathf.Cos(theta);
         point.z = transform.position.z + r * Mathf.Sin(theta);
+
+        // Clamp within map bounds
+        point.x = Mathf.Clamp(point.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+        point.z = Mathf.Clamp(point.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+
+        // Adjust Y to terrain height
         point.y = TerrainManager.Instance.GetTerrainHeight(point);
 
         return point;
@@ -186,6 +240,12 @@ public class Herd : MonoBehaviour
             Vector3 point = Vector3.zero;
             point.x = basePos.x + r * Mathf.Cos(theta);
             point.z = basePos.z + r * Mathf.Sin(theta);
+
+            // Clamp within map bounds
+            point.x = Mathf.Clamp(point.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+            point.z = Mathf.Clamp(point.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+
+            // Adjust Y to terrain height
             point.y = TerrainManager.Instance.GetTerrainHeight(point);
 
             newPositions.Add(point);
@@ -246,7 +306,38 @@ public class Herd : MonoBehaviour
         }
     }
 
-    public bool isActive()
+    public Vector3 GetRandomMovementPoint(float moveRadius)
+    {
+        const int maxAttempts = 10; // try up to 10 times for a valid position
+        Vector3 point = Vector3.zero;
+
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            // Random polar coordinates
+            float r = moveRadius * Mathf.Sqrt(Random.value);
+            float theta = Random.value * Mathf.PI * 2f;
+
+            point.x = transform.position.x + r * Mathf.Cos(theta);
+            point.z = transform.position.z + r * Mathf.Sin(theta);
+
+            // Check if within map bounds
+            if (point.x >= GlobalVariables.mapMin.x && point.x <= GlobalVariables.mapMax.x &&
+                point.z >= GlobalVariables.mapMin.z && point.z <= GlobalVariables.mapMax.z)
+            {
+                point.y = TerrainManager.Instance.GetTerrainHeight(point);
+                return point;
+            }
+        }
+
+        // --- Fallback: Clamp if all attempts fail ---
+        point.x = Mathf.Clamp(point.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+        point.z = Mathf.Clamp(point.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+        point.y = TerrainManager.Instance.GetTerrainHeight(point);
+
+        return point;
+    }
+
+    public bool IsActive()
     {
         return herdIsActive;
     }
@@ -268,7 +359,7 @@ public class Herd : MonoBehaviour
                 closestPlayerDist = dist;
         }
 
-        if (isActive())
+        if (IsActive())
         {
             // Deactivate if all players are too far
             if (closestPlayerDist > activationDistance + deactivationOffset)

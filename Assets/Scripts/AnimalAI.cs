@@ -167,6 +167,15 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         fsm.ChangeState(fsm.FleeingState);
     }
 
+    public void SetMoving(List<Vector3> target_list)
+    {
+        if (animal.IsDead())
+            return;
+        fsm.MovingState.ClearTargets();
+        fsm.MovingState.AddTargets(target_list);
+        fsm.ChangeState(fsm.MovingState);
+    }
+
     public List<Vector3> ChooseEscapePositions(Vector3 panicSource, int maxAttempts = 10)
     {
         Vector3 deerPos = transform.position;

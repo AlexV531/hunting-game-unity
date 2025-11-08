@@ -35,6 +35,7 @@ public class AnimalGrazingState : AnimalBaseState
         {
             AnimalAI animalAI = animal.GetComponent<AnimalAI>();
             Vector3 targetPosition;
+
             if (animalAI.herd != null)
             {
                 targetPosition = animalAI.herd.GetRandomPointInRadius();
@@ -46,12 +47,22 @@ public class AnimalGrazingState : AnimalBaseState
                     0f,
                     Random.Range(0f, 7f)
                 );
+
                 targetPosition = animal.transform.position + randomOffset;
+
+                // Clamp within map bounds (ignore Y axis)
+                targetPosition.x = Mathf.Clamp(targetPosition.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+                targetPosition.z = Mathf.Clamp(targetPosition.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+
+                // Optionally, adjust Y based on terrain if needed
+                targetPosition.y = TerrainManager.Instance.GetTerrainHeight(targetPosition);
             }
+
             if (nextState is AnimalMovingState movingState)
             {
                 movingState.AddTarget(targetPosition);
             }
+
             animal.ChangeState(nextState);
         }
     }
