@@ -713,15 +713,15 @@ MonoBehaviour:
   agent: {fileID: 0}
   audioSource: {fileID: 0}
   fleeAngleSpread: 45
-  fleeDistance: 75
+  fleeDistance: 125
   fleeSegments: 3
   herd: {fileID: 0}
   MostRecentSoundPosition: {x: 0, y: 0, z: 0}
   soundHeard: 0
   alertTolerance: 3
-  panicTolerance: 8
-  soundForgetRate: 0.3
-  sightRange: 30
+  panicTolerance: 7
+  soundForgetRate: 0.15
+  sightRange: 40
   sightAngle: 160
   panicCooldown: 3
   onHitReactionTime: 1
@@ -978,6 +978,7 @@ MonoBehaviour:
         byte0060: 0
         byte0061: 0
   male: 0
+  age: 0
 --- !u!82 &2580321422776480406
 AudioSource:
   m_ObjectHideFlags: 0

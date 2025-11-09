@@ -18,6 +18,7 @@ public class HerdManager : MonoBehaviour
     public float needThreshold = 30f; // Start seeking need zone when below this
     public float needSatisfiedThreshold = 80f; // Leave zone when above this
     public float stayAtZoneMinTime = 180f; // Minimum time to stay at zone
+    public float leaveNeedZoneDistanceMax = 500f;
     public float needDrainedPerSecond = 0.01f;
     public float needRestoredPerSecond = 0.1f;
 
@@ -140,7 +141,7 @@ public class HerdManager : MonoBehaviour
                         needsComp.timeAtCurrentZone = 0f;
                         Debug.Log($"Herd satisfied {currentZone.needType} need, leaving zone");
 
-                        Vector3 wanderTarget = herd.GetRandomMovementPoint(300f); // wander within 300 meters of current position
+                        Vector3 wanderTarget = herd.GetRandomMovementPoint(leaveNeedZoneDistanceMax);
                         List<Vector3> wanderList = new List<Vector3> { wanderTarget };
                         herd.HerdMoveTo(wanderList);
                     }

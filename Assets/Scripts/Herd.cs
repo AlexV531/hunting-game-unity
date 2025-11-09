@@ -144,12 +144,20 @@ public class Herd : MonoBehaviour
         }
     }
 
-    public void HerdFleeTo(List<Vector3> target_list)
+    public void HerdFleeTo(List<Vector3> target_list, AnimalAI noticingAnimalAI)
     {
         transform.position = target_list[^1];
         for (int i = 0; i < animalsInHerd.Count; i++)
         {
-            animalsInHerd[i].SetFleeing(GetRandomPointsInRadiusForArray(target_list));
+            if (animalsInHerd[i] == noticingAnimalAI)
+            {
+                animalsInHerd[i].SetFleeing(GetRandomPointsInRadiusForArray(target_list));
+            }
+            else
+            {
+                StartCoroutine(animalsInHerd[i].DelayedSetFleeing(GetRandomPointsInRadiusForArray(target_list)));
+            }
+            
         }
     }
 
@@ -158,7 +166,7 @@ public class Herd : MonoBehaviour
         transform.position = target_list[^1];
         for (int i = 0; i < animalsInHerd.Count; i++)
         {
-            animalsInHerd[i].SetMoving(GetRandomPointsInRadiusForArray(target_list));
+            StartCoroutine(animalsInHerd[i].DelayedSetMoving(GetRandomPointsInRadiusForArray(target_list)));
         }
     }
 

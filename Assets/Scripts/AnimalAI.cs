@@ -26,6 +26,10 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float panicCooldown = 3f; // seconds
     public float onHitReactionTime = 0.6f;
     public float sightReactionTime = 1.5f;
+    public float herdReactionTimeMin = 0.3f;
+    public float herdReactionTimeMax = 1.8f;
+    public float herdReactionTime = 1.0f;
+    public float herdReactionTimeNonFleeFactor = 1.4f;
     private float lastPanicTime = -Mathf.Infinity;
     private int sightLayerMask;
     private bool initialized = false;
@@ -35,7 +39,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     void Awake()
     {
         animal = GetComponent<Animal>();
-        // fsm = GetComponent<AnimalStateManager>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
@@ -91,6 +94,8 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
             herd.RegisterHerdAnimal(this);
         }
         sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
+
+        herdReactionTime = Random.Range(herdReactionTimeMin, herdReactionTimeMax);
 
         initialized = true;
     }
@@ -150,7 +155,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         lastPanicTime = Time.time;
         if (herd != null)
         {
-            herd.HerdFleeTo(ChooseEscapePositions(panicSource));
+            herd.HerdFleeTo(ChooseEscapePositions(panicSource), this);
         }
         else
         {
@@ -158,13 +163,20 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
     }
 
-    public void SetFleeing(List<Vector3> target_list)
+    public void SetFleeing(List<Vector3> targetList)
     {
         if (animal.IsDead())
             return;
         fsm.FleeingState.ClearTargets();
-        fsm.FleeingState.AddTargets(target_list);
+        fsm.FleeingState.AddTargets(targetList);
         fsm.ChangeState(fsm.FleeingState);
+    }
+
+    public IEnumerator DelayedSetFleeing(List<Vector3> targetList)
+    {
+        yield return new WaitForSeconds(herdReactionTime);
+
+        SetFleeing(targetList);
     }
 
     public void SetMoving(List<Vector3> target_list)
@@ -174,6 +186,13 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         fsm.MovingState.ClearTargets();
         fsm.MovingState.AddTargets(target_list);
         fsm.ChangeState(fsm.MovingState);
+    }
+
+    public IEnumerator DelayedSetMoving(List<Vector3> targetList)
+    {
+        yield return new WaitForSeconds(herdReactionTime * herdReactionTimeNonFleeFactor);
+
+        SetMoving(targetList);
     }
 
     public List<Vector3> ChooseEscapePositions(Vector3 panicSource, int maxAttempts = 10)

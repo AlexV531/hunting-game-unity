@@ -6,7 +6,7 @@ public class AnimalMovingState : AnimalBaseState
 {
     [Header("Movement Settings")]
     public float navmeshSearchRadius = 2f;
-    public float movingSpeed = 4.5f;
+    public float movingSpeed = 6f;
 
     [Header("Path Completion Settings")]
     [Tooltip("Additional distance buffer beyond stopping distance to consider arrived")]
@@ -181,7 +181,6 @@ public class AnimalMovingState : AnimalBaseState
 
     protected virtual void OnTargetsDepleted(AnimalStateManager animal)
     {
-        // Safety check - only transition if we're truly done
         if (agent.hasPath || isWaitingForPath || targetQueue.Count > 0)
         {
             Debug.LogWarning($"{animal.gameObject.name}: OnTargetsDepleted called prematurely, ignoring");
