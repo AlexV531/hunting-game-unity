@@ -28,5 +28,10 @@ public class WeaponPickup : InteractableBase
             Debug.Log("Added item to inventory with key " + weapon.key);
             inventory.TryAddItem(weapon);
         }
+
+        if (player.Money < 3)
+        {
+            player.Money += 3;
+        }
     }
 }

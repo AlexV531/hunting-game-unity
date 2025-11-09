@@ -1,7 +1,7 @@
 ========== Build Completed ==========
 Build Result: Unknown
-Total Size: 132331512 bytes
-Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000008/My project.exe
+Total Size: 132332024 bytes
+Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000009/My project.exe
 -----------------------------------------
 ========== Assets Used in Build ==========
 Asset: Assets/Scenes/SampleScene.unity, Size: 21.99 MB
@@ -185,8 +185,8 @@ Asset: Assets/Scripts/ShaderSwitcher.cs, Size: 0.00 MB
 Asset: Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputSystemUIInputModule@64.png, Size: 0.00 MB
 Asset: Assets/Scripts/CameraRecoil.cs, Size: 0.00 MB
 Asset: Assets/Scripts/NeedZone.cs, Size: 0.00 MB
-Asset: Assets/Scripts/ItemPickup.cs, Size: 0.00 MB
 Asset: Assets/Scripts/WeaponPickup.cs, Size: 0.00 MB
+Asset: Assets/Scripts/ItemPickup.cs, Size: 0.00 MB
 Asset: Assets/RenderTextures/AnimalPreviewRT.renderTexture, Size: 0.00 MB
 Asset: Assets/Scripts/PeltSpawnerInteractable.cs, Size: 0.00 MB
 Asset: Assets/Scripts/InventoryPanelUI.cs, Size: 0.00 MB
@@ -536,9 +536,9 @@ Unused Asset: Assets\Scripts\AnimalStateManager.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\FairyTotemObjective.cs, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ColorDebug\OpenScriptFromDebug.cs, Size: 0.00 MB
 Unused Asset: Assets\Settings\Build Profiles\Windows.asset, Size: 0.00 MB
+Unused Asset: Assets\Scripts\TODO, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerData.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LoadoutSlot.cs, Size: 0.00 MB
-Unused Asset: Assets\Scripts\TODO, Size: 0.00 MB
 Unused Asset: Assets\Shaders\BackfacePinkTransparent.shader, Size: 0.00 MB
 Unused Asset: Assets\Materials\Lit Variant.mat, Size: 0.00 MB
 Unused Asset: Assets\Shaders\BackfacePink.shader, Size: 0.00 MB
@@ -561,9 +561,9 @@ Unused Asset: Assets\Scripts\ShaderSwitcher.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\RandomUtil.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\CameraRecoil.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\NeedZone.cs, Size: 0.00 MB
+Unused Asset: Assets\Scripts\WeaponPickup.cs, Size: 0.00 MB
 Unused Asset: Assets\UserChoices.choices, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemPickup.cs, Size: 0.00 MB
-Unused Asset: Assets\Scripts\WeaponPickup.cs, Size: 0.00 MB
 Unused Asset: Assets\RenderTextures\AnimalPreviewRT.renderTexture, Size: 0.00 MB
 Unused Asset: Assets\Scripts\UIMenu.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PeltSpawnerInteractable.cs, Size: 0.00 MB
