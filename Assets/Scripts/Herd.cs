@@ -188,7 +188,7 @@ public class Herd : MonoBehaviour
             animalPos.y = 0f;
 
             float dist = Vector3.Distance(herdPos, animalPos);
-            if (dist > radius)
+            if (dist > radius + 1f)
                 return false;
         }
 

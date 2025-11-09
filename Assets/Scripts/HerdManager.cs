@@ -19,7 +19,7 @@ public class HerdManager : MonoBehaviour
     public float needSatisfiedThreshold = 80f; // Leave zone when above this
     public float stayAtZoneMinTime = 180f; // Minimum time to stay at zone
     public float leaveNeedZoneDistanceMax = 500f;
-    public float needDrainedPerSecond = 0.01f;
+    public float needDrainedPerSecond = 0.05f;
     public float needRestoredPerSecond = 0.1f;
 
     private bool initialized = false;
@@ -108,9 +108,6 @@ public class HerdManager : MonoBehaviour
     {
         foreach (var herd in activeHerds)
         {
-            // if (!herd.IsActive())
-            //     continue;
-
             if (herd.IsHerdFleeing())
                 continue;
 
