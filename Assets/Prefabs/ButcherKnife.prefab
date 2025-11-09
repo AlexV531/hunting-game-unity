@@ -292,7 +292,8 @@ MonoBehaviour:
   loudness: 80
   automaticFire: 1
   maxAmmo: 3
-  reserveAmmo: 100
+  reserveAmmoKey: 0
+  bulletDecalPrefab: {fileID: 0}
 --- !u!114 &7597123915084632046
 MonoBehaviour:
   m_ObjectHideFlags: 0

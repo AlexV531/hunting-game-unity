@@ -20,13 +20,13 @@ public class MoneyDisplay : MonoBehaviour
     {
         // Now safe to use Player.LocalPlayer
         Debug.Log("Local player event proced in money display");
-        moneyText.text = player.Money.ToString();
+        moneyText.text = "$" + player.Money.ToString();
         player.OnMoneyChanged += UpdateMoneyText;
     }
     
 
     private void UpdateMoneyText(int newMoney)
     {
-        moneyText.text = newMoney.ToString();
+        moneyText.text = "$" + newMoney.ToString();
     }
 }

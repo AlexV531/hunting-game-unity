@@ -165,6 +165,9 @@ public class FirstPersonController : NetworkBehaviour
 	private StorageMenu _storageMenu;
 	private ObjectiveMenu _objectiveMenu;
 
+	// ammo UI
+	private AmmoUI _ammoUI;
+
 	// weapon manager
 	private WeaponManager _weaponManager;
 	public Transform weaponContainer;
@@ -237,6 +240,10 @@ public class FirstPersonController : NetworkBehaviour
 		if (_interactText == null)
 		{
 			_interactText = GameObject.FindGameObjectWithTag("InteractText").GetComponent<TextMeshProUGUI>();
+		}
+		if (_ammoUI == null)
+		{
+			_ammoUI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<AmmoUI>();
 		}
 		GroundLayers = LayerMask.GetMask("Terrain", "Default", "Interactable");
 	}
@@ -928,8 +935,10 @@ public class FirstPersonController : NetworkBehaviour
 	public PlayerInventoryMenu GetPlayerInventoryMenu() => _playerInventoryMenu;
 
 	public StorageMenu GetStorageMenu() => _storageMenu;
-	
+
 	public ObjectiveMenu GetObjectiveMenu() => _objectiveMenu;
+
+	public AmmoUI GetAmmoUI() => _ammoUI;
 
     public void RequestOpenInspect(ulong animalId)
     {
@@ -974,7 +983,7 @@ public class FirstPersonController : NetworkBehaviour
 			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData);
 		}
 	}
-	
+
 	[ServerRpc(RequireOwnership = false)]
     public void DropItemServerRpc(ItemInstance droppedItem)
     {

@@ -37,7 +37,7 @@ public class ShopButton : MonoBehaviour
 
         icon.sprite = def.icon;
         nameText.text = shopOptionText;
-        priceText.text = price.ToString();
+        priceText.text = "$" + price.ToString();
         button.onClick.AddListener(OnClicked);
     }
 

@@ -80,14 +80,15 @@ public class Inventory
         return false;
     }
 
-    public bool RemoveItem(ItemInstance target, int amount = 1)
+    public int RemoveItem(ItemInstance target, int amount = 1)
     {
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].Compare(target))
             {
                 ItemInstance updated = items[i];
-                updated.stackSize -= amount;
+                int removedAmount = Mathf.Min(amount, updated.stackSize);
+                updated.stackSize -= removedAmount;
 
                 if (updated.stackSize <= 0)
                 {
@@ -99,14 +100,14 @@ public class Inventory
                 }
                 else
                 {
-                    items[i] = updated; // write-back mutated struct
+                    items[i] = updated;
                 }
 
-                return true;
+                return removedAmount;
             }
         }
 
-        return false;
+        return 0;
     }
 
     public void Clear()
@@ -145,6 +146,16 @@ public class Inventory
         }
 
         return weaponList;
+    }
+
+    public ItemInstance GetInstance(int key)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].key == key)
+                return items[i];
+        }
+        return default;
     }
 
     public List<ItemInstance> GetItems() => items;

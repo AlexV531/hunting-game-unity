@@ -43,7 +43,7 @@ public class BalloonSpawner : Weapon
         Debug.Log("Hey what are we doing here");
         return null;
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
     protected void SpawnBalloonServerRpc(Vector3 spawnPos, Vector3 targetPos, ulong attachTargetId)
     {
@@ -71,8 +71,10 @@ public class BalloonSpawner : Weapon
         {
             Debug.LogWarning($"Could not find attach target with ID {attachTargetId}");
         }
-        
+
         balloon.Initialize(targetPos, attach);
         balloon.GetComponent<NetworkObject>().Spawn();
     }
+    
+    public override int GetCurrentAmmo() => 1;
 }

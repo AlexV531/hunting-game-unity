@@ -32,13 +32,11 @@ public class Weapon : NetworkBehaviour
     public WeaponClass weaponClass = WeaponClass.Large; // This is for loadouts
 
     public int weaponKey;
-    // public ItemInstance weaponInstance;
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(
         false,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
-
     public NetworkVariable<ItemInstance> weaponInstance = new NetworkVariable<ItemInstance>(
         default,
         NetworkVariableReadPermission.Everyone,
@@ -67,17 +65,21 @@ public class Weapon : NetworkBehaviour
     public bool automaticFire = true;
 
     public int maxAmmo = 3;
-    public int reserveAmmo = 100;
+    public int reserveAmmoKey = 24; // TEMPORARY Eventually ammo will be set in loadout
 
     public GameObject bulletDecalPrefab;
 
-    private int currentAmmo = 3;
+    private int currentAmmo = 0;
     private float _fireCooldown = 0f;
     private bool aiming = false;
 
     protected bool initialized = false;
 
     public static bool recoilEnabled = true;
+
+    // private ItemInstance ammoInstance;
+
+    public event System.Action<int, int> OnAmmoChanged;
 
     public virtual void Initialize()
     {
@@ -215,11 +217,12 @@ public class Weapon : NetworkBehaviour
             {
                 return;
             }
-            Shoot();
+            CreateBulletServerRpc();
             EmitNoiseServerRpc(transform.position, loudness, "gunshot");
             if (recoilEnabled)
                 _recoil.AddRecoil(recoilPitch, recoilYaw);
             currentAmmo--;
+            OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
             _fireCooldown = fireRate;
 
             if (!automaticFire)
@@ -231,7 +234,7 @@ public class Weapon : NetworkBehaviour
     void EmitNoiseServerRpc(Vector3 position, float loudness, string name)
     {
         NoiseEvent noiseEvent = new NoiseEvent(position, loudness, name);
-        // NoiseManager.Instance.EmitNoise(noiseEvent);
+        NoiseManager.Instance.EmitNoise(noiseEvent);
         PlayShootAudioClientRpc();
     }
 
@@ -253,14 +256,6 @@ public class Weapon : NetworkBehaviour
         }
     }
 
-    void Shoot()
-    {
-        // GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        // Bullet bullet = bulletObj.GetComponent<Bullet>();
-        // bullet.speed = bulletSpeed;
-        CreateBulletServerRpc();
-    }
-
     [ServerRpc(RequireOwnership = false)]
     public void CreateBulletServerRpc(ServerRpcParams rpcParams = default)
     {
@@ -277,11 +272,22 @@ public class Weapon : NetworkBehaviour
 
     void Reload()
     {
-        if (currentAmmo == maxAmmo)
+        if (currentAmmo >= maxAmmo)
             return;
 
-        reserveAmmo -= maxAmmo - currentAmmo;
-        currentAmmo = maxAmmo;
+        // TEMPORARY AMMO SELECTION SECTION Eventually ammo will be set in loadout screen
+        ItemInstance ammoInstance = _owner.GetInventory().GetInstance(reserveAmmoKey);
+
+        if (ammoInstance.Equals(default))
+            return;
+
+        int needed = maxAmmo - currentAmmo;
+
+        int removed = _owner.GetInventory().RemoveItem(ammoInstance, needed);
+
+        currentAmmo += removed;
+
+        OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
 
         // Play reload animation
     }
@@ -296,6 +302,7 @@ public class Weapon : NetworkBehaviour
         if (!IsOwner)
             return;
         isEquipped.Value = true;
+        _owner.GetAmmoUI().SetWeapon(this);
     }
 
     public virtual void OnUnequip()
@@ -303,5 +310,14 @@ public class Weapon : NetworkBehaviour
         if (!IsOwner)
             return;
         isEquipped.Value = false;
+        _owner.GetAmmoUI().SetWeapon(null);
+    }
+
+    public virtual int GetCurrentAmmo() => currentAmmo;
+
+    public int GetReserveAmmo()
+    {
+        ItemInstance ammo = _owner.GetInventory().GetInstance(reserveAmmoKey);
+        return ammo.Equals(default) ? 0 : ammo.stackSize;
     }
 }
