@@ -1,7 +1,7 @@
 ========== Build Completed ==========
 Build Result: Unknown
 Total Size: 132332024 bytes
-Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000009/My project.exe
+Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000010/My project.exe
 -----------------------------------------
 ========== Assets Used in Build ==========
 Asset: Assets/Scenes/SampleScene.unity, Size: 21.99 MB
