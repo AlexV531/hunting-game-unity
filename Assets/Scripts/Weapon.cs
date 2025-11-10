@@ -67,8 +67,6 @@ public class Weapon : NetworkBehaviour
     public int maxAmmo = 3;
     public int reserveAmmoKey = 24; // TEMPORARY Eventually ammo will be set in loadout
 
-    public GameObject bulletDecalPrefab;
-
     private int currentAmmo = 0;
     private float _fireCooldown = 0f;
     private bool aiming = false;
@@ -76,8 +74,6 @@ public class Weapon : NetworkBehaviour
     protected bool initialized = false;
 
     public static bool recoilEnabled = true;
-
-    // private ItemInstance ammoInstance;
 
     public event System.Action<int, int> OnAmmoChanged;
 
@@ -263,7 +259,6 @@ public class Weapon : NetworkBehaviour
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         bullet.speed = bulletSpeed;
         bullet.playerClientId = rpcParams.Receive.SenderClientId;
-        bullet.bulletDecalPrefab = bulletDecalPrefab;
 
         // Spawn over network
         bulletObj.GetComponent<NetworkObject>().Spawn();

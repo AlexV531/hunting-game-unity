@@ -9,7 +9,6 @@ BUGS:
 Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
 Balloons sometimes do not move after being spawned (reproduction unknown)
 Partridge needs to be looked at again
-Bullet marks don't appear for clients
 Animals in cart can be ballooned, and they don't free the cart space even though they are not in the cart
 
 IN PROGRESS:

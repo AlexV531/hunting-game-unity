@@ -114,22 +114,41 @@ public class Bullet : NetworkBehaviour
         NoiseManager.Instance.EmitNoise(noiseEvent);
     }
 
-    private void SpawnBulletDecal(RaycastHit hit)
+    public void SpawnBulletDecal(RaycastHit hit)
+    {
+        if (!IsServer) return;
+
+        int randomSeed = Random.Range(1, 10000);
+        ulong parentId = 0;
+
+        var networkObject = hit.collider.GetComponentInParent<NetworkObject>();
+        if (networkObject != null)
+            parentId = networkObject.NetworkObjectId;
+
+        SpawnBulletDecalClientRpc(hit.point, hit.normal, parentId, randomSeed);
+    }
+
+    [ClientRpc]
+    private void SpawnBulletDecalClientRpc(Vector3 hitPoint, Vector3 hitNormal, ulong parentId, int seed)
     {
         if (bulletDecalPrefab == null) return;
 
-        GameObject decal = Instantiate(bulletDecalPrefab, hit.point + hit.normal * 0.01f, Quaternion.identity);
+        System.Random rng = new System.Random(seed);
+
+        GameObject decal = Instantiate(bulletDecalPrefab, hitPoint + hitNormal * 0.01f, Quaternion.identity);
 
         // Align decal perpendicular to surface
-        decal.transform.rotation = Quaternion.LookRotation(-hit.normal);
+        decal.transform.rotation = Quaternion.LookRotation(-hitNormal);
 
-        // Random rotation around the normal for variation
-        decal.transform.Rotate(hit.normal, Random.Range(0f, 360f), Space.World);
+        // Add variation
+        decal.transform.Rotate(hitNormal, RandomUtil.RandomRangeFloat(rng, 0f, 360f), Space.World);
 
-        // Parent to hit object (optional)
-        decal.transform.SetParent(hit.collider.transform);
+        // Parent if valid
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(parentId, out var parentObj))
+        {
+            decal.transform.SetParent(parentObj.transform);
+        }
 
-        // Destroy after some time
         Destroy(decal, decalLifetime);
     }
 

@@ -82,7 +82,7 @@ MonoBehaviour:
   healPrevention: 1
   impactLoudness: 50
   playerClientId: 0
-  bulletDecalPrefab: {fileID: 0}
+  bulletDecalPrefab: {fileID: 4446228548660162820, guid: 9d874a01747efde41960c65dc5ed065e, type: 3}
   decalLifetime: 100
 --- !u!114 &1793851522527557457
 MonoBehaviour:
