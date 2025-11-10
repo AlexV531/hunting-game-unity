@@ -78,9 +78,9 @@ public class Antler : MonoBehaviour
                 main.children.Add(secondaryBeam);
         }
 
-        // Age affects tine count - older deer have more tines, but not too many
-        int minAdjustedTines = Mathf.Max(1, Mathf.RoundToInt(minTines * Mathf.Lerp(0.5f, 1.0f, (age - 0.3f) / 1.2f)));
-        int maxAdjustedTines = Mathf.RoundToInt(maxTines * Mathf.Lerp(0.6f, 1.1f, (age - 0.3f) / 1.2f));
+        // Age affects tine count slightly - focus more on size than quantity
+        int minAdjustedTines = Mathf.Max(1, Mathf.RoundToInt(minTines * Mathf.Lerp(0.5f, 0.9f, (age - 0.3f) / 1.2f)));
+        int maxAdjustedTines = Mathf.RoundToInt(maxTines * Mathf.Lerp(0.6f, 0.9f, (age - 0.3f) / 1.2f));
         int tineCount = RandomRangeInt(rng, minAdjustedTines, maxAdjustedTines + 1);
         List<int> usedIndices = new List<int>();
 
@@ -130,9 +130,9 @@ public class Antler : MonoBehaviour
         // Generate the secondary beam path
         beam.pathPoints = GenerateBeam(Vector3.zero, offset, segments, mainBeamCurvature * 0.8f, rng);
 
-        // Add tines to the secondary beam (scaled with age, but not too many)
+        // Add tines to the secondary beam (even fewer on secondary beams)
         List<int> usedIndices = new List<int>();
-        int maxSecondaryTines = Mathf.RoundToInt(maxTines * Mathf.Lerp(0.4f, 0.8f, (age - 0.3f) / 1.2f));
+        int maxSecondaryTines = Mathf.RoundToInt(maxTines * Mathf.Lerp(0.3f, 0.5f, (age - 0.3f) / 1.2f));
         int tineCount = RandomRangeInt(rng, 1, maxSecondaryTines + 1);
 
         for (int i = 0; i < tineCount; i++)
