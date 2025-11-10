@@ -36,11 +36,16 @@ public class BalloonSpawner : Weapon
     private NetworkObject GetTargetAttachObject()
     {
         InteractableBase currentInteractable = _owner.GetCurrentInteractable();
-        if (currentInteractable.NetworkObject.GetComponent<BalloonAttach>() != null)
+
+        BalloonAttach balloonAttach = currentInteractable.NetworkObject.GetComponent<BalloonAttach>();
+        if (balloonAttach != null)
         {
+            if (balloonAttach.IsAttached())
+                return null;
+
             return currentInteractable.NetworkObject;
         }
-        Debug.Log("Hey what are we doing here");
+
         return null;
     }
 
