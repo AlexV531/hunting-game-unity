@@ -72,7 +72,11 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
         List<GameObject> visiblePlayers = GetVisiblePlayers();
 
-        if (visiblePlayers.Count > 0 && sightPanicRoutine == null)
+        if (IsPanicked() && visiblePlayers.Count > 0) // Do not have a reaction time if fleeing
+        {
+            BecomePanicked(visiblePlayers[0].transform.position);
+        }
+        else if (visiblePlayers.Count > 0 && sightPanicRoutine == null)
         {
             sightPanicRoutine = StartCoroutine(PanicReactionRoutine(sightReactionTime, visiblePlayers[0].transform.position));
         }
@@ -80,7 +84,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         {
             StopCoroutine(sightPanicRoutine);
             sightPanicRoutine = null;
-            // Debug.Log("Calmed before panicking");
         }
     }
 
@@ -329,7 +332,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
     public bool IsPanicked()
     {
-        // Debug.Log(fsm.GetCurrentState().GetType().ToString());
         return fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked;
     }
 

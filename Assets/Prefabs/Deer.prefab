@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2034573511
+  GlobalObjectIdHash: 3525937885
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -694,6 +694,8 @@ MonoBehaviour:
   antler: {fileID: 2789237748827086075}
   butcherable: 0
   hitNoiseLoudness: 100
+  bloodSplatterPrefab: {fileID: 7779890846127452997, guid: b16ba903bb88597478123e25004a825b, type: 3}
+  bloodSplatterLifetime: 180
 --- !u!114 &6834382181995577058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,6 +728,10 @@ MonoBehaviour:
   panicCooldown: 3
   onHitReactionTime: 1
   sightReactionTime: 1.5
+  herdReactionTimeMin: 0.3
+  herdReactionTimeMax: 1.8
+  herdReactionTime: 1
+  herdReactionTimeNonFleeFactor: 1.4
 --- !u!195 &5216222710232790833
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1036,7 +1042,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

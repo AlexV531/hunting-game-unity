@@ -108,7 +108,7 @@ public class HerdManager : MonoBehaviour
     {
         foreach (var herd in activeHerds)
         {
-            if (herd.IsHerdFleeing())
+            if (herd.IsHerdPanicked())
                 continue;
 
             var needsComp = herd.GetComponent<HerdNeedsComponent>();

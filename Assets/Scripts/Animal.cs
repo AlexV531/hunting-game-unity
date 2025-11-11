@@ -5,25 +5,36 @@ using System;
 
 public class Animal : NetworkBehaviour
 {
+    [Header("Animal Stats")]
     public float health = 100f;
     public float maxHealth = 100f;
-    public List<HitData> hits = new List<HitData>();
-    public float distDamageFactor = 0.5f;
-    public Transform markerPrefab;
     public float animalBleedFactor = 0.1f;
     public float animalHealFactor = 0.1f;
+    public float distDamageFactor = 0.5f;
+    public float hitNoiseLoudness = 60f;
+
+    [Header("Blood Splatter")]
+    public GameObject bloodSplatterPrefab;
+    public float bloodSplatterLifetime = 180f;
+    public float bleedDamageUntilSplatter = 2f;
+
+    [Header("Animal Components")]
     public AnimalAI animalAI;
     public Corpse corpseInteractable;
-    public Transform bottom;
-    public GameObject internalContainer;
-    private bool isDead = false;
-    public Internal[] internals;
-    private Dictionary<int, Internal> internalLookup;
-    LayerMask layerMask;
-    private BalloonAttach balloonAttach;
     public Antler antler;
-    public bool butcherable = false;
-    public float hitNoiseLoudness = 100;
+    public GameObject internalContainer;
+    public Internal[] internals;
+    public Transform bottom;
+    public Transform markerPrefab;
+
+    private bool isDead = false;
+    private float bleedDamageSinceLastSplatter = 0f;
+
+    private Dictionary<int, Internal> internalLookup;
+    private LayerMask layerMask;
+    private BalloonAttach balloonAttach;
+
+    public List<HitData> hits = new List<HitData>();
 
     void Awake()
     {
@@ -35,17 +46,6 @@ public class Animal : NetworkBehaviour
             internalLookup[internalOrg.internalId] = internalOrg;
         }
         balloonAttach = GetComponent<BalloonAttach>();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        // if (IsServer && antler != null)
-        // {
-        //     antlerSeed = UnityEngine.Random.Range(0, 100000);
-        //     GenerateAntlersClientRpc(antlerSeed);
-        // }
     }
 
     private void Update()
@@ -68,6 +68,7 @@ public class Animal : NetworkBehaviour
             }
 
             float bleedDamage = hit.bleedRate * animalBleedFactor * Time.deltaTime;
+            bleedDamageSinceLastSplatter += bleedDamage;
             if (health - bleedDamage < 0)
             {
                 hit.bleedDamageDone += health;
@@ -79,6 +80,12 @@ public class Animal : NetworkBehaviour
             health = Mathf.Clamp(health - bleedDamage, 0f, maxHealth);
 
             hit.bleedRate -= hit.healRate * animalHealFactor * Time.deltaTime;
+        }
+
+        if (bleedDamageSinceLastSplatter >= bleedDamageUntilSplatter)
+        {
+            SpawnBloodSplatter();
+            bleedDamageSinceLastSplatter = 0;
         }
 
         if (health <= 0f)
@@ -235,6 +242,31 @@ public class Animal : NetworkBehaviour
         animalAI?.OnHit(direction.normalized);
     }
 
+    private void SpawnBloodSplatter()
+    {
+        int randomSeed = UnityEngine.Random.Range(1, 10000);
+        SpawnBloodSplatterClientRpc(bottom.transform.position, randomSeed);
+    }
+
+    [ClientRpc]
+    private void SpawnBloodSplatterClientRpc(Vector3 position, int seed)
+    {
+        if (bloodSplatterPrefab == null) return;
+
+        System.Random rng = new System.Random(seed);
+
+        Quaternion baseRotation = Quaternion.Euler(90f, 0f, 0f);
+
+        float randomAngle = RandomUtil.RandomRangeFloat(rng, 0f, 360f);
+        Quaternion randomRotation = Quaternion.AngleAxis(randomAngle, Vector3.forward);
+
+        Quaternion finalRotation = baseRotation * randomRotation;
+
+        GameObject decal = Instantiate(bloodSplatterPrefab, position, finalRotation);
+
+        Destroy(decal, bloodSplatterLifetime);
+    }
+
     public bool IsDead()
     {
         return isDead;
@@ -310,6 +342,8 @@ public class Animal : NetworkBehaviour
             Debug.Log($"Internal: {internalHit.internalPart.name} Health reduced by: {initialDamage}, Bleed inflicted: {bleedInflicted}");
         }
 
+        SpawnBloodSplatter();
+
         Debug.Log("Total health remaining: " + health);
 
         if (health <= 0f)
@@ -325,6 +359,8 @@ public class Animal : NetworkBehaviour
 
     private void EmitAnimalHitNoise()
     {
+        if (animalAI.IsPanicked())
+            return;
         NoiseEvent noiseEvent = new NoiseEvent(transform.position, hitNoiseLoudness, "Animal hit noise");
         NoiseManager.Instance.EmitNoise(noiseEvent);
     }

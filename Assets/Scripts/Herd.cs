@@ -195,18 +195,19 @@ public class Herd : MonoBehaviour
         return true;
     }
 
-    public bool IsHerdFleeing()
+    public bool IsHerdPanicked()
     {
         if (animalsInHerd.Count == 0 || !IsActive())
+        {
             return false;
+        }
 
         foreach (var animal in animalsInHerd)
         {
             if (animal == null)
                 continue;
 
-            AnimalAI animalAI = animal.GetComponent<AnimalAI>();
-            if (animalAI != null && animalAI.fsm.GetCurrentState().Alertness == AlertnessLevel.Panicked)
+            if (animal.IsPanicked())
             {
                 return true;
             }
