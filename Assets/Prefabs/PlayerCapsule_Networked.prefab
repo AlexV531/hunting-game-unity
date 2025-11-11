@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 4547363607548388873}
   - component: {fileID: 438105904991772349}
   - component: {fileID: 7925094639610938169}
+  - component: {fileID: 5303262583389119518}
   m_Layer: 14
   m_Name: PlayerCapsule_Networked
   m_TagString: Player
@@ -755,6 +756,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5303262583389119518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435097450268482601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce667bf000777a4aa4709a383c6d831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassTrampler
+  trampleOffset: {x: 0, y: 0, z: 0}
+  showDebugGizmo: 0
 --- !u!1 &8519950718463265629
 GameObject:
   m_ObjectHideFlags: 0
