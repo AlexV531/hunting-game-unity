@@ -1,18 +1,18 @@
-Shader "Custom/GrassTrampleComputeBuffer"
+Shader "Custom/GrassTrampleComputeBuffer_Shadow"
 {
     Properties
     {
-        _MainTex ("Grass Texture", 2D) = "white" {}
-        _Color ("Tint Color", Color) = (1,1,1,1)
-        _Cutoff ("Alpha Cutoff", Range(0,1)) = 0.5
+        _MainTex("Grass Texture", 2D) = "white" {}
+        _Color("Tint Color", Color) = (1,1,1,1)
+        _Cutoff("Alpha Cutoff", Range(0,1)) = 0.5
 
-        [Header(Wind)]
-        _WindSpeed ("Wind Speed", Float) = 1.0
-        _WindStrength ("Wind Strength", Float) = 0.1
+        _WindSpeed("Wind Speed", Float) = 1.0
+        _WindStrength("Wind Strength", Float) = 0.1
 
-        [Header(Trample)]
-        _TrampleRadius ("Trample Radius", Float) = 10
-        _TrailLifetime ("Trail Lifetime", Float) = 5.0
+        _TrampleRadius("Trample Radius", Float) = 1.5
+        _BendStiffness("Bend Stiffness", Range(0,1)) = 0.5
+        _TrailLifetime("Trail Lifetime", Float) = 180
+        _FadeTime("Fade Time", Float) = 5
     }
 
     SubShader
@@ -21,6 +21,7 @@ Shader "Custom/GrassTrampleComputeBuffer"
         LOD 100
         Cull Off
 
+        // ===== Forward Pass =====
         Pass
         {
             Name "ForwardLit"
@@ -31,6 +32,7 @@ Shader "Custom/GrassTrampleComputeBuffer"
             #pragma fragment frag
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_shadowcaster
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -65,42 +67,44 @@ Shader "Custom/GrassTrampleComputeBuffer"
                 float _WindSpeed;
                 float _WindStrength;
                 float _TrampleRadius;
+                float _BendStiffness;
                 float _TrailLifetime;
+                float _FadeTime;
             CBUFFER_END
 
-            StructuredBuffer<float4> _TrampleTrailBuffer; // xyz = position, w = creationTime
+            StructuredBuffer<float4> _TrampleTrailBuffer;
             int _TrampleTrailCount;
             float _GlobalTime;
 
-            // Wind sway
-            float3 ApplyWind(float3 positionWS, float verticalFactor)
-            {
-                float windPhase = (_GlobalTime * _WindSpeed) + (positionWS.x * 0.5) + (positionWS.z * 0.5);
-                float wind = sin(windPhase) * _WindStrength;
-                return float3(wind, 0, wind * 0.5) * verticalFactor;
-            }
-
-            // Trample bending
-            float3 ApplyTrample(float3 worldPos, float3 positionOS)
+            float3 ApplyTrample(float3 worldPos)
             {
                 float3 offset = float3(0,0,0);
-                float verticalFactor = saturate(positionOS.y * 2.0);
 
                 for (int i = 0; i < _TrampleTrailCount; i++)
                 {
-                    float3 trailPos = _TrampleTrailBuffer[i].xyz;
-                    float age = _GlobalTime - _TrampleTrailBuffer[i].w;
-                    float fade = saturate(1.0 - age / _TrailLifetime);
-                    if (fade <= 0) continue;
+                    float4 trailData = _TrampleTrailBuffer[i];
+                    float3 trailPos = trailData.xyz;
+                    float age = _GlobalTime - trailData.w;
+
+                    if (age > _TrailLifetime) continue;
+
+                    float fade = 1.0;
+                    if (age > (_TrailLifetime - _FadeTime))
+                        fade = saturate(1.0 - (age - (_TrailLifetime - _FadeTime)) / _FadeTime);
+
+                    if (fade <= 0.0) continue;
 
                     float2 deltaXZ = worldPos.xz - trailPos.xz;
                     float dist = length(deltaXZ);
-                    if (dist > _TrampleRadius) continue; // spatial culling
+                    if (dist > _TrampleRadius) continue;
 
                     float influence = saturate(1.0 - dist / _TrampleRadius) * fade;
                     influence = influence * influence * influence;
 
-                    float2 dir = normalize(deltaXZ);
+                    float2 dir = deltaXZ;
+                    if (length(dir) > 0.001)
+                        dir = normalize(dir);
+
                     offset.x += dir.x * influence * 0.6;
                     offset.y -= influence * 1.2;
                     offset.z += dir.y * influence * 0.6;
@@ -109,37 +113,34 @@ Shader "Custom/GrassTrampleComputeBuffer"
                 return offset;
             }
 
+            float3 ApplyWind(float3 worldPos)
+            {
+                float phase = (_GlobalTime * _WindSpeed) + (worldPos.x + worldPos.z) * 0.5;
+                float wind = sin(phase) * _WindStrength;
+                return float3(wind,0,wind*0.5);
+            }
+
             Varyings vert(Attributes input)
             {
                 Varyings output;
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
-                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
+                posWS += ApplyTrample(posWS);
+                posWS += ApplyWind(posWS);
 
-                // Trample
-                float3 trampleOffset = ApplyTrample(positionWS, input.positionOS.xyz);
-                positionWS += trampleOffset;
-
-                // Wind
-                float verticalFactor = saturate(input.positionOS.y);
-                float3 windOffset = ApplyWind(positionWS, verticalFactor);
-                positionWS += windOffset;
-
-                output.positionCS = TransformWorldToHClip(positionWS);
-                output.positionWS = positionWS;
+                output.positionCS = TransformWorldToHClip(posWS);
+                output.positionWS = posWS;
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 output.fogFactor = ComputeFogFactor(output.positionCS.z);
                 output.color = input.color;
-
                 return output;
             }
 
             half4 frag(Varyings input) : SV_Target
             {
-                UNITY_SETUP_INSTANCE_ID(input);
-
                 half4 albedo = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
                 albedo *= _Color * input.color;
                 clip(albedo.a - _Cutoff);
@@ -148,13 +149,103 @@ Shader "Custom/GrassTrampleComputeBuffer"
                 float3 normalWS = normalize(input.normalWS);
                 float NdotL = saturate(dot(normalWS, mainLight.direction));
 
-                float3 ambient = float3(0.4, 0.45, 0.5);
-                float3 lighting = ambient + (mainLight.color * NdotL * 0.6);
+                float3 ambient = float3(0.4,0.45,0.5);
+                float3 lighting = ambient + mainLight.color * NdotL * 0.6;
 
                 half3 color = albedo.rgb * lighting;
                 color = MixFog(color, input.fogFactor);
-
                 return half4(color, 1.0);
+            }
+            ENDHLSL
+        }
+
+        // ===== Shadow Caster Pass =====
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode"="ShadowCaster" }
+
+            ZWrite On
+            ZTest LEqual
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex vertShadow
+            #pragma fragment fragShadow
+            #pragma multi_compile_instancing
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+
+            StructuredBuffer<float4> _TrampleTrailBuffer;
+            int _TrampleTrailCount;
+            float _GlobalTime;
+            float _TrampleRadius;
+            float _TrailLifetime;
+            float _FadeTime;
+
+            float3 ApplyTrampleShadow(float3 worldPos)
+            {
+                float3 offset = float3(0,0,0);
+
+                for (int i = 0; i < _TrampleTrailCount; i++)
+                {
+                    float4 trailData = _TrampleTrailBuffer[i];
+                    float3 trailPos = trailData.xyz;
+                    float age = _GlobalTime - trailData.w;
+
+                    if (age > _TrailLifetime) continue;
+
+                    float fade = 1.0;
+                    if (age > (_TrailLifetime - _FadeTime))
+                        fade = saturate(1.0 - (age - (_TrailLifetime - _FadeTime)) / _FadeTime);
+
+                    if (fade <= 0.0) continue;
+
+                    float2 deltaXZ = worldPos.xz - trailPos.xz;
+                    float dist = length(deltaXZ);
+                    if (dist > _TrampleRadius) continue;
+
+                    float influence = saturate(1.0 - dist / _TrampleRadius) * fade;
+                    influence = influence * influence * influence;
+
+                    float2 dir = deltaXZ;
+                    if (length(dir) > 0.001)
+                        dir = normalize(dir);
+
+                    offset.x += dir.x * influence * 0.6;
+                    offset.y -= influence * 1.2;
+                    offset.z += dir.y * influence * 0.6;
+                }
+
+                return offset;
+            }
+
+            Varyings vertShadow(Attributes input)
+            {
+                Varyings output;
+                UNITY_SETUP_INSTANCE_ID(input);
+
+                float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
+                posWS += ApplyTrampleShadow(posWS);
+
+                output.positionCS = TransformWorldToHClip(posWS);
+                return output;
+            }
+
+            half4 fragShadow(Varyings input) : SV_Target
+            {
+                return 0;
             }
             ENDHLSL
         }

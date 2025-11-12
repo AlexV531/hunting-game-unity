@@ -5,29 +5,28 @@ public class GrassTrampleSystem : MonoBehaviour
 {
     [Header("Trample Settings")]
     [SerializeField] private float trampleRadius = 1.5f;
-    [SerializeField] private float trailLifetime = 5.0f; // seconds
+    [SerializeField] private float trampleStrength = 1.0f;
+    [SerializeField] private float recoverySpeed = 0.5f;
     [SerializeField] private int maxActiveTramplers = 10;
 
     [Header("Trail Settings")]
     [SerializeField] private bool enableTrails = true;
+    [SerializeField] private float trailLifetime = 180f; // 3 minutes
+    [SerializeField] private float trailFadeTime = 5f;   // fade duration
     [SerializeField] private float trailSpacing = 0.4f;
-    [SerializeField] private int maxTrailPoints = 2000; // Max points in ComputeBuffer
+    [SerializeField] private int maxTrailPoints = 2000;
 
-    [Header("Optimization")]
-    [SerializeField] private bool useCameraCulling = true;
-    [SerializeField] private float maxTrailDistance = 50.0f;
-
-    private Camera mainCamera;
     private static GrassTrampleSystem instance;
-
-    private List<Trampler> activeTramplers = new List<Trampler>();
+    private List<TrampleData> activeTramplers = new List<TrampleData>();
     private List<TrailPoint> trailPoints = new List<TrailPoint>();
 
     private ComputeBuffer trailBuffer;
 
-    private class Trampler
+    private class TrampleData
     {
         public Transform transform;
+        public float currentStrength;
+        public float targetStrength;
         public Vector3 lastTrailPosition;
         public float distanceSinceLastTrail;
     }
@@ -35,6 +34,7 @@ public class GrassTrampleSystem : MonoBehaviour
     private class TrailPoint
     {
         public Vector3 position;
+        public float strength;
         public float creationTime;
     }
 
@@ -43,17 +43,13 @@ public class GrassTrampleSystem : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
             trailBuffer = new ComputeBuffer(maxTrailPoints, sizeof(float) * 4);
         }
         else
         {
             Destroy(gameObject);
         }
-    }
-
-    void Start()
-    {
-        mainCamera = Camera.main;
     }
 
     void OnDestroy()
@@ -67,10 +63,10 @@ public class GrassTrampleSystem : MonoBehaviour
 
     void Update()
     {
-        if (enableTrails)
-            UpdateTrails();
+        if (!enableTrails) return;
 
-        UpdateShaderProperties();
+        UpdateTrails();
+        UpdateShaderBuffer();
     }
 
     public static void RegisterTrampler(Transform trampler)
@@ -78,12 +74,15 @@ public class GrassTrampleSystem : MonoBehaviour
         if (instance == null) return;
         if (instance.activeTramplers.Count >= instance.maxActiveTramplers) return;
 
-        instance.activeTramplers.Add(new Trampler
+        var data = new TrampleData
         {
             transform = trampler,
+            currentStrength = 0f,
+            targetStrength = instance.trampleStrength,
             lastTrailPosition = trampler.position,
             distanceSinceLastTrail = 0f
-        });
+        };
+        instance.activeTramplers.Add(data);
     }
 
     public static void UnregisterTrampler(Transform trampler)
@@ -94,76 +93,62 @@ public class GrassTrampleSystem : MonoBehaviour
 
     private void UpdateTrails()
     {
-        float time = Time.time;
-
-        // Remove old trails
-        trailPoints.RemoveAll(t => (time - t.creationTime) > trailLifetime);
-
+        // Update existing tramplers
         foreach (var trampler in activeTramplers)
         {
             if (trampler.transform == null) continue;
 
             Vector3 currentPos = trampler.transform.position;
-            trampler.distanceSinceLastTrail += Vector3.Distance(currentPos, trampler.lastTrailPosition);
+            float distance = Vector3.Distance(currentPos, trampler.lastTrailPosition);
+            trampler.distanceSinceLastTrail += distance;
 
             if (trampler.distanceSinceLastTrail >= trailSpacing)
             {
-                if (trailPoints.Count < maxTrailPoints)
+                // Add new trail point
+                if (trailPoints.Count >= maxTrailPoints)
+                    trailPoints.RemoveAt(0); // remove oldest
+
+                trailPoints.Add(new TrailPoint
                 {
-                    trailPoints.Add(new TrailPoint
-                    {
-                        position = currentPos,
-                        creationTime = time
-                    });
-                }
-                else
-                {
-                    // Overwrite oldest trail point
-                    trailPoints[0] = new TrailPoint
-                    {
-                        position = currentPos,
-                        creationTime = time
-                    };
-                }
+                    position = currentPos,
+                    strength = trampler.targetStrength,
+                    creationTime = Time.time
+                });
 
                 trampler.distanceSinceLastTrail = 0f;
-                trampler.lastTrailPosition = currentPos;
             }
+
+            trampler.lastTrailPosition = currentPos;
         }
+
+        // Remove old trails beyond lifetime
+        trailPoints.RemoveAll(t => Time.time - t.creationTime > trailLifetime + trailFadeTime);
     }
 
-    private void UpdateShaderProperties()
+    private void UpdateShaderBuffer()
     {
         int count = trailPoints.Count;
-        Vector4[] bufferData = new Vector4[maxTrailPoints];
+        if (count > maxTrailPoints) count = maxTrailPoints;
 
+        Vector4[] bufferData = new Vector4[maxTrailPoints];
         for (int i = 0; i < count; i++)
         {
             var t = trailPoints[i];
             bufferData[i] = new Vector4(t.position.x, t.position.y, t.position.z, t.creationTime);
         }
 
-        // Fill remaining slots with zeros
+        // Fill remaining slots with zero
         for (int i = count; i < maxTrailPoints; i++)
             bufferData[i] = Vector4.zero;
 
         trailBuffer.SetData(bufferData);
 
         Shader.SetGlobalBuffer("_TrampleTrailBuffer", trailBuffer);
-        Shader.SetGlobalInt("_TrampleTrailCount", count);
+        Shader.SetGlobalInt("_TrampleTrailCount", trailPoints.Count);
         Shader.SetGlobalFloat("_TrampleRadius", trampleRadius);
+        Shader.SetGlobalFloat("_RecoverySpeed", recoverySpeed);
         Shader.SetGlobalFloat("_TrailLifetime", trailLifetime);
+        Shader.SetGlobalFloat("_FadeTime", trailFadeTime);
         Shader.SetGlobalFloat("_GlobalTime", Time.time);
-    }
-
-    void OnDrawGizmos()
-    {
-        if (!enableTrails || trailPoints == null) return;
-
-        Gizmos.color = Color.red;
-        foreach (var t in trailPoints)
-        {
-            Gizmos.DrawSphere(t.position, trampleRadius * 0.5f);
-        }
     }
 }
