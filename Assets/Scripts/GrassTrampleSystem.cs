@@ -45,6 +45,18 @@ public class GrassTrampleSystem : MonoBehaviour
             instance = this;
 
             trailBuffer = new ComputeBuffer(maxTrailPoints, sizeof(float) * 4);
+            
+            // Initialize buffer with empty data immediately
+            Vector4[] emptyData = new Vector4[maxTrailPoints];
+            for (int i = 0; i < maxTrailPoints; i++)
+                emptyData[i] = Vector4.zero;
+            
+            trailBuffer.SetData(emptyData);
+            
+            // Set global shader properties immediately
+            Shader.SetGlobalBuffer("_TrampleTrailBuffer", trailBuffer);
+            Shader.SetGlobalInt("_TrampleTrailCount", 0);
+            Shader.SetGlobalFloat("_GlobalTime", Time.time);
         }
         else
         {

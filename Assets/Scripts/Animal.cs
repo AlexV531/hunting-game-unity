@@ -359,6 +359,9 @@ public class Animal : NetworkBehaviour
 
     private void EmitAnimalHitNoise()
     {
+        if (animalAI != null)
+            return;
+
         if (animalAI.IsPanicked())
             return;
         NoiseEvent noiseEvent = new NoiseEvent(transform.position, hitNoiseLoudness, "Animal hit noise");

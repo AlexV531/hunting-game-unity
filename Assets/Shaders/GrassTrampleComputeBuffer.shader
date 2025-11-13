@@ -13,6 +13,10 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
         _ShadowStrength("Shadow Strength", Range(0,1)) = 0.7
         _NormalInfluence("Normal Lighting Influence", Range(0,1)) = 0.5
         _MinLighting("Minimum Lighting", Range(0,1)) = 0.3
+        
+        [Header(Shadow Bias Fix)]
+        _CustomShadowBias("Shadow Depth Bias", Range(0,10)) = 1.0
+        _CustomShadowNormalBias("Shadow Normal Bias", Range(0,10)) = 1.5
 
         _TrampleRadius("Trample Radius", Float) = 1.5
         _BendStiffness("Bend Stiffness", Range(0,1)) = 0.5
@@ -81,6 +85,8 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
                 float _ShadowStrength;
                 float _NormalInfluence;
                 float _MinLighting;
+                float _CustomShadowBias;
+                float _CustomShadowNormalBias;
                 float _TrampleRadius;
                 float _BendStiffness;
                 float _TrailLifetime;
@@ -94,6 +100,9 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
             float3 ApplyTrample(float3 worldPos)
             {
                 float3 offset = float3(0,0,0);
+                
+                // Safety check for when buffer isn't set
+                if (_TrampleTrailCount <= 0) return offset;
 
                 for (int i = 0; i < _TrampleTrailCount; i++)
                 {
@@ -152,8 +161,19 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
                 output.fogFactor = ComputeFogFactor(output.positionCS.z);
                 output.color = input.color;
                 
-                // Calculate shadow coordinates
-                output.shadowCoord = TransformWorldToShadowCoord(posWS);
+                // Calculate shadow coordinates with custom bias
+                VertexPositionInputs vertexInput = (VertexPositionInputs)0;
+                vertexInput.positionWS = posWS;
+                vertexInput.positionCS = output.positionCS;
+                
+                float3 normalWS = output.normalWS;
+                float4 shadowCoord = GetShadowCoord(vertexInput);
+                
+                // Apply custom bias to reduce shadow acne
+                shadowCoord.xyz += normalWS * _CustomShadowNormalBias * 0.001;
+                shadowCoord.z -= _CustomShadowBias * 0.0001;
+                
+                output.shadowCoord = shadowCoord;
                 
                 return output;
             }
@@ -232,6 +252,8 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
             
             float4 _MainTex_ST;
             float _Cutoff;
+            float _CustomShadowBias;
+            float _CustomShadowNormalBias;
             
             StructuredBuffer<float4> _TrampleTrailBuffer;
             int _TrampleTrailCount;
@@ -245,6 +267,9 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
             float3 ApplyTrampleShadow(float3 worldPos)
             {
                 float3 offset = float3(0,0,0);
+                
+                // Safety check for when buffer isn't set
+                if (_TrampleTrailCount <= 0) return offset;
 
                 for (int i = 0; i < _TrampleTrailCount; i++)
                 {
@@ -286,14 +311,22 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
                 return float3(wind, 0, wind * 0.5);
             }
 
-            float3 GetShadowPositionHClip(Attributes input)
+            float4 GetShadowPositionHClip(Attributes input)
             {
                 float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
                 posWS += ApplyTrampleShadow(posWS);
                 posWS += ApplyWindShadow(posWS);
                 
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
-                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(posWS, normalWS, _MainLightPosition.xyz));
+                
+                // Apply custom shadow bias
+                float3 lightDir = _MainLightPosition.xyz;
+                posWS = ApplyShadowBias(posWS, normalWS, lightDir);
+                
+                // Add additional custom bias
+                posWS += normalWS * _CustomShadowNormalBias * 0.001;
+                
+                float4 positionCS = TransformWorldToHClip(posWS);
                 
                 #if UNITY_REVERSED_Z
                     positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
@@ -371,6 +404,9 @@ Shader "Custom/GrassTrampleComputeBuffer_ShadowReceiving"
             float3 ApplyTrampleDepth(float3 worldPos)
             {
                 float3 offset = float3(0,0,0);
+                
+                // Safety check for when buffer isn't set
+                if (_TrampleTrailCount <= 0) return offset;
 
                 for (int i = 0; i < _TrampleTrailCount; i++)
                 {
