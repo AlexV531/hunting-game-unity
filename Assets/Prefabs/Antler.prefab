@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8387617026056533479, guid: aa38d7b0e367ecc4aac915dcfe957879, type: 3}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,13 +104,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Antler
   generator: {fileID: 8793793919697073829}
-  mainSegments: 10
+  antlerMirror: {fileID: 0}
+  minMainSegments: 8
+  maxMainSegments: 12
   mainLength: 1.2
+  mainLengthVariation: 0.2
   mainRadius: 0.1
+  secondaryBeamChance: 0.4
+  secondaryBeamLengthMultiplier: 0.7
+  secondaryBeamRadiusMultiplier: 0.8
   minTines: 2
   maxTines: 5
   tineMaxLength: 0.5
   tineMaxRadius: 0.03
+  tineMinRadius: 0.02
   maxDepth: 2
   mainBeamCurvature: 0.22
   tineCurvature: 0.05

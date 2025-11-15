@@ -19,7 +19,7 @@ public class Herd : MonoBehaviour
     private float deactivationOffset = 100f;
     private bool herdIsActive = false;
 
-    void Initialize()
+    void ManuallyInitialize()
     {
         if (animalPrefab != null)
         {
@@ -34,8 +34,9 @@ public class Herd : MonoBehaviour
         
         if (manuallyInitialize)
         {
-            Initialize();
+            Debug.Log("Initializing herd manually");
             manuallyInitialize = false;
+            ManuallyInitialize();
         }
 
         HandleActivateDeactivate();
@@ -83,6 +84,8 @@ public class Herd : MonoBehaviour
             numAnimals = Mathf.RoundToInt(Mathf.Lerp(2, maxNumAnimals, biased));
         }
 
+        Debug.Log("Herd initializing with " + numAnimals + " animals");
+
         // Spawn the animals
         for (int i = 0; i < numAnimals; i++)
         {
@@ -119,6 +122,8 @@ public class Herd : MonoBehaviour
             Destroy(animal);
             return;
         }
+
+        Debug.Log("Spawning animal");
 
         RegisterHerdAnimal(animalAI);
     }
@@ -312,6 +317,21 @@ public class Herd : MonoBehaviour
         foreach (var animal in animalsInHerd)
         {
             animal.animal.SetVisualsEnabled(visualsEnabled);
+
+            if (visualsEnabled)
+            {
+                if (animal.trampler != null)
+                {
+                    animal.trampler.RegisterTrampler();
+                }
+            }
+            else
+            {
+                if (animal.trampler != null)
+                {
+                    animal.trampler.UnregisterTrampler();
+                }
+            }
         }
     }
 

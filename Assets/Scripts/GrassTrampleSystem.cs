@@ -13,8 +13,8 @@ public class GrassTrampleSystem : MonoBehaviour
     [SerializeField] private bool enableTrails = true;
     [SerializeField] private float trailLifetime = 180f; // 3 minutes
     [SerializeField] private float trailFadeTime = 5f;   // fade duration
-    [SerializeField] private float trailSpacing = 0.4f;
-    [SerializeField] private int maxTrailPoints = 2000;
+    [SerializeField] private float trailSpacing = 1f;
+    [SerializeField] private int maxTrailPoints = 20000;
 
     private static GrassTrampleSystem instance;
     private List<TrampleData> activeTramplers = new List<TrampleData>();
@@ -85,6 +85,13 @@ public class GrassTrampleSystem : MonoBehaviour
     {
         if (instance == null) return;
         if (instance.activeTramplers.Count >= instance.maxActiveTramplers) return;
+        if (trampler == null)
+        {
+            Debug.Log("transform is null");
+            return;
+        }
+
+        Debug.Log(trampler.ToString());
 
         var data = new TrampleData
         {
@@ -95,6 +102,8 @@ public class GrassTrampleSystem : MonoBehaviour
             distanceSinceLastTrail = 0f
         };
         instance.activeTramplers.Add(data);
+
+        Debug.Log("Added trampler");
     }
 
     public static void UnregisterTrampler(Transform trampler)
@@ -118,7 +127,10 @@ public class GrassTrampleSystem : MonoBehaviour
             {
                 // Add new trail point
                 if (trailPoints.Count >= maxTrailPoints)
+                {
+                    Debug.Log("Removing oldest trail point " + trailPoints.Count);
                     trailPoints.RemoveAt(0); // remove oldest
+                }
 
                 trailPoints.Add(new TrailPoint
                 {

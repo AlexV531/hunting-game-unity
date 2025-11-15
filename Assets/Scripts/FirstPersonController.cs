@@ -87,6 +87,9 @@ public class FirstPersonController : NetworkBehaviour
 	[Header("Item dropping")]
 	public ItemSpawner itemSpawner;
 
+	[Header("Grass trampling")]
+	public GrassTrampler trampler;
+
 	[Header("Multiplayer")]
 	public NetworkVariable<FixedString64Bytes> PlayerName = new NetworkVariable<FixedString64Bytes>(
 		"Player",

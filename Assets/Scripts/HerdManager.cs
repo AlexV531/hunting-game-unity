@@ -75,6 +75,7 @@ public class HerdManager : MonoBehaviour
         {
             for (int i = 0; i < maxHerdForAnimal[j]; i++)
             {
+                Debug.Log("Attempting herd spawn");
                 TrySpawnHerd(animalPrefabs[j], maxHerdForAnimal[j], maxAnimalInHerdForAnimal[j]);
             }
         }

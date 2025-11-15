@@ -11,6 +11,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public Animator animator;
     public NavMeshAgent agent;
     public AudioSource audioSource;
+    public GrassTrampler trampler;
     public float HearingThreshold => 0.5f;
     public float fleeAngleSpread = 45f; // degrees
     public float fleeDistance = 50f;

@@ -162,7 +162,7 @@ MeshRenderer:
   m_RenderingLayerMask: 256
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b911390c5825014e8377183a7837d3f, type: 2}
+  - {fileID: -2813467912831258332, guid: 343a4f0a24782ed47994aba1764adf46, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -400,6 +400,7 @@ MonoBehaviour:
   shoulderCarryPoint: {fileID: 3114307596873294267}
   grabPoint: {fileID: 6582197765361090636}
   itemSpawner: {fileID: 2953867833584633733}
+  trampler: {fileID: 0}
   PlayerName:
     m_InternalValue:
       utf8LengthInBytes: 6
@@ -769,6 +770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassTrampler
   trampleOffset: {x: 0, y: 0, z: 0}
+  registerTramplerOnStart: 1
   showDebugGizmo: 0
 --- !u!1 &8519950718463265629
 GameObject:
