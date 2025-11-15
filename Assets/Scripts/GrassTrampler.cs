@@ -38,7 +38,7 @@ public class GrassTrampler : MonoBehaviour
 
     public void RegisterTrampler()
     {
-        // GrassTrampleSystem.RegisterTrampler(transform);
+        GrassTrampleSystem.RegisterTrampler(transform);
     }
 
     public void UnregisterTrampler()

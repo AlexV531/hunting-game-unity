@@ -4,6 +4,7 @@ Tracking system (footsteps, blood, feces)
 Foliage and rocks
 Partidge fly movement when fleeing
 Spell system framework
+Optimize grass trails (trail points only need to be added to compute buffer if they are close to the player, currently all points are added to compute buffer)
 
 BUGS:
 Butcher knife sometimes disappears when taken off the rack (reproduction unknown)
