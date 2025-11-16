@@ -30,6 +30,8 @@ public class PlayerInputs : MonoBehaviour
 	public bool inventory;
 	public bool dropItem;
 	public bool toggleShader;
+	public bool debug1;
+	public bool debug2;
 	public bool leftMouseHeld;
 	public Vector2 dragInUI;
 
@@ -173,6 +175,16 @@ public class PlayerInputs : MonoBehaviour
 	public void OnToggleShader(InputValue value)
 	{
 		ToggleShaderInput(value.isPressed);
+	}
+
+	public void OnDebug1(InputValue value)
+	{
+		Debug1Input(value.isPressed);
+	}
+
+	public void OnDebug2(InputValue value)
+	{
+		Debug2Input(value.isPressed);
 	}
 
 	public void OnLeftMouseHeld(InputValue value)
@@ -333,6 +345,16 @@ public class PlayerInputs : MonoBehaviour
 	public void ToggleShaderInput(bool newToggleShaderState)
 	{
 		toggleShader = newToggleShaderState;
+	}
+
+	public void Debug1Input(bool newDebug1State)
+	{
+		debug1 = newDebug1State;
+	}
+
+	public void Debug2Input(bool newDebug2State)
+	{
+		debug2 = newDebug2State;
 	}
 
 	public void LeftMouseHeldInput(bool pressed)
