@@ -14,14 +14,14 @@ public class GrassTrampleSystem : MonoBehaviour
     [SerializeField] private FilterMode filterMode = FilterMode.Bilinear;
     
     [Header("Trample Settings")]
-    [SerializeField] private float trampleStrength = 5.0f;
+    [SerializeField] private float trampleStrength = 1.5f;
     [SerializeField] private float decayRate = 0.5f;
     [SerializeField] private int maxActiveTramplers = 10;
 
     [Header("Trail Settings")]
     [SerializeField] private bool enableTrails = true;
     [SerializeField] private float trailSpacing = 1f;
-    [SerializeField] private float footprintSize = 2f;
+    [SerializeField] private float footprintSize = 0.8f;
 
     [Header("Performance")]
     [SerializeField] [Tooltip("Decay every N frames (1=smoothest, 2-3=recommended, 5+=fastest)")]
