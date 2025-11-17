@@ -93,25 +93,20 @@ Shader "Custom/GrassTrampleRenderTexture"
             float4 _GridWorldSize;
             float _GlobalTime;
 
-            float3 ApplyTrample(float3 worldPos)
+            float3 ApplyTrample(float3 worldPos, float vertexHeight)
             {
                 // Convert world XZ to UV coordinates
                 float2 uv = (worldPos.xz - _GridWorldMin.xz) / _GridWorldSize.xz;
-                
-                // Clamp UV to valid range
                 uv = saturate(uv);
                 
                 // Sample trample map (R = strength, GB = direction)
-                // Use LOD 0 to ensure we sample the texture properly
                 float4 trampleData = SAMPLE_TEXTURE2D_LOD(_TrampleMap, sampler_TrampleMap, uv, 0);
                 float strength = trampleData.r;
                 float2 dirEncoded = trampleData.gb;
-                
-                // Decode direction from 0-1 to -1 to 1
                 float2 direction = dirEncoded * 2.0 - 1.0;
                 
-                // Apply offset based on vertex height (only affect top of grass)
-                float heightFactor = saturate(worldPos.y * 0.1); // Adjust multiplier as needed
+                // Height factor: squared for more natural bend (bottom stays fixed, top moves most)
+                float heightFactor = vertexHeight * vertexHeight;
                 
                 // Apply offset
                 float3 offset;
@@ -122,11 +117,15 @@ Shader "Custom/GrassTrampleRenderTexture"
                 return offset;
             }
 
-            float3 ApplyWind(float3 worldPos)
+            float3 ApplyWind(float3 worldPos, float vertexHeight)
             {
                 float phase = (_GlobalTime * _WindSpeed) + (worldPos.x + worldPos.z) * 0.5;
                 float wind = sin(phase) * _WindStrength;
-                return float3(wind, 0, wind * 0.5);
+                
+                // Height factor: squared for more natural sway
+                float heightFactor = vertexHeight * vertexHeight;
+                
+                return float3(wind, 0, wind * 0.5) * heightFactor;
             }
 
             Varyings vert(Attributes input)
@@ -135,9 +134,12 @@ Shader "Custom/GrassTrampleRenderTexture"
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
+                // Use UV.y as height factor (0 at bottom, 1 at top of grass blade)
+                float vertexHeight = input.uv.y;
+
                 float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
-                posWS += ApplyTrample(posWS);
-                posWS += ApplyWind(posWS);
+                posWS += ApplyTrample(posWS, vertexHeight);
+                posWS += ApplyWind(posWS, vertexHeight);
 
                 output.positionCS = TransformWorldToHClip(posWS);
                 output.positionWS = posWS;
@@ -168,10 +170,6 @@ Shader "Custom/GrassTrampleRenderTexture"
                 half4 albedo = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
                 albedo *= _Color * input.color;
                 clip(albedo.a - _Cutoff);
-
-                // DEBUG: Visualize trample map sampling
-                float2 trampleUV = (input.positionWS.xz - _GridWorldMin.xz) / _GridWorldSize.xz;
-                float4 trampleDebug = SAMPLE_TEXTURE2D_LOD(_TrampleMap, sampler_TrampleMap, trampleUV, 0);
 
                 // Get main light with shadow attenuation
                 float4 shadowCoord = input.shadowCoord;
@@ -253,7 +251,7 @@ Shader "Custom/GrassTrampleRenderTexture"
             float _WindSpeed;
             float _WindStrength;
 
-            float3 ApplyTrampleShadow(float3 worldPos)
+            float3 ApplyTrampleShadow(float3 worldPos, float vertexHeight)
             {
                 float2 uv = (worldPos.xz - _GridWorldMin.xz) / _GridWorldSize.xz;
                 uv = saturate(uv);
@@ -263,26 +261,36 @@ Shader "Custom/GrassTrampleRenderTexture"
                 float2 dirEncoded = trampleData.gb;
                 float2 direction = dirEncoded * 2.0 - 1.0;
                 
+                // Height factor: squared for more natural bend
+                float heightFactor = vertexHeight * vertexHeight;
+                
                 float3 offset;
-                offset.x = direction.x * strength * 0.6;
-                offset.y = -strength * 1.2;
-                offset.z = direction.y * strength * 0.6;
+                offset.x = direction.x * strength * 0.6 * heightFactor;
+                offset.y = -strength * 1.2 * heightFactor;
+                offset.z = direction.y * strength * 0.6 * heightFactor;
                 
                 return offset;
             }
 
-            float3 ApplyWindShadow(float3 worldPos)
+            float3 ApplyWindShadow(float3 worldPos, float vertexHeight)
             {
                 float phase = (_GlobalTime * _WindSpeed) + (worldPos.x + worldPos.z) * 0.5;
                 float wind = sin(phase) * _WindStrength;
-                return float3(wind, 0, wind * 0.5);
+                
+                // Height factor: squared for more natural sway
+                float heightFactor = vertexHeight * vertexHeight;
+                
+                return float3(wind, 0, wind * 0.5) * heightFactor;
             }
 
             float4 GetShadowPositionHClip(Attributes input)
             {
+                // Use UV.y as height factor
+                float vertexHeight = input.uv.y;
+                
                 float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
-                posWS += ApplyTrampleShadow(posWS);
-                posWS += ApplyWindShadow(posWS);
+                posWS += ApplyTrampleShadow(posWS, vertexHeight);
+                posWS += ApplyWindShadow(posWS, vertexHeight);
                 
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
                 
@@ -368,7 +376,7 @@ Shader "Custom/GrassTrampleRenderTexture"
             float _WindSpeed;
             float _WindStrength;
 
-            float3 ApplyTrampleDepth(float3 worldPos)
+            float3 ApplyTrampleDepth(float3 worldPos, float vertexHeight)
             {
                 float2 uv = (worldPos.xz - _GridWorldMin.xz) / _GridWorldSize.xz;
                 uv = saturate(uv);
@@ -378,19 +386,26 @@ Shader "Custom/GrassTrampleRenderTexture"
                 float2 dirEncoded = trampleData.gb;
                 float2 direction = dirEncoded * 2.0 - 1.0;
                 
+                // Height factor: squared for more natural bend
+                float heightFactor = vertexHeight * vertexHeight;
+                
                 float3 offset;
-                offset.x = direction.x * strength * 0.6;
-                offset.y = -strength * 1.2;
-                offset.z = direction.y * strength * 0.6;
+                offset.x = direction.x * strength * 0.6 * heightFactor;
+                offset.y = -strength * 1.2 * heightFactor;
+                offset.z = direction.y * strength * 0.6 * heightFactor;
                 
                 return offset;
             }
 
-            float3 ApplyWindDepth(float3 worldPos)
+            float3 ApplyWindDepth(float3 worldPos, float vertexHeight)
             {
                 float phase = (_GlobalTime * _WindSpeed) + (worldPos.x + worldPos.z) * 0.5;
                 float wind = sin(phase) * _WindStrength;
-                return float3(wind, 0, wind * 0.5);
+                
+                // Height factor: squared for more natural sway
+                float heightFactor = vertexHeight * vertexHeight;
+                
+                return float3(wind, 0, wind * 0.5) * heightFactor;
             }
 
             Varyings vertDepth(Attributes input)
@@ -398,9 +413,12 @@ Shader "Custom/GrassTrampleRenderTexture"
                 Varyings output;
                 UNITY_SETUP_INSTANCE_ID(input);
 
+                // Use UV.y as height factor
+                float vertexHeight = input.uv.y;
+
                 float3 posWS = TransformObjectToWorld(input.positionOS.xyz);
-                posWS += ApplyTrampleDepth(posWS);
-                posWS += ApplyWindDepth(posWS);
+                posWS += ApplyTrampleDepth(posWS, vertexHeight);
+                posWS += ApplyWindDepth(posWS, vertexHeight);
 
                 output.positionCS = TransformWorldToHClip(posWS);
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
