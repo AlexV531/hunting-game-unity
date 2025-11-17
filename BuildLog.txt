@@ -1,16 +1,16 @@
 ========== Build Completed ==========
 Build Result: Unknown
-Total Size: 132332024 bytes
+Total Size: 132867352 bytes
 Output Path: C:/Users/valex/Dev/Unity/HuntingGame/Builds/build_000000010/My project.exe
 -----------------------------------------
 ========== Assets Used in Build ==========
-Asset: Assets/Scenes/SampleScene.unity, Size: 21.99 MB
+Asset: Assets/Scenes/SampleScene.unity, Size: 21.98 MB
 Asset: Assets/Scenes/SampleScene/Lightmap-0_comp_light.exr, Size: 10.74 MB
 Asset: Assets/Scenes/SampleScene/NavMesh-NavMesh Surface.asset, Size: 4.43 MB
+Asset: Assets/New Terrain.asset, Size: 2.79 MB
 Asset: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset, Size: 2.15 MB
 Asset: Assets/TerrainData_9a87a5d8-2347-4d52-8196-f346db7d8124.asset, Size: 2.14 MB
 Asset: Assets/TerrainData_f1c6f525-e5e9-4178-8e70-7af4772601d4.asset, Size: 1.98 MB
-Asset: Assets/New Terrain.asset, Size: 1.98 MB
 Asset: Assets/TerrainData_b6b7ae38-6354-4d42-b53d-102fa5d16b4f.asset, Size: 1.94 MB
 Asset: Assets/Scenes/SampleScene/Lightmap-0_comp_dir.png, Size: 0.58 MB
 Asset: Assets/Scenes/SampleScene/LightingData.asset, Size: 0.49 MB
@@ -33,15 +33,14 @@ Asset: Packages/com.unity.netcode.gameobjects/Runtime/Transports/UTP/UnityTransp
 Asset: Packages/com.unity.netcode.gameobjects/Runtime/Core/NetworkManager.cs, Size: 0.07 MB
 Asset: Assets/Models/MageHunter - MusketteNew.fbx, Size: 0.07 MB
 Asset: Assets/Models/MageHunter - Deer.fbx, Size: 0.06 MB
-Asset: Packages/com.unity.cinemachine/Editor/EditorResources/cm_logo_sm.png, Size: 0.06 MB
 Asset: Assets/Models/MageHunter - DeerEars.fbx, Size: 0.06 MB
 Asset: Assets/Models/MageHunter - Deer_noantlers(1).fbx, Size: 0.06 MB
 Asset: Assets/Models/MageHunter - Environment.fbx, Size: 0.05 MB
+Asset: Assets/Prefabs/Deer.prefab, Size: 0.05 MB
 Asset: Assets/Models/MageHunter - Grouse.fbx, Size: 0.05 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/ScrollRect.cs, Size: 0.05 MB
-Asset: Assets/Prefabs/Deer.prefab, Size: 0.05 MB
+Asset: Assets/Sprites/blood_splatter_01.png, Size: 0.05 MB
 Asset: Assets/Models/MageHunter - GrouseOld.fbx, Size: 0.05 MB
-Asset: Assets/StarterAssets/Environment/Art/Models/Stairs_200x100x200_Mesh.fbx, Size: 0.05 MB
 Asset: Assets/Prefabs/WeaponRoot_Base.prefab, Size: 0.05 MB
 Asset: Packages/com.unity.inputsystem/InputSystem/Actions/InputActionAsset.cs, Size: 0.05 MB
 Asset: Assets/Sprites/bullet_mark.png, Size: 0.05 MB
@@ -49,9 +48,8 @@ Asset: Packages/com.unity.cinemachine/Runtime/Behaviours/CinemachineBrain.cs, Si
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/UniversalAdditionalCameraData.cs, Size: 0.04 MB
 Asset: Packages/com.unity.shadergraph/Editor/Importers/ShaderGraphImporter.cs, Size: 0.04 MB
 Asset: Assets/Prefabs/Partridge.prefab, Size: 0.04 MB
-Asset: Assets/StarterAssets/Environment/Art/Models/Ground_Mesh.fbx, Size: 0.04 MB
-Asset: Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputAction.png, Size: 0.04 MB
 Asset: Assets/InputSystem/PlayerActions.inputactions, Size: 0.04 MB
+Asset: Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputAction.png, Size: 0.04 MB
 Asset: Packages/com.unity.render-pipelines.universal/Shaders/Decal.shadergraph, Size: 0.03 MB
 Asset: Assets/Models/MageHunter - Cart.fbx, Size: 0.03 MB
 Asset: Assets/Prefabs/AmountInput.prefab, Size: 0.03 MB
@@ -68,13 +66,14 @@ Asset: Packages/com.unity.ugui/Runtime/UGUI/EventSystem/EventSystem.cs, Size: 0.
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Layout/CanvasScaler.cs, Size: 0.02 MB
 Asset: Packages/com.unity.inputsystem/InputSystem/Editor/AssetImporter/InputActionImporter.cs, Size: 0.02 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Scrollbar.cs, Size: 0.02 MB
+Asset: Assets/Shaders/GrassTrampleRenderTexture_ShadowReceiving.shader, Size: 0.02 MB
 Asset: Assets/Prefabs/InventoryPanel.prefab, Size: 0.02 MB
 Asset: Assets/Shaders/BackfacePinkShader.shadergraph, Size: 0.02 MB
 Asset: Assets/Prefabs/HitData.prefab, Size: 0.02 MB
+Asset: Assets/Scripts/Animal.cs, Size: 0.01 MB
 Asset: Assets/Prefabs/ItemSlot.prefab, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.core/Runtime/Volume/VolumeProfile.cs, Size: 0.01 MB
 Asset: Assets/Prefabs/ShopButton.prefab, Size: 0.01 MB
-Asset: Assets/Scripts/Animal.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Layout/GridLayoutGroup.cs, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Overrides/Tonemapping.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/GraphicRaycaster.cs, Size: 0.01 MB
@@ -83,8 +82,8 @@ Asset: Packages/com.unity.render-pipelines.universal/Runtime/Decal/DecalProjecto
 Asset: Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLit.shader, Size: 0.01 MB
 Asset: Packages/com.unity.cinemachine/Runtime/Components/Cinemachine3rdPersonFollow.cs, Size: 0.01 MB
 Asset: Assets/Scripts/WeaponManager.cs, Size: 0.01 MB
-Asset: Assets/Audio/elevator_ding.ogg, Size: 0.01 MB
 Asset: Assets/Scripts/Herd.cs, Size: 0.01 MB
+Asset: Assets/Audio/elevator_ding.ogg, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/RectMask2D.cs, Size: 0.01 MB
 Asset: Assets/Scripts/AnimalAI.cs, Size: 0.01 MB
 Asset: Assets/Prefabs/Balloon.prefab, Size: 0.01 MB
@@ -96,13 +95,14 @@ Asset: Assets/Prefabs/LoadoutWeaponButton.prefab, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Overrides/Bloom.cs, Size: 0.01 MB
 Asset: Assets/Animations/Deer.controller, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/UniversalAdditionalLightData.cs, Size: 0.01 MB
-Asset: Assets/Scripts/Weapon.cs, Size: 0.01 MB
 Asset: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset, Size: 0.01 MB
+Asset: Assets/Scripts/Weapon.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Layout/LayoutElement.cs, Size: 0.01 MB
 Asset: Assets/Sprites/fairy_totem_icon_01.png, Size: 0.01 MB
 Asset: Assets/Prefabs/Bullet.prefab, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Overrides/MotionBlur.cs, Size: 0.01 MB
 Asset: Assets/Scripts/HerdManager.cs, Size: 0.01 MB
+Asset: Assets/Scripts/GrassTrampleSystem.cs, Size: 0.01 MB
 Asset: Assets/Animations/Die.anim, Size: 0.01 MB
 Asset: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader, Size: 0.01 MB
 Asset: Packages/com.unity.ai.navigation/Gizmos/NavMeshSurface Icon.png, Size: 0.01 MB
@@ -110,37 +110,40 @@ Asset: Packages/com.unity.render-pipelines.core/Runtime/Volume/Volume.cs, Size: 
 Asset: Assets/Scripts/HandCart.cs, Size: 0.01 MB
 Asset: Assets/Scripts/WorldItem.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Mask.cs, Size: 0.01 MB
+Asset: Assets/InputSystem/PlayerInputs.cs, Size: 0.01 MB
 Asset: Assets/Scenes/SampleScene/Lightmap-0_comp_shadowmask.png, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Button.cs, Size: 0.01 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Overrides/Vignette.cs, Size: 0.01 MB
-Asset: Assets/InputSystem/PlayerInputs.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ai.navigation/Runtime/NavMeshModifier.cs, Size: 0.01 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/RawImage.cs, Size: 0.01 MB
+Asset: Assets/Scripts/Bullet.cs, Size: 0.01 MB
 Asset: Assets/Scripts/AntlerMeshGenerator.cs, Size: 0.01 MB
 Asset: Assets/Animations/Run.anim, Size: 0.01 MB
 Asset: Assets/Animations/OnHit.anim, Size: 0.01 MB
 Asset: Assets/Animations/OverShoulder.anim, Size: 0.00 MB
 Asset: Assets/Prefabs/Tree001.prefab, Size: 0.00 MB
 Asset: Assets/Prefabs/WorldItem.prefab, Size: 0.00 MB
-Asset: Assets/Scripts/Bullet.cs, Size: 0.00 MB
 Asset: Assets/Scripts/PlayerInventoryMenu.cs, Size: 0.00 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Materials/TerrainLit.mat, Size: 0.00 MB
 Asset: Packages/com.unity.ai.navigation/Gizmos/NavMeshModifier Icon.png, Size: 0.00 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Layout/ContentSizeFitter.cs, Size: 0.00 MB
 Asset: Packages/com.unity.render-pipelines.universal/Editor/Decal/Resources/DecalGizmo.png, Size: 0.00 MB
 Asset: Assets/Animations/Idle.anim, Size: 0.00 MB
+Asset: Assets/Materials/GrassTrailMaterial2.mat, Size: 0.00 MB
 Asset: Assets/Materials/DeerFootprintDecal.mat, Size: 0.00 MB
+Asset: Assets/Materials/BloodSplatterDecal.mat, Size: 0.00 MB
 Asset: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat, Size: 0.00 MB
 Asset: Assets/Prefabs/ItemCustomInfoText.prefab, Size: 0.00 MB
 Asset: Assets/Prefabs/PlayerListEntry.prefab, Size: 0.00 MB
+Asset: Assets/Prefabs/Antler.prefab, Size: 0.00 MB
 Asset: Assets/Models/DeerBodyMaterial.mat, Size: 0.00 MB
 Asset: Assets/Scripts/ObjectiveMenu.cs, Size: 0.00 MB
 Asset: Assets/Scripts/AnimalVariator.cs, Size: 0.00 MB
-Asset: Assets/Prefabs/Antler.prefab, Size: 0.00 MB
 Asset: Assets/Scripts/KnifeRack.cs, Size: 0.00 MB
-Asset: Assets/StarterAssets/Environment/Art/Materials/GreyBlue_Mat.mat, Size: 0.00 MB
+Asset: Assets/Materials/Antler.mat, Size: 0.00 MB
 Asset: Assets/Scripts/LoadoutMenu.cs, Size: 0.00 MB
 Asset: Assets/Settings/SampleSceneProfile.asset, Size: 0.00 MB
+Asset: Assets/Sprites/grass_01.png, Size: 0.00 MB
 Asset: Assets/Scripts/MySetTerrainObstacles.cs, Size: 0.00 MB
 Asset: Assets/Prefabs/Rock_1.prefab, Size: 0.00 MB
 Asset: Assets/Scripts/InspectRoom.cs, Size: 0.00 MB
@@ -149,11 +152,13 @@ Asset: Assets/Scripts/ItemTradingPanelUI.cs, Size: 0.00 MB
 Asset: Assets/Scripts/BalloonSpawner.cs, Size: 0.00 MB
 Asset: Assets/Scripts/PlayerListUI.cs, Size: 0.00 MB
 Asset: Assets/Prefabs/Marker.prefab, Size: 0.00 MB
+Asset: Assets/Prefabs/Grass.prefab, Size: 0.00 MB
 Asset: Assets/Scripts/SimpleNetworkHUD.cs, Size: 0.00 MB
 Asset: Packages/com.unity.shadergraph/Editor/Importers/ShaderGraphMetadata.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ButcherTable.cs, Size: 0.00 MB
 Asset: Assets/DefaultNetworkPrefabs.asset, Size: 0.00 MB
 Asset: Assets/Scripts/PlayerListManager.cs, Size: 0.00 MB
+Asset: Assets/Shaders/GrassTrampleStamp.shader, Size: 0.00 MB
 Asset: Assets/Scripts/ScopeSway.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ShopButton.cs, Size: 0.00 MB
 Asset: Assets/Scripts/TenPeltObjective.cs, Size: 0.00 MB
@@ -163,8 +168,10 @@ Asset: Assets/Scripts/Balloon.cs, Size: 0.00 MB
 Asset: Assets/Sprites/BulletMark.mat, Size: 0.00 MB
 Asset: Assets/Resources/FairyTotem.mat, Size: 0.00 MB
 Asset: Assets/Prefabs/Footstep.prefab, Size: 0.00 MB
+Asset: Assets/Scripts/GrassTrampler.cs, Size: 0.00 MB
 Asset: Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/UniversalMetadata.cs, Size: 0.00 MB
 Asset: Assets/Prefabs/BulletMark.prefab, Size: 0.00 MB
+Asset: Assets/Prefabs/BloodSplatter.prefab, Size: 0.00 MB
 Asset: Assets/Scripts/TerrainManager.cs, Size: 0.00 MB
 Asset: Assets/Settings/LightingSettings.lighting, Size: 0.00 MB
 Asset: Assets/Scripts/AnimalInspectUI.cs, Size: 0.00 MB
@@ -178,6 +185,7 @@ Asset: Assets/Prefabs/Herd.prefab, Size: 0.00 MB
 Asset: Assets/Scripts/AmountUI.cs, Size: 0.00 MB
 Asset: Packages/com.unity.ugui/Runtime/UGUI/UI/Core/Layout/VerticalLayoutGroup.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ShopUI.cs, Size: 0.00 MB
+Asset: Assets/Shaders/GrassTrampleDecay.shader, Size: 0.00 MB
 Asset: Assets/Scripts/BalloonAttach.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ItemSlotUI.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ClientPlayerMove.cs, Size: 0.00 MB
@@ -192,9 +200,9 @@ Asset: Assets/Scripts/PeltSpawnerInteractable.cs, Size: 0.00 MB
 Asset: Assets/Scripts/InventoryPanelUI.cs, Size: 0.00 MB
 Asset: Assets/Scripts/MoneyDisplay.cs, Size: 0.00 MB
 Asset: Assets/Scripts/WeaponButton.cs, Size: 0.00 MB
+Asset: Assets/Materials/NewLayer.terrainlayer, Size: 0.00 MB
 Asset: Assets/Scripts/PauseMenu.cs, Size: 0.00 MB
 Asset: Packages/com.unity.netcode.gameobjects/Runtime/Components/NetworkRigidbody.cs, Size: 0.00 MB
-Asset: Assets/Materials/NewLayer.terrainlayer, Size: 0.00 MB
 Asset: Assets/Scripts/Internal.cs, Size: 0.00 MB
 Asset: Assets/Scripts/AmmoUI.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ButcherKnife.cs, Size: 0.00 MB
@@ -203,6 +211,7 @@ Asset: Assets/Scripts/StorageMenu.cs, Size: 0.00 MB
 Asset: Assets/Scripts/BootstrapHost.cs, Size: 0.00 MB
 Asset: Assets/Scripts/PartridgeStateManager.cs, Size: 0.00 MB
 Asset: Assets/Scripts/BalloonShop.cs, Size: 0.00 MB
+Asset: Assets/Scripts/FPSCounter.cs, Size: 0.00 MB
 Asset: Assets/Scripts/ItemSpawner.cs, Size: 0.00 MB
 Asset: Assets/Scripts/CoordDisplay.cs, Size: 0.00 MB
 Asset: Packages/com.unity.cinemachine/Runtime/Behaviours/CinemachinePipeline.cs, Size: 0.00 MB
@@ -215,7 +224,8 @@ Asset: Packages/com.unity.render-pipelines.universal/Editor/AssetVersion.cs, Siz
 ============================================
 ========== Unused Assets ==========
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Documentation\Documentation.rtf, Size: 68.39 MB
-Unused Asset: Assets\Scenes\SampleScene.unity, Size: 21.99 MB
+Unused Asset: Assets\Scenes\SampleScene.unity, Size: 21.98 MB
+Unused Asset: Assets\_Recovery\0 (7).unity, Size: 21.98 MB
 Unused Asset: Assets\_Recovery\0 (6).unity, Size: 21.96 MB
 Unused Asset: Assets\_Recovery\0 (5).unity, Size: 21.85 MB
 Unused Asset: Assets\_Recovery\0 (4).unity, Size: 21.67 MB
@@ -223,13 +233,12 @@ Unused Asset: Assets\_Recovery\0 (3).unity, Size: 14.88 MB
 Unused Asset: Assets\_Recovery\0 (2).unity, Size: 14.82 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_light.exr, Size: 10.74 MB
 Unused Asset: Assets\Scenes\SampleScene\NavMesh-NavMesh Surface.asset, Size: 4.43 MB
+Unused Asset: Assets\New Terrain.asset, Size: 2.79 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF.asset, Size: 2.15 MB
 Unused Asset: Assets\TerrainData_9a87a5d8-2347-4d52-8196-f346db7d8124.asset, Size: 2.14 MB
 Unused Asset: Assets\TerrainData_f1c6f525-e5e9-4178-8e70-7af4772601d4.asset, Size: 1.98 MB
-Unused Asset: Assets\New Terrain.asset, Size: 1.98 MB
 Unused Asset: Assets\TerrainData_b6b7ae38-6354-4d42-b53d-102fa5d16b4f.asset, Size: 1.94 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_dir.png, Size: 0.58 MB
-Unused Asset: Assets\StarterAssets\StarterAssets_Documentation_v1.1.pdf, Size: 0.55 MB
 Unused Asset: Assets\Scenes\SampleScene\LightingData.asset, Size: 0.49 MB
 Unused Asset: Assets\TextMesh Pro\Fonts\LiberationSans.ttf, Size: 0.33 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP LIT.shadergraph, Size: 0.27 MB
@@ -237,47 +246,32 @@ Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Lit.shadergraph, Size: 0.2
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP UNLIT.shadergraph, Size: 0.27 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Unlit.shadergraph, Size: 0.26 MB
 Unused Asset: Assets\Audio\musket_sound.mp3, Size: 0.23 MB
-Unused Asset: Assets\StarterAssets\TutorialInfo\Icons\ReadMeImg.PNG, Size: 0.22 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-1.exr, Size: 0.21 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-0.exr, Size: 0.18 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-2.exr, Size: 0.17 MB
 Unused Asset: Assets\Scenes\SampleScene\ReflectionProbe-0.exr, Size: 0.16 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\LightingData.asset, Size: 0.15 MB
 Unused Asset: Assets\Materials\grass002.jpg, Size: 0.12 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Environment_Prefab.prefab, Size: 0.11 MB
 Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne.png, Size: 0.11 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Stairs_650_400_300_Mesh.fbx, Size: 0.08 MB
 Unused Asset: Assets\Models\MageHunter - MusketteNew.fbx, Size: 0.07 MB
 Unused Asset: Assets\Models\MageHunter - Muskette.fbx, Size: 0.07 MB
 Unused Asset: Assets\Models\MageHunter - CauldronWithFirepit.fbx, Size: 0.06 MB
 Unused Asset: Assets\Models\MageHunter - Deer.fbx, Size: 0.06 MB
 Unused Asset: Assets\Models\MageHunter - DeerEars.fbx, Size: 0.06 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Structure_Mesh.fbx, Size: 0.06 MB
 Unused Asset: Assets\Models\MageHunter - Deer_noantlers(1).fbx, Size: 0.06 MB
 Unused Asset: Assets\Models\MageHunter - Deer_noantlers.fbx, Size: 0.06 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Structure_Prefab.prefab, Size: 0.06 MB
 Unused Asset: Assets\Models\MageHunter - Environment.fbx, Size: 0.05 MB
-Unused Asset: Assets\Models\MageHunter - Grouse.fbx, Size: 0.05 MB
 Unused Asset: Assets\Prefabs\Deer.prefab, Size: 0.05 MB
+Unused Asset: Assets\Models\MageHunter - Grouse.fbx, Size: 0.05 MB
+Unused Asset: Assets\Sprites\blood_splatter_01.png, Size: 0.05 MB
 Unused Asset: Assets\Models\MageHunter - GrouseOld.fbx, Size: 0.05 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Stairs_200x100x200_Mesh.fbx, Size: 0.05 MB
 Unused Asset: Assets\Prefabs\WeaponRoot_Base.prefab, Size: 0.05 MB
 Unused Asset: Assets\Sprites\bullet_mark.png, Size: 0.05 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Box_350x250x300_Mesh.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Wall_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\Models\MageHunter - Crossbow.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Tunnel_Mesh.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Box_350x250x200_Mesh.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground.unity, Size: 0.04 MB
 Unused Asset: Assets\Prefabs\Partridge.prefab, Size: 0.04 MB
 Unused Asset: Assets\Models\MageHunter - Cauldron.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ramp_Mesh.fbx, Size: 0.04 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ground_Mesh.fbx, Size: 0.04 MB
 Unused Asset: Assets\InputSystem_Actions.inputactions, Size: 0.04 MB
+Unused Asset: Assets\InputSystem\PlayerActions.inputactions, Size: 0.04 MB
 Unused Asset: Assets\_Recovery\0 (1).unity, Size: 0.04 MB
 Unused Asset: Assets\_Recovery\0.unity, Size: 0.04 MB
 Unused Asset: Assets\Prefabs\MusketteWorldAppearance.prefab, Size: 0.04 MB
-Unused Asset: Assets\InputSystem\PlayerActions.inputactions, Size: 0.04 MB
+Unused Asset: Assets\Sprites\blood_splatter_03.png, Size: 0.03 MB
 Unused Asset: Assets\Models\MageHunter - Cart.fbx, Size: 0.03 MB
 Unused Asset: Assets\Prefabs\AmountInput.prefab, Size: 0.03 MB
 Unused Asset: Assets\Materials\grass.jpg, Size: 0.03 MB
@@ -291,24 +285,21 @@ Unused Asset: Assets\Settings\DefaultVolumeProfile.asset, Size: 0.02 MB
 Unused Asset: Assets\Settings\UniversalRenderPipelineGlobalSettings.asset, Size: 0.02 MB
 Unused Asset: Assets\Models\MageHunter - Knives.fbx, Size: 0.02 MB
 Unused Asset: Assets\Models\MageHunter - Balloon.fbx, Size: 0.02 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_Normal.png, Size: 0.02 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\NestedParent_Unpack.prefab, Size: 0.02 MB
+Unused Asset: Assets\Shaders\GrassTrampleRenderTexture_ShadowReceiving.shader, Size: 0.02 MB
 Unused Asset: Assets\Prefabs\InventoryPanel.prefab, Size: 0.02 MB
 Unused Asset: Assets\Shaders\BackfacePinkShader.shadergraph, Size: 0.02 MB
 Unused Asset: Assets\Prefabs\HitData.prefab, Size: 0.02 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ramp_100x100x200_Mesh.fbx, Size: 0.01 MB
+Unused Asset: Assets\Scripts\Animal.cs, Size: 0.01 MB
 Unused Asset: Assets\TutorialInfo\Layout.wlt, Size: 0.01 MB
 Unused Asset: Assets\Prefabs\ItemSlot.prefab, Size: 0.01 MB
 Unused Asset: Assets\Prefabs\ShopButton.prefab, Size: 0.01 MB
-Unused Asset: Assets\Scripts\Animal.cs, Size: 0.01 MB
 Unused Asset: Assets\Sprites\deer_footstep_02.png, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Sprite Assets\EmojiOne.asset, Size: 0.01 MB
 Unused Asset: Assets\Scripts\WeaponManager.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader, Size: 0.01 MB
-Unused Asset: Assets\Audio\elevator_ding.ogg, Size: 0.01 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\PlayerCapsule.prefab, Size: 0.01 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader, Size: 0.01 MB
 Unused Asset: Assets\Scripts\Herd.cs, Size: 0.01 MB
+Unused Asset: Assets\Audio\elevator_ding.ogg, Size: 0.01 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader, Size: 0.01 MB
 Unused Asset: Assets\Scripts\AnimalAI.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF.shader, Size: 0.01 MB
@@ -320,27 +311,26 @@ Unused Asset: Assets\Prefabs\LoadoutWeaponButton.prefab, Size: 0.01 MB
 Unused Asset: Assets\Animations\Deer.controller, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\SteamCustom\BuildWindow.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne.png.meta, Size: 0.01 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_02_BaseMap.png, Size: 0.01 MB
-Unused Asset: Assets\Scripts\Weapon.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Fallback.asset, Size: 0.01 MB
+Unused Asset: Assets\Scripts\Weapon.cs, Size: 0.01 MB
 Unused Asset: Assets\Sprites\fairy_totem_icon_01.png, Size: 0.01 MB
 Unused Asset: Assets\Prefabs\Bullet.prefab, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch\ScriptContentReplaceTool.cs, Size: 0.01 MB
 Unused Asset: Assets\Scripts\HerdManager.cs, Size: 0.01 MB
+Unused Asset: Assets\Scripts\GrassTrampleSystem.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader, Size: 0.01 MB
+Unused Asset: Assets\Settings\NewShaderVariants.shadervariants, Size: 0.01 MB
 Unused Asset: Assets\Animations\Die.anim, Size: 0.01 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_Emissive.png, Size: 0.01 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_BaseMap.png, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader, Size: 0.01 MB
 Unused Asset: Assets\Scripts\HandCart.cs, Size: 0.01 MB
 Unused Asset: Assets\Scripts\WorldItem.cs, Size: 0.01 MB
 Unused Asset: Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch\ScriptContentSearchTool.cs, Size: 0.01 MB
+Unused Asset: Assets\InputSystem\PlayerInputs.cs, Size: 0.01 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_shadowmask.png, Size: 0.01 MB
 Unused Asset: Assets\Sprites\deer_footstep_01.png, Size: 0.01 MB
 Unused Asset: Assets\Sprites\fairy_key.png, Size: 0.01 MB
-Unused Asset: Assets\InputSystem\PlayerInputs.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\LocalBackup\LocalBackupWindow.cs, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\PrefsViewer\PlayerPrefsViewer.cs, Size: 0.01 MB
@@ -348,6 +338,7 @@ Unused Asset: Assets\Scripts\AnimalMovingState.cs, Size: 0.01 MB
 Unused Asset: Assets\Sprites\deer_pelt.png, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ReplaceWithPrefabEditor\ReplaceWithPrefabEditor.cs, Size: 0.01 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Style Sheets\Default Style Sheet.asset, Size: 0.01 MB
+Unused Asset: Assets\Scripts\Bullet.cs, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildPostProcessor.cs, Size: 0.01 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\WindowResize\WindowResizer.cs, Size: 0.01 MB
 Unused Asset: Assets\Sprites\balloons_icon_1.png, Size: 0.01 MB
@@ -359,156 +350,116 @@ Unused Asset: Assets\Animations\OnHit.anim, Size: 0.01 MB
 Unused Asset: Assets\Prefabs\BalloonWorldAppearance.prefab, Size: 0.01 MB
 Unused Asset: Assets\Animations\OverShoulder.anim, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Tree001.prefab, Size: 0.00 MB
+Unused Asset: Assets\Scripts\TrampleDebugTest.cs, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\WorldItem.prefab, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Bullet.cs, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\LocalBackup\PersistentBackupPrompter.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Inventory.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerInventoryMenu.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\MainCamera.prefab, Size: 0.00 MB
 Unused Asset: Assets\Settings\PC_RPAsset.asset, Size: 0.00 MB
 Unused Asset: Assets\Resources\ItemDatabase.asset, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\PlayerFollowCamera.prefab, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very High_PipelineAsset.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very Low_PipelineAsset.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Medium_PipelineAsset.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Ultra_PipelineAsset.asset, Size: 0.00 MB
 Unused Asset: Assets\Settings\Mobile_RPAsset.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\High_PipelineAsset.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Low_PipelineAsset.asset, Size: 0.00 MB
 Unused Asset: Assets\Animations\Idle.anim, Size: 0.00 MB
+Unused Asset: Assets\Materials\GrassTrailMaterial2.mat, Size: 0.00 MB
 Unused Asset: Assets\Sprites\muskette_icon_1.png, Size: 0.00 MB
 Unused Asset: Assets\Materials\DeerFootprintDecal.mat, Size: 0.00 MB
+Unused Asset: Assets\Materials\BloodSplatterDecal.mat, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\CauldronWorldAppearance.prefab, Size: 0.00 MB
 Unused Asset: Assets\Sprites\cauldron.png, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Data\DebugC.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridOrange_01_Mat.mat, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridBlue_01_Mat.mat, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridWhite_01_Mat.mat, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\ItemCustomInfoText.prefab, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\PlayerListEntry.prefab, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Antler.prefab, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne.json, Size: 0.00 MB
 Unused Asset: Assets\Models\DeerBodyMaterial.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ObjectiveMenu.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalVariator.cs, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Antler.prefab, Size: 0.00 MB
 Unused Asset: Assets\Scripts\KnifeRack.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GreyBlue_Mat.mat, Size: 0.00 MB
+Unused Asset: Assets\Materials\Antler.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LoadoutMenu.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Tunnel_Prefab.prefab, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\NotEditor\SetTerrainObstaclesStatic.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\Blue_Mat.mat, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_Emissive.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\SampleSceneProfile.asset, Size: 0.00 MB
 Unused Asset: Assets\Settings\PC_Renderer.asset, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader, Size: 0.00 MB
+Unused Asset: Assets\Sprites\grass_01.png, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Sprite.shader, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ProjectReport\ProjectSizeReportEditorWindow.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_02_BaseMap.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\MySetTerrainObstacles.cs, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Rock_1.prefab, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InspectRoom.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Wall_Prefab.prefab, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\TestWorldAppearance.prefab, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\WorldAppearance.prefab, Size: 0.00 MB
 Unused Asset: Assets\Resources\PerformanceTestRunInfo.json, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Icons\URP.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemTradingPanelUI.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_BaseMap.png.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures\Grid_01_Normal.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\butcher_knife_icon_1.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\bullet_mark.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\fairy_totem_icon_01.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\deer_pelt.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\blood_splatter_01.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\balloons_icon_1.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\blood_splatter_03.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\bullet_mark.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\deer_pelt.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\butcher_knife_icon_1.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\cauldron.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\muskette_icon_1.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\fairy_key.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\fairy_totem_icon_01.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\grass_01.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\muskette_icon_1.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Sprites\ammo_icon_01.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_dir.png.meta, Size: 0.00 MB
-Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_shadowmask.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\ReflectionProbe-0.exr.meta, Size: 0.00 MB
+Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_shadowmask.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\deer_footstep_02.png.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\deer_footstep_01.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Materials\grass002.jpg.meta, Size: 0.00 MB
 Unused Asset: Assets\Materials\grass.jpg.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\deer_footstep_02.png.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\Lightmap-0_comp_light.exr.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\deer_footstep_01.png.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_650_400_300_Prefab.prefab, Size: 0.00 MB
+Unused Asset: Assets\Scripts\BalloonSpawner.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemInstance.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_200x100x200_Prefab.prefab, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - MusketteNew.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Knives.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - GrouseOld.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Muskette.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - DeerMeat.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Balloon.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Cart.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Cauldron.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - CauldronWithFirepit.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Crossbow.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Deer.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - DeerEars.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Crossbow.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - DeerMeat.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Deer_noantlers(1).fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Balloon.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - CauldronWithFirepit.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Cauldron.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Deer_noantlers.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Environment.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Garden.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Models\MageHunter - Grouse.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\MageHunter - Deer_noantlers.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Ramp_Prefab.prefab, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_350x250x300_Prefab.prefab, Size: 0.00 MB
-Unused Asset: Assets\Scripts\BalloonSpawner.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_350x250x200_Prefab.prefab, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - GrouseOld.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Knives.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - Muskette.fbx.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\MageHunter - MusketteNew.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AttachHandler.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InteractableBase.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_100x100x100_Prefab.prefab, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerListUI.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Stairs_650_400_300_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Stairs_200x100x200_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Box_350x250x200_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Box_350x250x300_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ramp_100x100x200_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Structure_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Tunnel_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ground_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Ramp_Mesh.fbx.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models\Wall_Mesh.fbx.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTrackerLegacy.cs, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Marker.prefab, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Grass.prefab, Size: 0.00 MB
 Unused Asset: Assets\Scripts\SimpleNetworkHUD.cs, Size: 0.00 MB
 Unused Asset: Assets\Editor\TreePainter.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ButcherTable.cs, Size: 0.00 MB
 Unused Asset: Assets\Sprites\ammo_icon_01.png, Size: 0.00 MB
 Unused Asset: Assets\DefaultNetworkPrefabs.asset, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Loadout.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-0.exr.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-1.exr.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\ReflectionProbe-2.exr.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerListManager.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\TutorialInfo\Icons\ReadMeImg.PNG.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\GrassTrampleStamp.shader, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ScopeSway.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Skybox\SkyboxLiteWarm.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ShopButton.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TenPeltObjective.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Skybox\SkyboxLite.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ObjectiveInteractable.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMPro.cginc, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PartridgeListeningState.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Readme.asset, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalReward.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very High_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very Low_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Medium_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Ultra_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\High_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Low_PipelineAsset_ForwardRenderer.asset, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalGrazingState.cs, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTrackerUpdater.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalListeningState.cs, Size: 0.00 MB
@@ -520,23 +471,24 @@ Unused Asset: Assets\Scripts\Balloon.cs, Size: 0.00 MB
 Unused Asset: Assets\Resources\FairyTotem.mat, Size: 0.00 MB
 Unused Asset: Assets\Sprites\BulletMark.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemDatabase.cs, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AnimalDeadState.cs, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Footstep.prefab, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AnimalDeadState.cs, Size: 0.00 MB
+Unused Asset: Assets\Scripts\GrassTrampler.cs, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\BulletMark.prefab, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\BloodSplatter.prefab, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\TMP Settings.asset, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitData.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TerrainManager.cs, Size: 0.00 MB
 Unused Asset: Assets\Settings\LightingSettings.lighting, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalInspectUI.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AlbinoPeltObjective.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\PlaygroundSettings.lighting, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HerdNeeds.cs, Size: 0.00 MB
+Unused Asset: Assets\Scripts\TODO, Size: 0.00 MB
 Unused Asset: Assets\Settings\Mobile_Renderer.asset, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalStateManager.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\FairyTotemObjective.cs, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ColorDebug\OpenScriptFromDebug.cs, Size: 0.00 MB
 Unused Asset: Assets\Settings\Build Profiles\Windows.asset, Size: 0.00 MB
-Unused Asset: Assets\Scripts\TODO, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerData.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LoadoutSlot.cs, Size: 0.00 MB
 Unused Asset: Assets\Shaders\BackfacePinkTransparent.shader, Size: 0.00 MB
@@ -547,6 +499,7 @@ Unused Asset: Assets\Prefabs\Herd.prefab, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AmountUI.cs, Size: 0.00 MB
 Unused Asset: Assets\Materials\Lit Variant 1.mat, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ShopUI.cs, Size: 0.00 MB
+Unused Asset: Assets\Shaders\GrassTrampleDecay.shader, Size: 0.00 MB
 Unused Asset: Assets\Editor\ItemDatabaseEditor.cs, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTracker.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalTimerState.cs, Size: 0.00 MB
@@ -570,10 +523,9 @@ Unused Asset: Assets\Scripts\PeltSpawnerInteractable.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InventoryPanelUI.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\MoneyDisplay.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponButton.cs, Size: 0.00 MB
-Unused Asset: Assets\Scripts\PauseMenu.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Editor\SetTerrainObstaclesEditor.cs, Size: 0.00 MB
-Unused Asset: Assets\Settings\NewLayer.terrainlayer, Size: 0.00 MB
 Unused Asset: Assets\Materials\NewLayer.terrainlayer, Size: 0.00 MB
+Unused Asset: Assets\Scripts\PauseMenu.cs, Size: 0.00 MB
+Unused Asset: Assets\Settings\NewLayer.terrainlayer, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Internal.cs, Size: 0.00 MB
 Unused Asset: Assets\InputSystem\PlayerActions.inputsettings.asset, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo\CustomDebugLogColor.cs, Size: 0.00 MB
@@ -599,79 +551,41 @@ Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ProjectRepo
 Unused Asset: Assets\Audio\elevator_ding.ogg.meta, Size: 0.00 MB
 Unused Asset: Assets\Audio\musket_sound.mp3.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch\ScriptContentReplaceTool.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTrackerUpdater.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch\ScriptContentSearchTool.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\LocalBackup\PersistentBackupPrompter.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch\ScriptContentSearchTool.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTrackerUpdater.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTrackerLegacy.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\PlaygroundSettings.lighting.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildPostProcessor.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogSettings.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogWindow.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ColorDebug\OpenScriptFromDebug.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogWindow.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\SteamCustom\BuildWindow.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTracker.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\LocalBackup\LocalBackupWindow.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker\EditorTimeTracker.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\PrefsViewer\PlayerPrefsViewer.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground\LightingData.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogger.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\WindowResize\WindowResizer.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\SnapToGround\SnapToGround.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogger.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very High_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very Low_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Medium_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\Editor\MySetTerrainObstaclesEditor.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Ultra_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo\CustomDebugLogColor.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\High_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Low_PipelineAsset_ForwardRenderer.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo\MoreDebugLogDemos.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo\PlayerPrefsDemo.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PartridgeStateManager.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GreyBlue_Mat.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Skybox\SkyboxLiteWarm.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridOrange_01_Mat.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridWhite_01_Mat.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo\PlayerPrefsDemo.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\InputSystem\PlayerActions.inputsettings.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\GridBlue_01_Mat.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very High_PipelineAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Very Low_PipelineAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials\Blue_Mat.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Skybox\SkyboxLite.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Data\DebugC.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Medium_PipelineAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Ultra_PipelineAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\High_PipelineAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings\Low_PipelineAsset.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\BalloonShop.cs, Size: 0.00 MB
+Unused Asset: Assets\Scripts\FPSCounter.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalBaseState.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AntlerBranch.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\NestedParent_Unpack.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemSpawner.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\PlayerFollowCamera.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_650_400_300_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Stairs_200x100x200_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\PlayerCapsule.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_350x250x300_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_350x250x200_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Box_100x100x100_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs\MainCamera.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground.unity.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Environment_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Structure_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Tunnel_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Readme.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Ramp_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs\Wall_Prefab.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\StarterAssets_Documentation_v1.1.pdf.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Fonts\LiberationSans.ttf.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalStoringInteractableBase.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\CursorManager.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\license.txt.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponDatabase.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerSaveData.cs, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art\Materials\MatA.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art\Materials\MatB.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art\Materials\MatA.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\GlobalVariables.cs, Size: 0.00 MB
 Unused Asset: Assets\InputSystem_Actions.inputactions.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Documentation\Documentation.rtf.meta, Size: 0.00 MB
@@ -680,75 +594,79 @@ Unused Asset: Assets\Scripts\CoordDisplay.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LayerUtils.cs, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Scripts\Readme.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP UNLIT.shadergraph.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Lit.shadergraph.meta, Size: 0.00 MB
 Unused Asset: Assets\Shaders\BackfacePinkShader.shadergraph.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Unlit.shadergraph.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP LIT.shadergraph.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Unlit.shadergraph.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-URP Lit.shadergraph.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow\BuildLogSettings.cs, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Shop.cs, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TerrainRegister.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\NotEditor\SetTerrainObstaclesStatic.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Editor\SetTerrainObstaclesEditor.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMPro.cginc.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitDataUIEntry.cs, Size: 0.00 MB
-Unused Asset: Assets\Shaders\BackfacePink.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc.meta, Size: 0.00 MB
-Unused Asset: Assets\Shaders\BackfacePinkTransparent.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Sprite.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF.shader.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\GrassTrampleRenderTexture_ShadowReceiving.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\GrassTrampleDecay.shader.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\BackfacePinkTransparent.shader.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials\NewLayer.terrainlayer.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\NewLayer.terrainlayer.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\BackfacePink.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_Sprite.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\LightingSettings.lighting.meta, Size: 0.00 MB
-Unused Asset: Assets\TutorialInfo\Scripts.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\NewLayer.terrainlayer.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\NewLayer.terrainlayer.meta, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Scripts\Editor.meta, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Icons.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials.meta, Size: 0.00 MB
+Unused Asset: Assets\TutorialInfo\Scripts.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Sprite Assets.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Style Sheets.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials.meta, Size: 0.00 MB
 Unused Asset: Assets\Scenes\SampleScene\LightingData.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\DefaultVolumeProfile.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TerrainData_9a87a5d8-2347-4d52-8196-f346db7d8124.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\DefaultNetworkPrefabs.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\Mobile_Renderer.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\Mobile_RPAsset.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Scenes\SampleScene\NavMesh-NavMesh Surface.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\Build Profiles\Windows.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings\PC_RPAsset.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TerrainData_b6b7ae38-6354-4d42-b53d-102fa5d16b4f.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TerrainData_f1c6f525-e5e9-4178-8e70-7af4772601d4.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\TerrainData_9a87a5d8-2347-4d52-8196-f346db7d8124.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\UniversalRenderPipelineGlobalSettings.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\Resources\ItemDatabase.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\PC_RPAsset.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\New Terrain.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\DefaultNetworkPrefabs.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\NewShaderVariants.shadervariants.meta, Size: 0.00 MB
+Unused Asset: Assets\TerrainData_f1c6f525-e5e9-4178-8e70-7af4772601d4.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\Build Profiles\Windows.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\PC_Renderer.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\Mobile_Renderer.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\DefaultVolumeProfile.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Scenes\SampleScene\NavMesh-NavMesh Surface.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Resources\ItemDatabase.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings\Mobile_RPAsset.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\Lit Variant 1.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Models\DeerBodyMaterial.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\GrassTrailMaterial2.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\DeerFootprintDecal.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\BloodSplatterDecal.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Animations\Deer.controller.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials\Antler.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites\BulletMark.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\Resources\FairyTotem.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\RenderTextures\AnimalPreviewRT.renderTexture.meta, Size: 0.00 MB
 Unused Asset: Assets\Animations\OverShoulder.anim.meta, Size: 0.00 MB
+Unused Asset: Assets\Animations\OnHit.anim.meta, Size: 0.00 MB
 Unused Asset: Assets\Animations\Idle.anim.meta, Size: 0.00 MB
 Unused Asset: Assets\Animations\Die.anim.meta, Size: 0.00 MB
 Unused Asset: Assets\Animations\Run.anim.meta, Size: 0.00 MB
-Unused Asset: Assets\Animations\Deer.controller.meta, Size: 0.00 MB
-Unused Asset: Assets\Animations\OnHit.anim.meta, Size: 0.00 MB
-Unused Asset: Assets\Resources\FairyTotem.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials\Lit Variant 1.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\RenderTextures\AnimalPreviewRT.renderTexture.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites\BulletMark.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials\DeerFootprintDecal.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\Models\DeerBodyMaterial.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\Materials\Lit Variant.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ClientNetworkTransform.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt, Size: 0.00 MB
@@ -756,155 +674,143 @@ Unused Asset: Assets\Scripts\ClientNetworkAnimator.cs, Size: 0.00 MB
 Unused Asset: Assets\Readme.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\SampleSceneProfile.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Style Sheets\Default Style Sheet.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF.asset.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\TMP Settings.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Fallback.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\Sprite Assets\EmojiOne.asset.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne.json.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Fallback.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF.asset.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat.meta, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne.json.meta, Size: 0.00 MB
 Unused Asset: Assets\TutorialInfo\Layout.wlt.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art\Materials.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Documentation.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Data.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ColorDebug.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Skybox.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Models.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\SteamCustom.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build\LogWindow.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes\Playground.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art\Materials.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Data.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\WindowResize.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\TimeTracker.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\SnapToGround.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ScriptSearch.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ReplaceWithPrefabEditor.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\ProjectReport.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\PrefsViewer.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Materials.meta, Size: 0.00 MB
 Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\LocalBackup.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\WindowResize.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art\Textures.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Editor\Build.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts\Demo.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Sprites.meta, Size: 0.00 MB
 Unused Asset: Assets\Animations.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Scripts.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Editor.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Resources.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\ItemAndPlayerInventoryUI.cs, Size: 0.00 MB
+Unused Asset: Assets\Scenes\SampleScene.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Shaders.meta, Size: 0.00 MB
+Unused Asset: Assets\_Recovery.meta, Size: 0.00 MB
+Unused Asset: Assets\TutorialInfo.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders.meta, Size: 0.00 MB
+Unused Asset: Assets\Settings.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts.meta, Size: 0.00 MB
+Unused Asset: Assets\Scenes.meta, Size: 0.00 MB
+Unused Asset: Assets\Resources.meta, Size: 0.00 MB
+Unused Asset: Assets\RenderTextures.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs.meta, Size: 0.00 MB
+Unused Asset: Assets\Sprites.meta, Size: 0.00 MB
+Unused Asset: Assets\Models.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Fonts.meta, Size: 0.00 MB
+Unused Asset: Assets\Materials.meta, Size: 0.00 MB
+Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools.meta, Size: 0.00 MB
+Unused Asset: Assets\InputSystem.meta, Size: 0.00 MB
+Unused Asset: Assets\Editor.meta, Size: 0.00 MB
 Unused Asset: Assets\Settings\Build Profiles.meta, Size: 0.00 MB
 Unused Asset: Assets\Audio.meta, Size: 0.00 MB
-Unused Asset: Assets\Editor.meta, Size: 0.00 MB
-Unused Asset: Assets\InputSystem.meta, Size: 0.00 MB
-Unused Asset: Assets\Materials.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs.meta, Size: 0.00 MB
-Unused Asset: Assets\RenderTextures.meta, Size: 0.00 MB
-Unused Asset: Assets\Resources.meta, Size: 0.00 MB
-Unused Asset: Assets\Scenes.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts.meta, Size: 0.00 MB
-Unused Asset: Assets\Settings.meta, Size: 0.00 MB
-Unused Asset: Assets\Shaders.meta, Size: 0.00 MB
-Unused Asset: Assets\Sprites.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro.meta, Size: 0.00 MB
-Unused Asset: Assets\TutorialInfo.meta, Size: 0.00 MB
-Unused Asset: Assets\_Recovery.meta, Size: 0.00 MB
-Unused Asset: Assets\Scenes\SampleScene.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\ItemAndPlayerInventoryUI.cs, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController.meta, Size: 0.00 MB
-Unused Asset: Assets\Models.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scenes.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Art.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\NotEditor.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Scripts.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\TutorialInfo\Icons.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Art.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Environment\Prefabs.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools\Documentation.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\FirstPersonController\Prefabs.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Shaders.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Resources.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Fonts.meta, Size: 0.00 MB
-Unused Asset: Assets\TegridyMadeGames\TMG_EditorTools.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\TutorialInfo.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\Settings.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Sprites.meta, Size: 0.00 MB
-Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt.meta, Size: 0.00 MB
-Unused Asset: Assets\Resources\PerformanceTestRunSettings.json.meta, Size: 0.00 MB
 Unused Asset: Assets\Resources\PerformanceTestRunInfo.json.meta, Size: 0.00 MB
-Unused Asset: Assets\Scenes\SampleScene.unity.meta, Size: 0.00 MB
-Unused Asset: Assets\UserChoices.choices.meta, Size: 0.00 MB
-Unused Asset: Assets\StarterAssets\license.txt, Size: 0.00 MB
+Unused Asset: Assets\Resources\PerformanceTestRunSettings.json.meta, Size: 0.00 MB
+Unused Asset: Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt.meta, Size: 0.00 MB
 Unused Asset: Assets\_Recovery\0 (6).unity.meta, Size: 0.00 MB
-Unused Asset: Assets\_Recovery\0 (5).unity.meta, Size: 0.00 MB
-Unused Asset: Assets\_Recovery\0 (4).unity.meta, Size: 0.00 MB
-Unused Asset: Assets\_Recovery\0 (3).unity.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\TODO.meta, Size: 0.00 MB
+Unused Asset: Assets\Shaders\GrassTrampleStamp.shader.meta, Size: 0.00 MB
+Unused Asset: Assets\UserChoices.choices.meta, Size: 0.00 MB
+Unused Asset: Assets\Scenes\SampleScene.unity.meta, Size: 0.00 MB
 Unused Asset: Assets\_Recovery\0 (2).unity.meta, Size: 0.00 MB
 Unused Asset: Assets\_Recovery\0 (1).unity.meta, Size: 0.00 MB
+Unused Asset: Assets\_Recovery\0 (5).unity.meta, Size: 0.00 MB
 Unused Asset: Assets\_Recovery\0.unity.meta, Size: 0.00 MB
+Unused Asset: Assets\_Recovery\0 (7).unity.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\TODO.meta, Size: 0.00 MB
+Unused Asset: Assets\_Recovery\0 (3).unity.meta, Size: 0.00 MB
+Unused Asset: Assets\_Recovery\0 (4).unity.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Marker.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\MusketteWorldAppearance.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Partridge.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\PlayerCapsule_Networked.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\PlayerListEntry.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Rock_1.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\LoadoutWeaponButton.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\TestWorldAppearance.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\ShopButton.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\Tree001.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\LoadoutWeaponButton.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\WeaponRoot_Base.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\WorldAppearance.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\WorldItem.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\ShopButton.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\TestWorldAppearance.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\ItemSlot.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\BalloonSpawner.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\ItemCustomInfoText.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\InventoryPanel.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\HitData.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Herd.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Footstep.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Deer.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\CauldronWorldAppearance.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\ButcherKnife.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\BulletMark.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Bullet.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\BalloonWorldAppearance.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\ItemCustomInfoText.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\ItemInformationPanel.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Balloon.prefab.meta, Size: 0.00 MB
-Unused Asset: Assets\Prefabs\Antler.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Prefabs\AmountInput.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Antler.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\BalloonSpawner.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\BalloonWorldAppearance.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\BloodSplatter.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Bullet.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\BulletMark.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Balloon.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\CauldronWorldAppearance.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Deer.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Footstep.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Grass.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\InventoryPanel.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\Herd.prefab.meta, Size: 0.00 MB
+Unused Asset: Assets\Prefabs\ButcherKnife.prefab.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HerdNeedsComponent.cs, Size: 0.00 MB
 Unused Asset: Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AlertnessLevel.cs, Size: 0.00 MB
-Unused Asset: Assets\Editor\MySetTerrainObstaclesEditor.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AntlerBranch.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Editor\ItemDatabaseEditor.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Antler.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AntlerMeshGenerator.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AnimalPelt.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalVariator.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Editor\MySetTerrainObstaclesEditor.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalTimerState.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalStoringInteractableBase.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalStateManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalReward.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AnimalPelt.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AntlerBranch.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalMovingState.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AnimalListeningState.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AmmoUI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalInspectUI.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AnimalGrazingState.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalFleeingState.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Editor\TreePainter.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalDeadState.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalBaseState.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AnimalAI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Animal.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AmountUI.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AmmoUI.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AntlerMeshGenerator.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AlertnessLevel.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AlbinoPeltObjective.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Editor\ItemDatabaseEditor.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AnimalGrazingState.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Editor\TreePainter.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\AttachHandler.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\CursorManager.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Balloon.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AnimalListeningState.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\AttachInteractable.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\ButcherTable.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\BalloonAttach.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\RandomUtil.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\PlayerSaveData.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerListUI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerListManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PlayerInventoryMenu.cs.meta, Size: 0.00 MB
@@ -912,26 +818,27 @@ Unused Asset: Assets\Scripts\PlayerData.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PeltSpawnerInteractable.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PauseMenu.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PartridgeStateManager.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\PlayerSaveData.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\PartridgeListeningState.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\ObjectiveMenu.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ObjectiveInteractable.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\NoiseManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\NeedZone.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\MySetTerrainObstacles.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\MoneyDisplay.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LoadoutSlot.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\LoadoutMenu.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\ObjectiveMenu.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\RandomUtil.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\SaveSystem.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\LoadoutMenu.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ScopeSway.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Shop.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WorldItem.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponPickup.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponDefinition.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponDatabase.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\WeaponButton.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Weapon.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\UIMenu.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\TrampleDebugTest.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TerrainRegister.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TerrainManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\TenPeltObjective.cs.meta, Size: 0.00 MB
@@ -940,32 +847,31 @@ Unused Asset: Assets\Scripts\Size.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\SimpleNetworkHUD.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ShopUI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ShopButton.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Shop.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ShaderSwitcher.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Loadout.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\AttachInteractable.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Balloon.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\LayerUtils.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemTradingPanelUI.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\HandCart.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\GrassTrampleSystem.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\GrassTrampler.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\GlobalVariables.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\FPSCounter.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\FairyTotemObjective.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\CursorManager.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Corpse.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\CoordDisplay.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ClientPlayerMove.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ClientNetworkTransform.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Herd.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ClientNetworkAnimator.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\ButcherTable.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\CameraRecoil.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ButcherKnife.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Bullet.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\BootstrapHost.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\BalloonSpawner.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\BalloonShop.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\BalloonAttach.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\CameraRecoil.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\HandCart.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\KnifeRack.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\HerdManager.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\HerdNeedsComponent.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Herd.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\HerdNeeds.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemSpawner.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemSlotUI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemPickup.cs.meta, Size: 0.00 MB
@@ -974,16 +880,17 @@ Unused Asset: Assets\Scripts\ItemDefinition.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemDatabase.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\ItemAndPlayerInventoryUI.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InventoryPanelUI.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\HerdNeeds.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Inventory.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Internal.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InteractableBase.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\InspectRoom.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HouseStorageInteractable.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitDataUIEntry.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitDataStrings.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\HitData.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Internal.cs.meta, Size: 0.00 MB
-Unused Asset: Assets\Scripts\Weapon.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\HerdNeedsComponent.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\HerdManager.cs.meta, Size: 0.00 MB
+Unused Asset: Assets\Scripts\Loadout.cs.meta, Size: 0.00 MB
 Unused Asset: Assets\Scripts\Size.cs, Size: 0.00 MB
 Unused Asset: Assets\Resources\PerformanceTestRunSettings.json, Size: 0.00 MB
 ====================================

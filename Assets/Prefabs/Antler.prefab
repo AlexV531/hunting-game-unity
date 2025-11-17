@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1a36b79ce09e8dc4da8e1710a56f2518, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,5 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83937e8641a7b064790b39b5fc331b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AntlerMeshGenerator
-  material: {fileID: -8387617026056533479, guid: aa38d7b0e367ecc4aac915dcfe957879, type: 3}
+  material: {fileID: 2100000, guid: 1a36b79ce09e8dc4da8e1710a56f2518, type: 2}
   radialSegments: 5
