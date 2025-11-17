@@ -1,6 +1,5 @@
 TODO:
 Balance basic gameplay to a playable degree
-Tracking system (footsteps, blood, feces)
 Foliage and rocks
 Partidge fly movement when fleeing
 Spell system framework
@@ -16,9 +15,12 @@ Butchering item rewards
 Audio effects
 Herd Movement and animal need zones
     Maybe if need zones are used less their weight increases, increasing their likeliness to get selected by a herd
+    Water and sleep need zones should also be added
 Bullet impact effects
 Ammo System
-    Need to add ammo selection to the loadout screen, will likely need a minor redesign to enable drag and drop
+    Need to add ammo selection to the loadout screen
+Tracking system (blood, grass trampling)
+    Maybe add footsteps or feces that can also be used to track animals
 
 DONE:
 Player footstep noise
