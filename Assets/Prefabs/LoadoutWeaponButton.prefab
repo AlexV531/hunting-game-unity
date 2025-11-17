@@ -113,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 54.9775}
+  m_AnchoredPosition: {x: 103.68329, y: 0}
+  m_SizeDelta: {x: 237.3666, y: 54.9775}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4205813108409732302
 CanvasRenderer:
@@ -210,9 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24efea7c80570e945986fb8e5c6ed926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponButton
-  icon: {fileID: 1315465782040082450}
-  nameText: {fileID: 1099172215126163375}
-  button: {fileID: 6330044768342325220}
+  weaponNameText: {fileID: 1099172215126163375}
+  weaponIcon: {fileID: 1315465782040082450}
 --- !u!1 &7256993895544579114
 GameObject:
   m_ObjectHideFlags: 0
