@@ -25,7 +25,7 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
 
     public bool IsEmpty => currentItem.Equals(default);
     public ItemType ItemType => itemType;
-    public ItemInstance CurrentWeapon => currentItem;
+    public ItemInstance CurrentItem => currentItem;
 
     public void Initialize(ItemType itemType, LoadoutMenu loadoutMenu)
     {

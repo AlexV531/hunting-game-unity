@@ -6,7 +6,6 @@ public class WeaponDefinition : ItemDefinition
     public GameObject prefab; // prefab to instantiate
     public bool unlockedByDefault;
     public bool contextual;
-    // public WeaponClass weaponClass;
 
     public override string ToString()
     {

@@ -31,6 +31,11 @@ public class ItemDatabaseEditor : Editor
             AddItem(typeof(WeaponDefinition));
         }
 
+        if (GUILayout.Button("Add Ammo"))
+        {
+            AddItem(typeof(AmmoDefinition));
+        }
+
         serializedObject.ApplyModifiedProperties();
     }
 

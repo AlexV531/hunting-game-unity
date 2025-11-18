@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cinemachine;
 using Unity.Netcode;
+using System.Collections.Generic;
 
 public class Weapon : NetworkBehaviour
 {
@@ -48,7 +49,7 @@ public class Weapon : NetworkBehaviour
     public bool automaticFire = true;
 
     public int maxAmmo = 3;
-    public int reserveAmmoKey = 24; // TEMPORARY Eventually ammo will be set in loadout
+    public AmmoType acceptedAmmoType = AmmoType.Bullet;
     public ItemInstance fauxAmmoInstance; // Stack size cannot be kept in sync, use this to compare to the real ammo instance in inventory
 
     private int currentAmmo = 0;
@@ -82,6 +83,7 @@ public class Weapon : NetworkBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
+        SelectAmmoFromInventory();
         isEquipped.OnValueChanged += OnEquipChange;
         OnEquipChange(true, isEquipped.Value);
     }
@@ -237,7 +239,7 @@ public class Weapon : NetworkBehaviour
             return;
 
         // TEMPORARY AMMO SELECTION SECTION Eventually ammo will be set in loadout screen
-        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(reserveAmmoKey);
+        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(fauxAmmoInstance);
 
         if (trueAmmoInstance.Equals(default))
             return;
@@ -251,6 +253,21 @@ public class Weapon : NetworkBehaviour
         OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
 
         // Play reload animation
+    }
+
+    private void SelectAmmoFromInventory()
+    {
+        List<ItemInstance> ammoInstances = _owner.GetInventory().GetAmmoInstances();
+        foreach (ItemInstance ammoInstance in ammoInstances)
+        {
+            AmmoDefinition ammoDef = ItemDatabase.Instance.GetItem(ammoInstance.key) as AmmoDefinition;
+            if (ammoDef == null)
+                continue;
+            if (acceptedAmmoType == ammoDef.ammoType)
+            {
+                fauxAmmoInstance = ammoInstance;
+            }
+        }
     }
 
     private void OnEquipChange(bool previousValue, bool newValue)
@@ -278,7 +295,7 @@ public class Weapon : NetworkBehaviour
 
     public int GetReserveAmmo()
     {
-        ItemInstance ammo = _owner.GetInventory().GetInstance(reserveAmmoKey);
+        ItemInstance ammo = _owner.GetInventory().GetInstance(fauxAmmoInstance);
         return ammo.Equals(default) ? 0 : ammo.stackSize;
     }
 }

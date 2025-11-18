@@ -160,7 +160,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1198269481787267308, guid: 47e639f39d28bcc4da75f6739162f0f3, type: 3}
   firePoint: {fileID: 5581312515161585493}
   bulletSpeed: 600
-  weaponClass: 2
   weaponKey: 0
   weaponInstance:
     m_InternalValue:
@@ -248,8 +247,84 @@ MonoBehaviour:
   loudness: 80
   automaticFire: 1
   maxAmmo: 3
-  reserveAmmo: 100
-  bulletDecalPrefab: {fileID: 4446228548660162820, guid: 9d874a01747efde41960c65dc5ed065e, type: 3}
+  acceptedAmmoType: 1
+  fauxAmmoInstance:
+    key: 0
+    stackSize: 0
+    customData:
+      doses: 0
+      effectType: 0
+      duration: 0
+      quality: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+      description:
+        utf8LengthInBytes: 0
+        bytes:
+          offset0000:
+            byte0000: 0
+            byte0001: 0
+            byte0002: 0
+            byte0003: 0
+            byte0004: 0
+            byte0005: 0
+            byte0006: 0
+            byte0007: 0
+            byte0008: 0
+            byte0009: 0
+            byte0010: 0
+            byte0011: 0
+            byte0012: 0
+            byte0013: 0
+            byte0014: 0
+            byte0015: 0
+          offset0016:
+            byte0000: 0
+            byte0001: 0
+            byte0002: 0
+            byte0003: 0
+            byte0004: 0
+            byte0005: 0
+            byte0006: 0
+            byte0007: 0
+            byte0008: 0
+            byte0009: 0
+            byte0010: 0
+            byte0011: 0
+            byte0012: 0
+            byte0013: 0
+            byte0014: 0
+            byte0015: 0
+          offset0032:
+            byte0000: 0
+            byte0001: 0
+            byte0002: 0
+            byte0003: 0
+            byte0004: 0
+            byte0005: 0
+            byte0006: 0
+            byte0007: 0
+            byte0008: 0
+            byte0009: 0
+            byte0010: 0
+            byte0011: 0
+            byte0012: 0
+            byte0013: 0
+            byte0014: 0
+            byte0015: 0
+          byte0048: 0
+          byte0049: 0
+          byte0050: 0
+          byte0051: 0
+          byte0052: 0
+          byte0053: 0
+          byte0054: 0
+          byte0055: 0
+          byte0056: 0
+          byte0057: 0
+          byte0058: 0
+          byte0059: 0
+          byte0060: 0
+          byte0061: 0
 --- !u!82 &-7579572136297219852
 AudioSource:
   m_ObjectHideFlags: 0

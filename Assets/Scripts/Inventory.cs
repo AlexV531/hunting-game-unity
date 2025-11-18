@@ -148,6 +148,22 @@ public class Inventory
         return weaponList;
     }
 
+    public List<ItemInstance> GetAmmoInstances()
+    {
+        List<ItemInstance> ammoInstances = new List<ItemInstance>();
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            ItemDefinition def = ItemDatabase.Instance.GetItem(items[i].key);
+            if (def is AmmoDefinition)
+            {
+                ammoInstances.Add(items[i]);
+            }
+        }
+
+        return ammoInstances;
+    }
+
     public ItemInstance GetInstance(int key)
     {
         for (int i = 0; i < items.Count; i++)

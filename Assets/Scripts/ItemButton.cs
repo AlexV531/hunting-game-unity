@@ -41,7 +41,7 @@ public class ItemButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         originalParent = transform.parent;
         originalPosition = transform.position;
 
-        menu.OnWeaponDragStart(item);
+        menu.OnItemDragStart(item);
         
         // Move to root canvas for proper rendering
         transform.SetParent(canvas.transform);
