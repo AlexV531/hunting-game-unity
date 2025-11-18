@@ -57,16 +57,29 @@ public class LoadoutMenu : UIMenu
 
     public void RefreshLoadoutSlots()
     {
+        // Clear all slots first
         foreach (var slot in largeSlots) slot.ClearSlot();
         foreach (var slot in smallSlots) slot.ClearSlot();
         foreach (var slot in toolSlots) slot.ClearSlot();
         
-        foreach (var w in editableLoadout.largeWeapons)
-            GetFreeSlotForClass(WeaponClass.Large)?.AssignWeapon(w);
-        foreach (var w in editableLoadout.smallWeapons)
-            GetFreeSlotForClass(WeaponClass.Small)?.AssignWeapon(w);
-        foreach (var w in editableLoadout.tools)
-            GetFreeSlotForClass(WeaponClass.Tool)?.AssignWeapon(w);
+        // Assign weapons from arrays to corresponding slots
+        for (int i = 0; i < editableLoadout.largeWeapons.Length && i < largeSlots.Count; i++)
+        {
+            if (!editableLoadout.largeWeapons[i].Equals(default))
+                largeSlots[i].AssignWeapon(editableLoadout.largeWeapons[i]);
+        }
+        
+        for (int i = 0; i < editableLoadout.smallWeapons.Length && i < smallSlots.Count; i++)
+        {
+            if (!editableLoadout.smallWeapons[i].Equals(default))
+                smallSlots[i].AssignWeapon(editableLoadout.smallWeapons[i]);
+        }
+        
+        for (int i = 0; i < editableLoadout.tools.Length && i < toolSlots.Count; i++)
+        {
+            if (!editableLoadout.tools[i].Equals(default))
+                toolSlots[i].AssignWeapon(editableLoadout.tools[i]);
+        }
     }
 
     // Called when a weapon is dropped onto a valid slot
@@ -78,49 +91,42 @@ public class LoadoutMenu : UIMenu
         if (targetSlot.WeaponClass != def.weaponClass)
             return false;
         
-        var targetList = editableLoadout.GetListForClass(def.weaponClass);
+        var targetArray = editableLoadout.GetListForClass(def.weaponClass);
+        var slots = GetSlotsForClass(def.weaponClass);
         
-        // Check if weapon is already in loadout
-        bool alreadyInLoadout = targetList.Exists(w => w.Compare(weapon));
-        
-        // If not already in loadout, check capacity (only if slot is empty)
-        if (!alreadyInLoadout && targetSlot.IsEmpty && targetList.Count >= editableLoadout.GetMaxCountForClass(def.weaponClass))
+        // Find the index of the target slot
+        int targetIndex = slots.IndexOf(targetSlot);
+        if (targetIndex == -1 || targetIndex >= targetArray.Length)
             return false;
         
-        // If weapon is already in loadout, remove it from its old slot
-        if (alreadyInLoadout)
+        // Check if weapon is already in loadout
+        int existingIndex = -1;
+        for (int i = 0; i < targetArray.Length; i++)
         {
-            // Find and clear the old slot
-            var slots = def.weaponClass switch
+            if (!targetArray[i].Equals(default) && targetArray[i].Compare(weapon))
             {
-                WeaponClass.Large => largeSlots,
-                WeaponClass.Small => smallSlots,
-                WeaponClass.Tool => toolSlots,
-                _ => null
-            };
-            
-            foreach (var slot in slots)
-            {
-                if (!slot.IsEmpty && slot.CurrentWeapon.Compare(weapon))
-                {
-                    slot.ClearSlot();
-                    break;
-                }
+                existingIndex = i;
+                break;
             }
-            
-            targetList.RemoveAll(w => w.Compare(weapon));
         }
         
-        // If slot is occupied, remove the old weapon first
+        // If weapon is already in loadout, clear its old slot
+        if (existingIndex != -1)
+        {
+            targetArray[existingIndex] = default;
+            if (existingIndex < slots.Count)
+                slots[existingIndex].ClearSlot();
+        }
+        
+        // If target slot is occupied, clear it
         if (!targetSlot.IsEmpty)
         {
-            Debug.Log("Replacing weapon in slot");
-            var oldWeapon = targetSlot.CurrentWeapon;
-            targetList.RemoveAll(w => w.Compare(oldWeapon));
+            targetArray[targetIndex] = default;
         }
         
+        // Assign weapon to the target slot
+        targetArray[targetIndex] = weapon;
         targetSlot.AssignWeapon(weapon);
-        targetList.Add(weapon);
         return true;
     }
 
@@ -167,19 +173,31 @@ public class LoadoutMenu : UIMenu
     public void RemoveWeapon(ItemInstance weapon)
     {
         var def = WeaponDatabase.GetWeapon(weapon.key);
-        editableLoadout.GetListForClass(def.weaponClass).RemoveAll(w => w.Compare(weapon));
+        var targetArray = editableLoadout.GetListForClass(def.weaponClass);
+        var slots = GetSlotsForClass(def.weaponClass);
+        
+        // Find and remove the weapon from the array
+        for (int i = 0; i < targetArray.Length; i++)
+        {
+            if (!targetArray[i].Equals(default) && targetArray[i].Compare(weapon))
+            {
+                targetArray[i] = default;
+                if (i < slots.Count)
+                    slots[i].ClearSlot();
+                break;
+            }
+        }
     }
 
-    private LoadoutSlot GetFreeSlotForClass(WeaponClass wClass)
+    private List<LoadoutSlot> GetSlotsForClass(WeaponClass wClass)
     {
-        var slots = wClass switch
+        return wClass switch
         {
             WeaponClass.Large => largeSlots,
             WeaponClass.Small => smallSlots,
             WeaponClass.Tool => toolSlots,
             _ => null
         };
-        return slots?.Find(s => s.IsEmpty);
     }
 
     private void OnLoadoutConfirmed()

@@ -6,7 +6,8 @@ public enum ItemType
     Potion,
     AnimalPelt,
     Weapon,
-    Consumable
+    Consumable,
+    Ammo
 }
 
 [System.Serializable]

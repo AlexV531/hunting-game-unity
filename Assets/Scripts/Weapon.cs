@@ -44,16 +44,8 @@ public class Weapon : NetworkBehaviour
     );
 
     [Header("Zoom Settings")]
-    // public CinemachineVirtualCamera vCam;
     public float scopedFOV = 20f; // FOV when scoped
-    public float zoomSpeed = 10f; // FOV transition speed
-
-    // [Header("Shadow & LOD Settings")]
-    // public UniversalRenderPipelineAsset urpAsset;   // Assigned URP Asset
-    // public float scopedShadowDistance = 500f;       // Shadow distance when scoped
-    // public float normalShadowDistance = 100f;       // Default shadow distance
-    // public float scopedLODBias = 2f;                // LOD bias when scoped
-    // public float normalLODBias = 1f;      
+    public float zoomSpeed = 10f; // FOV transition speed  
 
     [Tooltip("Time in seconds between shots")]
     public float fireRate = 1f;
@@ -66,6 +58,7 @@ public class Weapon : NetworkBehaviour
 
     public int maxAmmo = 3;
     public int reserveAmmoKey = 24; // TEMPORARY Eventually ammo will be set in loadout
+    public ItemInstance fauxAmmoInstance; // Stack size cannot be kept in sync, use this to compare to the real ammo instance in inventory
 
     private int currentAmmo = 0;
     private float _fireCooldown = 0f;
@@ -271,14 +264,14 @@ public class Weapon : NetworkBehaviour
             return;
 
         // TEMPORARY AMMO SELECTION SECTION Eventually ammo will be set in loadout screen
-        ItemInstance ammoInstance = _owner.GetInventory().GetInstance(reserveAmmoKey);
+        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(reserveAmmoKey);
 
-        if (ammoInstance.Equals(default))
+        if (trueAmmoInstance.Equals(default))
             return;
 
         int needed = maxAmmo - currentAmmo;
 
-        int removed = _owner.GetInventory().RemoveItem(ammoInstance, needed);
+        int removed = _owner.GetInventory().RemoveItem(trueAmmoInstance, needed);
 
         currentAmmo += removed;
 

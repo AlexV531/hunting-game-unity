@@ -158,6 +158,16 @@ public class Inventory
         return default;
     }
 
+    public ItemInstance GetInstance(ItemInstance itemInstance)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].Compare(itemInstance))
+                return items[i];
+        }
+        return default;
+    }
+
     public List<ItemInstance> GetItems() => items;
 
     public int GetCapacity() => capacity;

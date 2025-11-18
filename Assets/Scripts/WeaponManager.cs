@@ -46,7 +46,15 @@ public class WeaponManager : NetworkBehaviour
         PlayerSaveData data = SaveSystem.LoadPlayer();
         if (data != null)
         {
-            SetUpLoadout(data.loadout);
+            // Need to check if save file has valid loadout, if not it must be updated
+            if (data.loadout.largeWeapons.Length < 2 || data.loadout.smallWeapons.Length < 2 || data.loadout.tools.Length < 4)
+            {
+                SetUpLoadout(new Loadout());
+            }
+            else
+            {
+                SetUpLoadout(data.loadout);
+            }
 
             // Spawn contextual weapons
             foreach (var def in WeaponDatabase.GetAllWeapons())
@@ -89,18 +97,18 @@ public class WeaponManager : NetworkBehaviour
         if (def == null)
             return;
 
-        List<ItemInstance> list = currentLoadout.GetListForClass(def.weaponClass);
+        ItemInstance[] array = currentLoadout.GetListForClass(def.weaponClass);
 
-        list.RemoveAll(w =>
+        for (int i = 0; i < array.Length; i++)
         {
-            if (weaponInstance.Compare(w))
+            if (!array[i].Equals(default) && weaponInstance.Compare(array[i]))
             {
-                RequestDespawnWeapon(w);
-                UnregisterSpawnedWeapon(w);
-                return true;
+                RequestDespawnWeapon(array[i]);
+                UnregisterSpawnedWeapon(array[i]);
+                array[i] = default;
+                break;
             }
-            return false;
-        });
+        }
     }
 
     public void SetUpLoadout(Loadout newLoadout)
@@ -195,87 +203,26 @@ public class WeaponManager : NetworkBehaviour
         {
             Debug.Log("Attempting to equip a player's weapon without being the player's owner client");
         }
-
         if (currentLoadout == null)
         {
             Debug.LogWarning("Loadout not set in weapon manager");
             return;
         }
-
-        ItemInstance key = default;
-        if (slot == 0)
+        
+        ItemInstance key = currentLoadout.GetWeaponInSlot(slot);
+        
+        // Only equip if the slot has a valid weapon (not default/empty)
+        if (!key.Equals(default))
         {
-            if (currentLoadout.largeWeapons.Count < 1)
-            {
-                return;
-            }
-            key = currentLoadout.largeWeapons[0];
+            EquipWeapon(key);
         }
-        else if (slot == 1)
-        {
-            if (currentLoadout.largeWeapons.Count < 2)
-            {
-                return;
-            }
-            key = currentLoadout.largeWeapons[1];
-        }
-        else if (slot == 2)
-        {
-            if (currentLoadout.smallWeapons.Count < 1)
-            {
-                return;
-            }
-            key = currentLoadout.smallWeapons[0];
-        }
-        else if (slot == 3)
-        {
-            if (currentLoadout.smallWeapons.Count < 2)
-            {
-                return;
-            }
-            key = currentLoadout.smallWeapons[1];
-        }
-        else if (slot == 4)
-        {
-            if (currentLoadout.tools.Count < 1)
-            {
-                return;
-            }
-            key = currentLoadout.tools[0];
-        }
-        else if (slot == 5)
-        {
-            if (currentLoadout.tools.Count < 2)
-            {
-                return;
-            }
-            key = currentLoadout.tools[1];
-        }
-        else if (slot == 6)
-        {
-            if (currentLoadout.tools.Count < 3)
-            {
-                return;
-            }
-            key = currentLoadout.tools[2];
-        }
-        else if (slot == 7)
-        {
-            if (currentLoadout.tools.Count < 4)
-            {
-                return;
-            }
-            key = currentLoadout.tools[3];
-        }
-
-        EquipWeapon(key);
     }
 
     public void RequestSpawnWeapon(ItemInstance weaponInstance)
     {
         if (!IsOwner)
             return;
-        if (WeaponDatabase.GetWeapon(weaponInstance.key).contextual)
+        if (weaponInstance.Equals(default) || WeaponDatabase.GetWeapon(weaponInstance.key).contextual)
             return;
         SpawnWeaponServerRpc(weaponInstance);
     }

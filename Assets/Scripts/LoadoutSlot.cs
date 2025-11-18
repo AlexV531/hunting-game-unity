@@ -42,6 +42,9 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
 
     public void AssignWeapon(ItemInstance weapon)
     {
+        if (weapon.Equals(default))
+            return;
+
         currentWeapon = weapon;
         var def = WeaponDatabase.GetWeapon(weapon.key);
         
@@ -94,7 +97,7 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
         if (draggedButton != null)
         {
             // Dropping from weapon list
-            menu.TryAddWeaponToSlot(draggedButton.GetWeapon(), this);
+            // menu.TryAddWeaponToSlot(draggedButton.GetWeapon(), this);
         }
     }
 
