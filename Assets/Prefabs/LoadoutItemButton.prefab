@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 6330044768342325220}
   - component: {fileID: -4918179810764047586}
   m_Layer: 5
-  m_Name: LoadoutWeaponButton
+  m_Name: LoadoutItemButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24efea7c80570e945986fb8e5c6ed926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponButton
-  weaponNameText: {fileID: 1099172215126163375}
-  weaponIcon: {fileID: 1315465782040082450}
+  nameText: {fileID: 1099172215126163375}
+  icon: {fileID: 1315465782040082450}
 --- !u!1 &7256993895544579114
 GameObject:
   m_ObjectHideFlags: 0

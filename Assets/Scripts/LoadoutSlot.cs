@@ -6,67 +6,61 @@ using TMPro;
 public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI")]
-    public Image weaponIcon;
-    public TMP_Text weaponNameText;
+    public Image icon;
+    public TMP_Text nameText;
     public Image slotBackground;
     public CanvasGroup slotCanvasGroup; // Optional: for fading out invalid slots
     
     [Header("Visual Feedback")]
     public Color normalColor = Color.white;
     public Color highlightColor = Color.yellow;
-    // public Color invalidColor = Color.red;
     public Color greyedOutColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-    public Color validDropColor = Color.white;
     
     public enum DragState { Normal, Valid, Invalid, Occupied }
     private DragState currentDragState = DragState.Normal;
     
-    private ItemInstance currentWeapon;
-    private WeaponClass weaponClass;
+    private ItemInstance currentItem;
+    private ItemType itemType;
     private LoadoutMenu menu;
 
-    public bool IsEmpty => currentWeapon.Equals(default);
-    public WeaponClass WeaponClass => weaponClass;
-    public ItemInstance CurrentWeapon => currentWeapon;
+    public bool IsEmpty => currentItem.Equals(default);
+    public ItemType ItemType => itemType;
+    public ItemInstance CurrentWeapon => currentItem;
 
-    private void Awake()
+    public void Initialize(ItemType itemType, LoadoutMenu loadoutMenu)
     {
-    }
-
-    public void Initialize(WeaponClass wClass, LoadoutMenu loadoutMenu)
-    {
-        weaponClass = wClass;
+        this.itemType = itemType;
         menu = loadoutMenu;
         ClearSlot();
     }
 
-    public void AssignWeapon(ItemInstance weapon)
+    public void AssignItem(ItemInstance item)
     {
-        if (weapon.Equals(default))
+        if (item.Equals(default))
             return;
 
-        currentWeapon = weapon;
-        var def = WeaponDatabase.GetWeapon(weapon.key);
+        currentItem = item;
+        var def = ItemDatabase.Instance.GetItem(item.key);
         
-        if (weaponIcon != null)
+        if (icon != null)
         {
-            weaponIcon.sprite = def.icon;
-            weaponIcon.enabled = true;
+            icon.sprite = def.icon;
+            icon.enabled = true;
         }
         
-        if (weaponNameText != null)
-            weaponNameText.text = def.itemName;
+        if (nameText != null)
+            nameText.text = def.itemName;
     }
 
     public void ClearSlot()
     {
-        currentWeapon = default;
+        currentItem = default;
         
-        if (weaponIcon != null)
-            weaponIcon.enabled = false;
+        if (icon != null)
+            icon.enabled = false;
         
-        if (weaponNameText != null)
-            weaponNameText.text = "";
+        if (nameText != null)
+            nameText.text = "";
         
         ResetVisuals();
     }
@@ -83,20 +77,20 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
 
         slotBackground.color = currentDragState switch
         {
-            DragState.Valid => validDropColor,
+            DragState.Valid => normalColor,
             DragState.Invalid => greyedOutColor,
             _ => normalColor
         };
     }
 
-    // Handle drops from weapon buttons
+    // Handle drops from item buttons
     public void OnDrop(PointerEventData eventData)
     {
-        var draggedButton = eventData.pointerDrag?.GetComponent<WeaponButton>();
+        var draggedButton = eventData.pointerDrag?.GetComponent<ItemButton>();
         
         if (draggedButton != null)
         {
-            // Dropping from weapon list
+            // Dropping from item list
             // menu.TryAddWeaponToSlot(draggedButton.GetWeapon(), this);
         }
     }
@@ -112,12 +106,12 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
     {
         if (slotBackground == null) return;
         
-        var draggedButton = eventData.pointerDrag?.GetComponent<WeaponButton>();
+        var draggedButton = eventData.pointerDrag?.GetComponent<ItemButton>();
         
         if (draggedButton != null)
         {
-            var def = WeaponDatabase.GetWeapon(draggedButton.GetWeapon().key);
-            if (def.weaponClass == weaponClass && IsEmpty)
+            var def = WeaponDatabase.GetWeapon(draggedButton.GetItem().key);
+            if (def.itemType == itemType && IsEmpty)
             {
                 slotBackground.color = highlightColor;
             }
@@ -134,7 +128,7 @@ public class LoadoutSlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IP
     {
         if (!IsEmpty)
         {
-            menu.RemoveWeapon(currentWeapon);
+            menu.RemoveWeapon(currentItem);
             ClearSlot();
         }
     }

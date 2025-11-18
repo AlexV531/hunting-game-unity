@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class WeaponButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public TMP_Text weaponNameText;
-    public Image weaponIcon;
+    public TMP_Text nameText;
+    public Image icon;
     
-    private ItemInstance weaponItem;
+    private ItemInstance item;
     private LoadoutMenu menu;
     private Canvas canvas;
     private RectTransform rectTransform;
@@ -18,14 +18,14 @@ public class WeaponButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void Initialize(ItemInstance item, LoadoutMenu loadoutMenu)
     {
-        weaponItem = item;
+        this.item = item;
         menu = loadoutMenu;
         
-        var def = WeaponDatabase.GetWeapon(item.key);
-        if (weaponNameText != null)
-            weaponNameText.text = def.itemName;
-        if (weaponIcon != null && def.icon != null)
-            weaponIcon.sprite = def.icon;
+        var def = ItemDatabase.Instance.GetItem(item.key);
+        if (nameText != null)
+            nameText.text = def.itemName;
+        if (icon != null && def.icon != null)
+            icon.sprite = def.icon;
         
         // Setup components
         rectTransform = GetComponent<RectTransform>();
@@ -41,7 +41,7 @@ public class WeaponButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         originalParent = transform.parent;
         originalPosition = transform.position;
 
-        menu.OnWeaponDragStart(weaponItem);
+        menu.OnWeaponDragStart(item);
         
         // Move to root canvas for proper rendering
         transform.SetParent(canvas.transform);
@@ -74,7 +74,7 @@ public class WeaponButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             var slot = result.gameObject.GetComponent<LoadoutSlot>();
             if (slot != null)
             {
-                droppedOnSlot = menu.TryAddWeaponToSlot(weaponItem, slot);
+                droppedOnSlot = menu.TryAddItemToSlot(item, slot);
                 break;
             }
         }
@@ -84,8 +84,8 @@ public class WeaponButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         transform.position = originalPosition;
     }
 
-    public ItemInstance GetWeapon()
+    public ItemInstance GetItem()
     {
-        return weaponItem;
+        return item;
     }
 }

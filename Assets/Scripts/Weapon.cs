@@ -2,13 +2,6 @@ using UnityEngine;
 using Cinemachine;
 using Unity.Netcode;
 
-public enum WeaponClass
-{
-    Tool,
-    Small,
-    Large
-}
-
 public class Weapon : NetworkBehaviour
 {
     protected PlayerInputs _input; // Reference to central input hub
@@ -28,8 +21,6 @@ public class Weapon : NetworkBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed = 300f;
-
-    public WeaponClass weaponClass = WeaponClass.Large; // This is for loadouts
 
     public int weaponKey;
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(
@@ -173,29 +164,11 @@ public class Weapon : NetworkBehaviour
     void EnterAim()
     {
         aiming = true;
-
-        // // Adjust URP shadow distance
-        // if (urpAsset != null)
-        // {
-        //     urpAsset.shadowDistance = scopedShadowDistance;
-        // }
-
-        // // Adjust global LOD bias
-        // QualitySettings.lodBias = scopedLODBias;
     }
 
     void ExitAim()
     {
         aiming = false;
-
-        // // Restore shadow distance
-        // if (urpAsset != null)
-        // {
-        //     urpAsset.shadowDistance = normalShadowDistance;
-        // }
-
-        // // Restore LOD bias
-        // QualitySettings.lodBias = normalLODBias;
     }
 
     protected virtual void HandleFire()

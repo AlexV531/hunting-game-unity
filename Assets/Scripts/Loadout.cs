@@ -8,19 +8,19 @@ public class Loadout
     public ItemInstance[] smallWeapons = new ItemInstance[2];
     public ItemInstance[] tools = new ItemInstance[4];
 
-    public ItemInstance[] GetListForClass(WeaponClass wClass) => wClass switch
+    public ItemInstance[] GetListForClass(ItemType itemType) => itemType switch
     {
-        WeaponClass.Large => largeWeapons,
-        WeaponClass.Small => smallWeapons,
-        WeaponClass.Tool => tools,
+        ItemType.LargeWeapon => largeWeapons,
+        ItemType.SmallWeapon => smallWeapons,
+        ItemType.Tool => tools,
         _ => null
     };
 
-    public int GetMaxCountForClass(WeaponClass wClass) => wClass switch
+    public int GetMaxCountForClass(ItemType itemType) => itemType switch
     {
-        WeaponClass.Large => 2,
-        WeaponClass.Small => 2,
-        WeaponClass.Tool => 4,
+        ItemType.LargeWeapon => 2,
+        ItemType.SmallWeapon => 2,
+        ItemType.Tool => 4,
         _ => 0
     };
 
@@ -82,9 +82,9 @@ public class Loadout
             || tools.Any(w => !w.Equals(default) && w.key == key);
     }
 
-    public int GetFirstEmptySlot(WeaponClass wClass)
+    public int GetFirstEmptySlot(ItemType itemType)
     {
-        var arr = GetListForClass(wClass);
+        var arr = GetListForClass(itemType);
         if (arr == null) return -1;
         
         for (int i = 0; i < arr.Length; i++)

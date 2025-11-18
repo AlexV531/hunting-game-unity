@@ -5,7 +5,9 @@ public enum ItemType
     None,
     Potion,
     AnimalPelt,
-    Weapon,
+    LargeWeapon,
+    SmallWeapon,
+    Tool,
     Consumable,
     Ammo
 }

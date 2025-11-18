@@ -97,7 +97,7 @@ public class WeaponManager : NetworkBehaviour
         if (def == null)
             return;
 
-        ItemInstance[] array = currentLoadout.GetListForClass(def.weaponClass);
+        ItemInstance[] array = currentLoadout.GetListForClass(def.itemType);
 
         for (int i = 0; i < array.Length; i++)
         {

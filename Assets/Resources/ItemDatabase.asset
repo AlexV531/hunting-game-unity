@@ -38,7 +38,6 @@ MonoBehaviour:
         prefab: {fileID: 1631708624346822267, guid: c057193311e8be749b24ed949125d9be, type: 3}
         unlockedByDefault: 1
         contextual: 0
-        weaponClass: 2
     - rid: 2233891618022752605
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
@@ -47,13 +46,12 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: b00d031c043494841824c019623c957c, type: 3}
         price: 10
         itemSize: 0
-        itemType: 3
+        itemType: 5
         stackable: 1
         worldAppearancePrefab: {fileID: 8474814667349154142, guid: b93e57b7b867fd3439a349696262bc0b, type: 3}
         prefab: {fileID: 8451684831342590609, guid: a8878b747dcd10c479cc4fb47477c79f, type: 3}
         unlockedByDefault: 0
         contextual: 0
-        weaponClass: 0
     - rid: 2233891618022752606
       type: {class: WeaponDefinition, ns: , asm: Assembly-CSharp}
       data:
@@ -68,7 +66,6 @@ MonoBehaviour:
         prefab: {fileID: 5986808091100910953, guid: 8b1006b4195617a42930f7f353569201, type: 3}
         unlockedByDefault: 1
         contextual: 1
-        weaponClass: 0
     - rid: 2233891618022752609
       type: {class: ItemDefinition, ns: , asm: Assembly-CSharp}
       data:
@@ -121,6 +118,6 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 946040f2a4eef4843ba28112381647eb, type: 3}
         price: 3
         itemSize: 0
-        itemType: 0
+        itemType: 7
         stackable: 1
         worldAppearancePrefab: {fileID: 178766187332375718, guid: ed4e62cd9a9ddfa4092842a926971d5f, type: 3}

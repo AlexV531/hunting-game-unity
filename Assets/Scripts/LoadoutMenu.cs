@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class LoadoutMenu : UIMenu
 {
     [Header("UI References")]
-    public Transform weaponListContainer;
-    public GameObject weaponButtonPrefab;
+    public Transform itemListContainer;
+    public GameObject itemButtonPrefab;
     public Button confirmButton;
     
     [Header("Slot Containers")]
@@ -15,16 +15,16 @@ public class LoadoutMenu : UIMenu
     public List<LoadoutSlot> toolSlots;
     
     private Loadout editableLoadout;
-    private ItemInstance currentlyDraggedWeapon;
+    private ItemInstance currentlyDraggedItem;
 
     protected override void Start()
     {
         base.Start();
         confirmButton.onClick.AddListener(OnLoadoutConfirmed);
         
-        foreach (var s in largeSlots) s.Initialize(WeaponClass.Large, this);
-        foreach (var s in smallSlots) s.Initialize(WeaponClass.Small, this);
-        foreach (var s in toolSlots) s.Initialize(WeaponClass.Tool, this);
+        foreach (var s in largeSlots) s.Initialize(ItemType.LargeWeapon, this);
+        foreach (var s in smallSlots) s.Initialize(ItemType.SmallWeapon, this);
+        foreach (var s in toolSlots) s.Initialize(ItemType.Tool, this);
     }
 
     public override void OpenMenu()
@@ -40,7 +40,7 @@ public class LoadoutMenu : UIMenu
 
     private void RefreshWeaponList()
     {
-        foreach (Transform child in weaponListContainer)
+        foreach (Transform child in itemListContainer)
             Destroy(child.gameObject);
         
         var inventory = FirstPersonController.LocalPlayer.GetInventory();
@@ -49,10 +49,27 @@ public class LoadoutMenu : UIMenu
             var def = WeaponDatabase.GetWeapon(weaponItem.key);
             if (def.contextual) continue;
             
-            var btnObj = Instantiate(weaponButtonPrefab, weaponListContainer);
-            var btn = btnObj.GetComponent<WeaponButton>();
+            var btnObj = Instantiate(itemButtonPrefab, itemListContainer);
+            var btn = btnObj.GetComponent<ItemButton>();
             btn.Initialize(weaponItem, this);
         }
+    }
+
+    private void RefreshAmmoList()
+    {
+        foreach (Transform child in itemListContainer)
+            Destroy(child.gameObject);
+        
+        // var inventory = FirstPersonController.LocalPlayer.GetInventory();
+        // foreach (var weaponItem in inventory.GetWeapons())
+        // {
+        //     var def = WeaponDatabase.GetWeapon(weaponItem.key);
+        //     if (def.contextual) continue;
+            
+        //     var btnObj = Instantiate(itemButtonPrefab, itemListContainer);
+        //     var btn = btnObj.GetComponent<ItemButton>();
+        //     btn.Initialize(weaponItem, this);
+        // }
     }
 
     public void RefreshLoadoutSlots()
@@ -66,33 +83,43 @@ public class LoadoutMenu : UIMenu
         for (int i = 0; i < editableLoadout.largeWeapons.Length && i < largeSlots.Count; i++)
         {
             if (!editableLoadout.largeWeapons[i].Equals(default))
-                largeSlots[i].AssignWeapon(editableLoadout.largeWeapons[i]);
+                largeSlots[i].AssignItem(editableLoadout.largeWeapons[i]);
         }
         
         for (int i = 0; i < editableLoadout.smallWeapons.Length && i < smallSlots.Count; i++)
         {
             if (!editableLoadout.smallWeapons[i].Equals(default))
-                smallSlots[i].AssignWeapon(editableLoadout.smallWeapons[i]);
+                smallSlots[i].AssignItem(editableLoadout.smallWeapons[i]);
         }
         
         for (int i = 0; i < editableLoadout.tools.Length && i < toolSlots.Count; i++)
         {
             if (!editableLoadout.tools[i].Equals(default))
-                toolSlots[i].AssignWeapon(editableLoadout.tools[i]);
+                toolSlots[i].AssignItem(editableLoadout.tools[i]);
         }
     }
 
     // Called when a weapon is dropped onto a valid slot
-    public bool TryAddWeaponToSlot(ItemInstance weapon, LoadoutSlot targetSlot)
+    public bool TryAddItemToSlot(ItemInstance item, LoadoutSlot targetSlot)
     {
-        var def = WeaponDatabase.GetWeapon(weapon.key);
+        var def = ItemDatabase.Instance.GetItem(item.key);
+        // if (def.itemType != ItemType.Weapon)
+        // {
+        //     // Check if slot is a non-weapon slot
+        //     if (targetSlot.ItemType != WeaponClass.None)
+        //         return false;
+            
+        //     // Check if weapon in corresponding slot accepts this type
+        // }
+
+        var weaponDef = WeaponDatabase.GetWeapon(item.key);
         
         // Check if slot accepts this weapon class
-        if (targetSlot.WeaponClass != def.weaponClass)
+        if (targetSlot.ItemType != weaponDef.itemType)
             return false;
         
-        var targetArray = editableLoadout.GetListForClass(def.weaponClass);
-        var slots = GetSlotsForClass(def.weaponClass);
+        var targetArray = editableLoadout.GetListForClass(weaponDef.itemType);
+        var slots = GetSlotsForClass(weaponDef.itemType);
         
         // Find the index of the target slot
         int targetIndex = slots.IndexOf(targetSlot);
@@ -103,7 +130,7 @@ public class LoadoutMenu : UIMenu
         int existingIndex = -1;
         for (int i = 0; i < targetArray.Length; i++)
         {
-            if (!targetArray[i].Equals(default) && targetArray[i].Compare(weapon))
+            if (!targetArray[i].Equals(default) && targetArray[i].Compare(item))
             {
                 existingIndex = i;
                 break;
@@ -125,25 +152,25 @@ public class LoadoutMenu : UIMenu
         }
         
         // Assign weapon to the target slot
-        targetArray[targetIndex] = weapon;
-        targetSlot.AssignWeapon(weapon);
+        targetArray[targetIndex] = item;
+        targetSlot.AssignItem(item);
         return true;
     }
 
     public void OnWeaponDragStart(ItemInstance weapon)
     {
-        currentlyDraggedWeapon = weapon;
+        currentlyDraggedItem = weapon;
         var def = WeaponDatabase.GetWeapon(weapon.key);
         
         // Update all slots based on whether they can accept this weapon
-        UpdateSlotsForDrag(largeSlots, def.weaponClass == WeaponClass.Large);
-        UpdateSlotsForDrag(smallSlots, def.weaponClass == WeaponClass.Small);
-        UpdateSlotsForDrag(toolSlots, def.weaponClass == WeaponClass.Tool);
+        UpdateSlotsForDrag(largeSlots, def.itemType == ItemType.LargeWeapon);
+        UpdateSlotsForDrag(smallSlots, def.itemType == ItemType.SmallWeapon);
+        UpdateSlotsForDrag(toolSlots, def.itemType == ItemType.Tool);
     }
 
     public void OnWeaponDragEnd()
     {
-        currentlyDraggedWeapon = default;
+        currentlyDraggedItem = default;
         
         // Reset all slots to normal
         foreach (var slot in largeSlots) slot.SetDragState(LoadoutSlot.DragState.Normal);
@@ -159,13 +186,9 @@ public class LoadoutMenu : UIMenu
             {
                 slot.SetDragState(LoadoutSlot.DragState.Invalid);
             }
-            else if (slot.IsEmpty)
-            {
-                slot.SetDragState(LoadoutSlot.DragState.Valid);
-            }
             else
             {
-                slot.SetDragState(LoadoutSlot.DragState.Occupied);
+                slot.SetDragState(LoadoutSlot.DragState.Valid);
             }
         }
     }
@@ -173,8 +196,8 @@ public class LoadoutMenu : UIMenu
     public void RemoveWeapon(ItemInstance weapon)
     {
         var def = WeaponDatabase.GetWeapon(weapon.key);
-        var targetArray = editableLoadout.GetListForClass(def.weaponClass);
-        var slots = GetSlotsForClass(def.weaponClass);
+        var targetArray = editableLoadout.GetListForClass(def.itemType);
+        var slots = GetSlotsForClass(def.itemType);
         
         // Find and remove the weapon from the array
         for (int i = 0; i < targetArray.Length; i++)
@@ -189,13 +212,13 @@ public class LoadoutMenu : UIMenu
         }
     }
 
-    private List<LoadoutSlot> GetSlotsForClass(WeaponClass wClass)
+    private List<LoadoutSlot> GetSlotsForClass(ItemType itemType)
     {
-        return wClass switch
+        return itemType switch
         {
-            WeaponClass.Large => largeSlots,
-            WeaponClass.Small => smallSlots,
-            WeaponClass.Tool => toolSlots,
+            ItemType.LargeWeapon => largeSlots,
+            ItemType.SmallWeapon => smallSlots,
+            ItemType.Tool => toolSlots,
             _ => null
         };
     }
