@@ -290,6 +290,16 @@ public class FirstPersonController : NetworkBehaviour
 			OnLocalPlayerSpawned?.Invoke(this);
 			Debug.Log("Local player assigned via OnNetworkSpawn");
 		}
+
+		// All clients should run this
+		base.OnNetworkSpawn();
+    	MapManager.Instance?.RegisterPlayer(gameObject, IsOwner);
+	}
+
+	public override void OnNetworkDespawn()
+	{
+		MapManager.Instance?.UnregisterPlayer(gameObject);
+		base.OnNetworkDespawn();
 	}
 
 	private void Update()

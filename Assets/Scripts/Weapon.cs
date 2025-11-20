@@ -78,12 +78,13 @@ public class Weapon : NetworkBehaviour
             _followTarget = _owner.weaponContainer;
             _vCam = _owner.vCam;
 
+            SelectAmmoFromInventory();
+
             Debug.Log("Weapon initialized for local owner: " + _owner.name);
             initialized = true;
         }
 
         _audioSource = GetComponent<AudioSource>();
-        SelectAmmoFromInventory();
         isEquipped.OnValueChanged += OnEquipChange;
         OnEquipChange(true, isEquipped.Value);
     }
