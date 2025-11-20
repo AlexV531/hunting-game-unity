@@ -87,6 +87,9 @@ public class FirstPersonController : NetworkBehaviour
 	[Header("Item dropping")]
 	public ItemSpawner itemSpawner;
 
+	[Header("Map menu")]
+	public MapMenu mapMenu;
+
 	[Header("Grass trampling")]
 	public GrassTrampler trampler;
 
@@ -259,7 +262,6 @@ public class FirstPersonController : NetworkBehaviour
 		_inspectUI.SetPlayerInput(_input);
 		inventory.SetWeaponManager(_weaponManager);
 		inventory.SetCanHoldLargeItems(false);
-		// inventory.SetCapacity(3);
 		_playerInventoryMenu.SetPlayerInput(_input);
 #if ENABLE_INPUT_SYSTEM
 		_playerInput = GetComponent<PlayerInput>();
@@ -493,6 +495,16 @@ public class FirstPersonController : NetworkBehaviour
 				_input.inventory = false;
 			}
         }
+		else if (mapMenu.IsMenuOpen())
+        {
+            if (_input.loadout || _input.pause || _input.map)
+			{
+				mapMenu.CloseMenu();
+				_input.pause = false;
+				_input.loadout = false;
+				_input.map = false;
+			}
+        }
 		else if (_pauseMenu.IsMenuOpen()) // Pause menu open
 		{
 			if (_input.pause)
@@ -517,6 +529,11 @@ public class FirstPersonController : NetworkBehaviour
 			{
 				_playerInventoryMenu.OpenMenu();
 				_input.inventory = false;
+			}
+			else if (_input.map)
+			{
+				mapMenu.OpenMenu();
+				_input.map = false;
 			}
 		}
 	}
@@ -936,7 +953,7 @@ public class FirstPersonController : NetworkBehaviour
 
 	public bool IsPlayerInMenu()
 	{
-		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen() || _storageMenu.IsMenuOpen() || _objectiveMenu.IsMenuOpen();
+		return _pauseMenu.IsMenuOpen() || _loadoutManager.IsMenuOpen() || _shopUI.IsMenuOpen() || _inspectUI.IsMenuOpen() || _playerInventoryMenu.IsMenuOpen() || _storageMenu.IsMenuOpen() || _objectiveMenu.IsMenuOpen() || mapMenu.IsMenuOpen();
 	}
 
 	public WeaponManager GetWeaponManager() => _weaponManager;

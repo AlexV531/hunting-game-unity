@@ -28,6 +28,7 @@ public class PlayerInputs : MonoBehaviour
 	public bool pause;
 	public bool loadout;
 	public bool inventory;
+	public bool map;
 	public bool dropItem;
 	public bool toggleShader;
 	public bool debug1;
@@ -165,6 +166,11 @@ public class PlayerInputs : MonoBehaviour
 	public void OnInventory(InputValue value)
 	{
 		InventoryInput(value.isPressed);
+	}
+
+	public void OnMap(InputValue value)
+	{
+		MapInput(value.isPressed);
 	}
 
 	public void OnDropItem(InputValue value)
@@ -335,6 +341,11 @@ public class PlayerInputs : MonoBehaviour
 	public void InventoryInput(bool newInventoryState)
 	{
 		inventory = newInventoryState;
+	}
+
+	public void MapInput(bool newMapState)
+	{
+		map = newMapState;
 	}
 
 	public void DropItemInput(bool newDropItemState)

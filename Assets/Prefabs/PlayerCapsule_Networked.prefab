@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &131983254068280283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 764746498244535995}
+  m_Layer: 14
+  m_Name: EmptyMenuScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &764746498244535995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131983254068280283}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6113314928438667844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2525797328779705692
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +94,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2298631370890896561}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3644478555716097745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6113314928438667844}
+  - component: {fileID: 8366222295758212341}
+  m_Layer: 14
+  m_Name: MapMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6113314928438667844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3644478555716097745}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 764746498244535995}
+  m_Father: {fileID: 5087568743913183604}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8366222295758212341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3644478555716097745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d1e1677b86a7c41988fa130e27c5b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapMenu
+  menuScreen: {fileID: 131983254068280283}
+  mapObject: {fileID: 0}
+  cameraRoot: {fileID: 569294695800174897}
+  mapDistance: 1.5
+  cameraLookAngle: 15
+  panSpeed: 0.2
+  panBoundsMin: {x: -1.5, y: -1.5}
+  panBoundsMax: {x: 1.5, y: 1.5}
+  scrollSpeed: 5
+  minZoomDistance: 0.4
+  maxZoomDistance: 2
 --- !u!1 &4256366922425650313
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +393,7 @@ Transform:
   - {fileID: 3114307596873294267}
   - {fileID: 6582197765361090636}
   - {fileID: 8114656500523924297}
+  - {fileID: 6113314928438667844}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &5274068184629879561
@@ -400,6 +488,7 @@ MonoBehaviour:
   shoulderCarryPoint: {fileID: 3114307596873294267}
   grabPoint: {fileID: 6582197765361090636}
   itemSpawner: {fileID: 2953867833584633733}
+  mapMenu: {fileID: 8366222295758212341}
   trampler: {fileID: 0}
   PlayerName:
     m_InternalValue:
@@ -510,6 +599,7 @@ MonoBehaviour:
   pause: 0
   loadout: 0
   inventory: 0
+  map: 0
   dropItem: 0
   toggleShader: 0
   debug1: 0
