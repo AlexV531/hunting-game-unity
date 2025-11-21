@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Weapon : NetworkBehaviour
 {
-    protected PlayerInputs _input; // Reference to central input hub
+    protected PlayerInputs _input;
     protected CameraRecoil _recoil;
     protected FirstPersonController _owner;
     protected Transform _followTarget;
@@ -36,29 +36,34 @@ public class Weapon : NetworkBehaviour
     );
 
     [Header("Zoom Settings")]
-    public float scopedFOV = 20f; // FOV when scoped
-    public float zoomSpeed = 10f; // FOV transition speed  
+    public float scopedFOV = 20f;
+    public float zoomSpeed = 10f;
 
-    [Tooltip("Time in seconds between shots")]
+    [Header("Fire Settings")]
     public float fireRate = 1f;
     public float recoilPitch = 50f;
     public float recoilYaw = 1f;
     public float loudness = 80f;
-
-    [Tooltip("If true, holding the fire button will shoot automatically")]
     public bool automaticFire = true;
 
     public int maxAmmo = 3;
     public AmmoType acceptedAmmoType = AmmoType.Bullet;
-    public ItemInstance fauxAmmoInstance; // Stack size cannot be kept in sync, use this to compare to the real ammo instance in inventory
+    public ItemInstance fauxAmmoInstance;
 
     private int currentAmmo = 0;
     private float _fireCooldown = 0f;
     private bool aiming = false;
 
     protected bool initialized = false;
-
     public static bool recoilEnabled = true;
+
+    [Header("Reload Settings")]
+    public Transform reloadPosition;
+    public float reloadSpeed = 10f;
+    public float reloadDuration = 1.5f;
+
+    private bool isReloading = false;
+    private float reloadTimer = 0f;
 
     public event System.Action<int, int> OnAmmoChanged;
 
@@ -68,10 +73,12 @@ public class Weapon : NetworkBehaviour
         {
             GameObject playerObj = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
             _owner = playerObj.GetComponent<FirstPersonController>();
+
             if (WeaponDatabase.GetWeapon(weaponInstance.Value.key).contextual)
                 _owner.GetComponent<WeaponManager>().RegisterSpawnedContextualWeapon(weaponInstance.Value.key, this);
             else
                 _owner.GetComponent<WeaponManager>().RegisterSpawnedWeapon(weaponInstance.Value, this);
+
             _input = _owner.GetComponent<PlayerInputs>();
             _input.fire = false;
             _recoil = _owner.GetComponent<CameraRecoil>();
@@ -80,7 +87,6 @@ public class Weapon : NetworkBehaviour
 
             SelectAmmoFromInventory();
 
-            Debug.Log("Weapon initialized for local owner: " + _owner.name);
             initialized = true;
         }
 
@@ -92,9 +98,7 @@ public class Weapon : NetworkBehaviour
     protected virtual void Update()
     {
         if (!initialized)
-        {
             Initialize();
-        }
 
         if (!IsOwner)
             return;
@@ -105,13 +109,12 @@ public class Weapon : NetworkBehaviour
         if (_owner.IsPlayerInMenu())
             return;
 
-        // reduce cooldown each frame
         if (_fireCooldown > 0f)
             _fireCooldown -= Time.deltaTime;
 
+        HandleReload();
         HandleAim();
         HandleFire();
-        HandleReload();
         HandleZoom();
     }
 
@@ -123,10 +126,7 @@ public class Weapon : NetworkBehaviour
         HandleFollowTarget();
     }
 
-    public bool IsAiming()
-    {
-        return aiming;
-    }
+    public bool IsAiming() => aiming;
 
     protected virtual void HandleFollowTarget()
     {
@@ -139,55 +139,64 @@ public class Weapon : NetworkBehaviour
 
     protected virtual void HandleAim()
     {
-        if (!model || !aimPosition || !hipPosition) return;
+        if (!model || !aimPosition || !hipPosition)
+            return;
 
-        if (!aiming && _input.aim)
+        Transform targetPos;
+
+        if (isReloading && reloadPosition != null)
         {
-            EnterAim();
+            targetPos = reloadPosition;
         }
-        else if (aiming && !_input.aim)
+        else
         {
-            ExitAim();
+            bool wantAim = _input.aim; // allow aiming with zero ammo
+            targetPos = wantAim ? aimPosition : hipPosition;
+
+            if (!aiming && wantAim)
+                EnterAim();
+            else if (aiming && !wantAim)
+                ExitAim();
         }
 
-        Transform targetPos = _input.aim ? aimPosition : hipPosition;
-        model.localPosition = Vector3.Lerp(model.localPosition, targetPos.localPosition, aimSpeed * Time.deltaTime);
-        model.localRotation = Quaternion.Slerp(model.localRotation, targetPos.localRotation, aimSpeed * Time.deltaTime);
+        float speed = isReloading ? reloadSpeed : aimSpeed;
+
+        // Smoothly interpolate both position and rotation
+        model.localPosition = Vector3.Lerp(model.localPosition, targetPos.localPosition, speed * Time.deltaTime);
+        model.localRotation = Quaternion.Slerp(model.localRotation, targetPos.localRotation, speed * Time.deltaTime);
     }
 
     void HandleZoom()
     {
-        if (_vCam != null)
-        {
-            float targetFOV = _input.aim ? scopedFOV : GlobalVariables.cameraFOV;
-            _vCam.m_Lens.FieldOfView = Mathf.Lerp(_vCam.m_Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
-        }
+        if (_vCam == null)
+            return;
+
+        float targetFOV = (_input.aim && !isReloading) ? scopedFOV : GlobalVariables.cameraFOV;
+        _vCam.m_Lens.FieldOfView = Mathf.Lerp(_vCam.m_Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
     }
 
-    void EnterAim()
-    {
-        aiming = true;
-    }
-
-    void ExitAim()
-    {
-        aiming = false;
-    }
+    void EnterAim() => aiming = true;
+    void ExitAim() => aiming = false;
 
     protected virtual void HandleFire()
     {
+        if (isReloading)
+            return;
+
         if (_input.fire && _fireCooldown <= 0f)
         {
             if (currentAmmo <= 0)
-            {
                 return;
-            }
+
             CreateBulletServerRpc();
             EmitNoiseServerRpc(transform.position, loudness, "gunshot");
+
             if (recoilEnabled)
                 _recoil.AddRecoil(recoilPitch, recoilYaw);
+
             currentAmmo--;
             OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
+
             _fireCooldown = fireRate;
 
             if (!automaticFire)
@@ -207,18 +216,51 @@ public class Weapon : NetworkBehaviour
     void PlayShootAudioClientRpc()
     {
         if (_audioSource != null)
-        {
             _audioSource.Play();
-        }
     }
 
     void HandleReload()
     {
-        if (_input.reload)
+        if (isReloading)
         {
-            Reload();
+            reloadTimer -= Time.deltaTime;
+            if (reloadTimer <= 0f)
+                FinishReload();
+            _input.reload = false;
+            return;
+        }
+
+        if (_input.reload && currentAmmo < maxAmmo)
+        {
+            StartReload();
             _input.reload = false;
         }
+    }
+
+    void StartReload()
+    {
+        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(fauxAmmoInstance);
+        if (trueAmmoInstance.Equals(default))
+            return;
+
+        isReloading = true;
+        reloadTimer = reloadDuration;
+    }
+
+    void FinishReload()
+    {
+        isReloading = false;
+
+        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(fauxAmmoInstance);
+        if (trueAmmoInstance.Equals(default))
+            return;
+
+        int needed = maxAmmo - currentAmmo;
+        int removed = _owner.GetInventory().RemoveItem(trueAmmoInstance, needed);
+
+        currentAmmo += removed;
+
+        OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -229,31 +271,7 @@ public class Weapon : NetworkBehaviour
         bullet.speed = bulletSpeed;
         bullet.playerClientId = rpcParams.Receive.SenderClientId;
 
-        // Spawn over network
         bulletObj.GetComponent<NetworkObject>().Spawn();
-        Debug.Log("Bullet spawned with speed " + bullet.speed);
-    }
-
-    void Reload()
-    {
-        if (currentAmmo >= maxAmmo)
-            return;
-
-        // TEMPORARY AMMO SELECTION SECTION Eventually ammo will be set in loadout screen
-        ItemInstance trueAmmoInstance = _owner.GetInventory().GetInstance(fauxAmmoInstance);
-
-        if (trueAmmoInstance.Equals(default))
-            return;
-
-        int needed = maxAmmo - currentAmmo;
-
-        int removed = _owner.GetInventory().RemoveItem(trueAmmoInstance, needed);
-
-        currentAmmo += removed;
-
-        OnAmmoChanged?.Invoke(GetCurrentAmmo(), GetReserveAmmo());
-
-        // Play reload animation
     }
 
     private void SelectAmmoFromInventory()
@@ -280,6 +298,7 @@ public class Weapon : NetworkBehaviour
     {
         if (!IsOwner)
             return;
+
         isEquipped.Value = true;
         _owner.GetAmmoUI().SetWeapon(this);
     }
@@ -288,6 +307,7 @@ public class Weapon : NetworkBehaviour
     {
         if (!IsOwner)
             return;
+
         isEquipped.Value = false;
         _owner.GetAmmoUI().SetWeapon(null);
     }
