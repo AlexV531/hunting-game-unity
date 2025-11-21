@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2034573511
+  GlobalObjectIdHash: 3525937885
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -724,8 +724,9 @@ MonoBehaviour:
   alertTolerance: 3
   panicTolerance: 7
   soundForgetRate: 0.15
-  sightRange: 40
+  sightRange: 45
   sightAngle: 160
+  alertSightFactor: 2
   panicCooldown: 3
   onHitReactionTime: 1
   sightReactionTime: 1.5

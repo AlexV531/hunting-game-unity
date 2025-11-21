@@ -241,6 +241,26 @@ public class Herd : MonoBehaviour
         return point;
     }
 
+    public Vector3 GetRandomPointInRadius(float radius)
+    {
+        // Random polar coordinates
+        float r = radius * Mathf.Sqrt(Random.value);
+        float theta = Random.value * Mathf.PI * 2f;
+
+        Vector3 point = Vector3.zero;
+        point.x = transform.position.x + r * Mathf.Cos(theta);
+        point.z = transform.position.z + r * Mathf.Sin(theta);
+
+        // Clamp within map bounds
+        point.x = Mathf.Clamp(point.x, GlobalVariables.mapMin.x, GlobalVariables.mapMax.x);
+        point.z = Mathf.Clamp(point.z, GlobalVariables.mapMin.z, GlobalVariables.mapMax.z);
+
+        // Adjust Y to terrain height
+        point.y = TerrainManager.Instance.GetTerrainHeight(point);
+
+        return point;
+    }
+
     public List<Vector3> GetRandomPointsInRadiusForArray(List<Vector3> positions)
     {
         List<Vector3> newPositions = new List<Vector3>();

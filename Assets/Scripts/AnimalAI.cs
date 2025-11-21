@@ -24,6 +24,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float soundForgetRate = 0.05f;
     public float sightRange = 20f;
     public float sightAngle = 160f; // degrees
+    public float alertSightFactor = 2f;
     public float panicCooldown = 3f; // seconds
     public float onHitReactionTime = 0.6f;
     public float sightReactionTime = 1.5f;
@@ -278,7 +279,9 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
         // Find all players (using tag instead of group)
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        // Debug.Log(players);
+
+        // If alert, increase sight range
+        float trueSightRange = IsAlert() ? sightRange * alertSightFactor : sightRange;
 
         foreach (GameObject player in players)
         {
@@ -287,7 +290,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
             // Distance check
             float distance = Vector3.Distance(transform.position, playerPos);
-            if (distance > sightRange)
+            if (distance > trueSightRange)
                 continue;
 
             // Angle check relative to forward
@@ -296,7 +299,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
                 continue;
 
             // Line-of-sight check
-            if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit, sightRange, sightLayerMask))
+            if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit, trueSightRange, sightLayerMask))
             {
                 // Walk up parents until we find something tagged "Player"
                 Transform hitTransform = hit.collider.transform;
@@ -329,6 +332,11 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         {
             audioSource.Play();
         }
+    }
+
+    public bool IsAlert()
+    {
+        return fsm.GetCurrentState().Alertness == AlertnessLevel.Alert;
     }
 
     public bool IsPanicked()

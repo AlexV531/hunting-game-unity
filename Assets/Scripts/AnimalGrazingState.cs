@@ -38,7 +38,7 @@ public class AnimalGrazingState : AnimalBaseState
 
             if (animalAI.herd != null)
             {
-                targetPosition = animalAI.herd.GetRandomPointInRadius();
+                targetPosition = animalAI.herd.GetRandomPointInRadius(animalAI.herd.radius * Random.Range(1, 3));
             }
             else // Fallback if no herd
             {

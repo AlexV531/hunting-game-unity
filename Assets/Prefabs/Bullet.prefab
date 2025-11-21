@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2712359987
+  GlobalObjectIdHash: 1216664178
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -80,7 +80,7 @@ MonoBehaviour:
   powerFactor: 1
   bleedFactor: 1
   healPrevention: 1
-  impactLoudness: 50
+  impactLoudness: 35
   playerClientId: 0
   bulletDecalPrefab: {fileID: 4446228548660162820, guid: 9d874a01747efde41960c65dc5ed065e, type: 3}
   decalLifetime: 100

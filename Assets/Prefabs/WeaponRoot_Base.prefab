@@ -244,7 +244,7 @@ MonoBehaviour:
   fireRate: 1
   recoilPitch: 50
   recoilYaw: 1
-  loudness: 80
+  loudness: 160
   automaticFire: 1
   maxAmmo: 3
   acceptedAmmoType: 1

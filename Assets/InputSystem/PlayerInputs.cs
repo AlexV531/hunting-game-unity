@@ -51,8 +51,8 @@ public class PlayerInputs : MonoBehaviour
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
 
-	private bool crouchHeld;
-	private bool steadyAimHeld;
+	private bool crouchHeld = false;
+	private bool steadyAimHeld = true;
 
 #if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)
