@@ -459,8 +459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  MoveSpeed: 4
-  SprintSpeed: 6
+  MoveSpeed: 3.5
+  SprintSpeed: 6.5
   RotationSpeed: 1
   SpeedChangeRate: 10
   JumpHeight: 1.2
@@ -606,7 +606,7 @@ MonoBehaviour:
   debug2: 0
   leftMouseHeld: 0
   dragInUI: {x: 0, y: 0}
-  crouchToggleMode: 0
+  crouchToggleMode: 1
   steadyAimToggleMode: 0
   analogMovement: 0
   cursorLocked: 1

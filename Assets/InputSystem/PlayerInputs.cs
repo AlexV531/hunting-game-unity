@@ -38,7 +38,7 @@ public class PlayerInputs : MonoBehaviour
 
 	[Header("Crouch Settings")]
 	[Tooltip("If true, crouch is toggled on/off. If false, crouch is hold-to-crouch.")]
-	public bool crouchToggleMode = false;
+	public bool crouchToggleMode = true;
 
 	[Header("Steady Aim Settings")]
 	[Tooltip("If true, steady aim is toggled on/off. If false, steady aim is hold-to-steady.")]
@@ -51,8 +51,8 @@ public class PlayerInputs : MonoBehaviour
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
 
-	private bool crouchHeld = false;
-	private bool steadyAimHeld = true;
+	private bool crouchHeld;
+	private bool steadyAimHeld;
 
 #if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)

@@ -26,6 +26,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float sightAngle = 160f; // degrees
     public float alertSightFactor = 2f;
     public float panicCooldown = 3f; // seconds
+    public float alertCooldown = 1f; // seconds
     public float onHitReactionTime = 0.6f;
     public float sightReactionTime = 1.5f;
     public float herdReactionTimeMin = 0.3f;
@@ -33,6 +34,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float herdReactionTime = 1.0f;
     public float herdReactionTimeNonFleeFactor = 1.4f;
     private float lastPanicTime = -Mathf.Infinity;
+    private float lastAlertTime = -Mathf.Infinity;
     private int sightLayerMask;
     private bool initialized = false;
     private bool aiEnabled = true;
@@ -147,6 +149,13 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     {
         if (IsPanicked())
             return;
+
+        // Check panic cooldown
+        if (Time.time < lastAlertTime + alertCooldown)
+            return;
+
+        lastAlertTime = Time.time;
+
         Debug.Log("Animal Listening");
         fsm.ChangeState(fsm.ListeningState);
     }
