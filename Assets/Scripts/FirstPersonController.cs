@@ -154,7 +154,7 @@ public class FirstPersonController : NetworkBehaviour
 	private float timeBetweenSteps = 0.75f;
 	private float crouchTimeBetweenModifier = 0.5f;
 	private float sprintTimeBetweenModfier = 1.2f;
-	private float footstepLoudness = 26f;
+	private float footstepLoudness = 22f;
 	private float crouchLoudnessModifier = 0.4f;
 	private float sprintLoudnessModfier = 1.75f;
 
