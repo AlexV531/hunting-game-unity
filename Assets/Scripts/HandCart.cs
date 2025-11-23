@@ -180,21 +180,46 @@ public class HandCart : AttachInteractable
         if (activeJoint != null)
             Destroy(activeJoint);
 
-        SpringJoint joint = gameObject.AddComponent<SpringJoint>();
-        joint.autoConfigureConnectedAnchor = false;
+        ConfigurableJoint joint = gameObject.AddComponent<ConfigurableJoint>();
 
-        // Connect to player's Rigidbody
-        joint.connectedBody = grabPoint.GetComponentInParent<Rigidbody>();
-        joint.connectedAnchor = grabPoint.localPosition;
+        Rigidbody playerRb = grabPoint.GetComponentInParent<Rigidbody>();
+        joint.connectedBody = playerRb;
 
-        // Anchor at the front of the cart
         joint.anchor = frontAnchor != null
             ? transform.InverseTransformPoint(frontAnchor.position)
             : Vector3.zero;
 
-        joint.spring = 1500f; // Increase for stiffness
-        joint.damper = 100f; // Higher damper reduces oscillation
-        joint.maxDistance = 0.5f; // Keep the cart close to the grab point
+        joint.autoConfigureConnectedAnchor = false;
+        joint.connectedAnchor = grabPoint.localPosition;
+
+        // Position settings
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+
+        // Rotation settings
+        joint.angularXMotion = ConfigurableJointMotion.Free;
+        joint.angularYMotion = ConfigurableJointMotion.Free;
+        joint.angularZMotion = ConfigurableJointMotion.Free;
+
+        // **KEY FIX**: Add spring/damper to smooth out jitter
+        JointDrive angularDrive = new JointDrive();
+        angularDrive.positionSpring = 0f;
+        angularDrive.positionDamper = 100f;  // High damping smooths rotation
+        angularDrive.maximumForce = Mathf.Infinity;
+        
+        joint.slerpDrive = angularDrive;
+
+        // Less restrictive angular limits
+        SoftJointLimit angularLimit = new SoftJointLimit();
+        angularLimit.limit = 90f;
+        angularLimit.bounciness = 0f;  // No bounce
+        angularLimit.contactDistance = 0f;
+        
+        joint.lowAngularXLimit = angularLimit;
+        joint.highAngularXLimit = angularLimit;
+        joint.angularYLimit = angularLimit;
+        joint.angularZLimit = angularLimit;
 
         activeJoint = joint;
     }

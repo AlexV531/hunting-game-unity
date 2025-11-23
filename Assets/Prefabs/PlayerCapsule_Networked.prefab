@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 71539812
+  GlobalObjectIdHash: 3182954585
   InScenePlacedSourceGlobalObjectIdHash: 3182954585
   DeferredDespawnTick: 0
   Ownership: 1
@@ -486,7 +486,7 @@ MonoBehaviour:
   CameraCrouchOffset: 0.5
   CrouchSpeed: 2
   shoulderCarryPoint: {fileID: 3114307596873294267}
-  grabPoint: {fileID: 6582197765361090636}
+  grabPointRb: {fileID: 0}
   itemSpawner: {fileID: 2953867833584633733}
   mapMenu: {fileID: 8366222295758212341}
   trampler: {fileID: 0}
