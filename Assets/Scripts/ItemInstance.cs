@@ -15,6 +15,9 @@ public struct ItemCustomData : INetworkSerializable
     public Color color;
     public FixedString64Bytes description;
 
+    // Antler fields
+    public int antlerSeed;
+
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref doses);
@@ -22,6 +25,7 @@ public struct ItemCustomData : INetworkSerializable
         serializer.SerializeValue(ref duration);
         serializer.SerializeValue(ref quality);
         serializer.SerializeValue(ref color);
+        serializer.SerializeValue(ref description);
         serializer.SerializeValue(ref description);
     }
 
@@ -31,7 +35,8 @@ public struct ItemCustomData : INetworkSerializable
                effectType == other.effectType &&
                Mathf.Approximately(duration, other.duration) &&
                Mathf.Approximately(quality, other.quality) &&
-               color.Equals(other.color);
+               color.Equals(other.color) &&
+               antlerSeed.Equals(other.antlerSeed);
     }
 
     public override bool Equals(object obj)
@@ -47,6 +52,7 @@ public struct ItemCustomData : INetworkSerializable
         hash = hash * 31 + duration.GetHashCode();
         hash = hash * 31 + quality.GetHashCode();
         hash = hash * 31 + color.GetHashCode();
+        hash = hash * 31 + antlerSeed.GetHashCode();
         return hash;
     }
 }

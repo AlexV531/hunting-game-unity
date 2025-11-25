@@ -27,18 +27,16 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float alertSightFactor = 2f;
     public float panicCooldown = 3f; // seconds
     public float alertCooldown = 1f; // seconds
-    public float onHitReactionTime = 0.6f;
-    public float sightReactionTime = 1.5f;
-    public float herdReactionTimeMin = 0.3f;
-    public float herdReactionTimeMax = 1.2f;
-    public float herdReactionTime = 1.0f;
-    public float herdReactionTimeNonFleeFactor = 1.4f;
-    private float lastPanicTime = -Mathf.Infinity;
-    private float lastAlertTime = -Mathf.Infinity;
+    public float reactionTimeMin = 0.3f;
+    public float reactionTimeMax = 1.2f;
+    public float reactionTime = 1.0f;
+    public float reactionTimeNonFleeFactor = 1.4f;
+    // private float lastPanicTime = -Mathf.Infinity;
+    // private float lastAlertTime = -Mathf.Infinity;
     private int sightLayerMask;
     private bool initialized = false;
     private bool aiEnabled = true;
-    private Coroutine sightPanicRoutine;
+    private Coroutine panicRoutine;
 
     void Awake()
     {
@@ -65,7 +63,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         if (animal.IsDead())
             return;
         
-        // Debug.Log(name + " is in state " + fsm.GetCurrentState().GetType().ToString());
+        Debug.Log(name + " is in state " + fsm.GetCurrentState().GetType().ToString());
 
         animator.SetFloat("speed", GetCurrentVelocity());
 
@@ -76,18 +74,14 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
         List<GameObject> visiblePlayers = GetVisiblePlayers();
 
-        if (IsPanicked() && visiblePlayers.Count > 0) // Do not have a reaction time if fleeing
+        if (visiblePlayers.Count > 0 && panicRoutine == null)
         {
-            BecomePanicked(visiblePlayers[0].transform.position);
+            panicRoutine = StartCoroutine(PanicReactionRoutine(reactionTime, visiblePlayers[0].transform.position));
         }
-        else if (visiblePlayers.Count > 0 && sightPanicRoutine == null)
+        else if (visiblePlayers.Count == 0 && panicRoutine != null)
         {
-            sightPanicRoutine = StartCoroutine(PanicReactionRoutine(sightReactionTime, visiblePlayers[0].transform.position));
-        }
-        else if (visiblePlayers.Count == 0 && sightPanicRoutine != null)
-        {
-            StopCoroutine(sightPanicRoutine);
-            sightPanicRoutine = null;
+            StopCoroutine(panicRoutine);
+            panicRoutine = null;
         }
     }
 
@@ -102,7 +96,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
         sightLayerMask = ~LayerMask.GetMask("Internal", "Interactable");
 
-        herdReactionTime = Random.Range(herdReactionTimeMin, herdReactionTimeMax);
+        reactionTime = Random.Range(reactionTimeMin, reactionTimeMax);
 
         initialized = true;
     }
@@ -135,14 +129,21 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
             return;
 
         animator.SetTrigger("hit");
-        StartCoroutine(PanicReactionRoutine(onHitReactionTime, panicSourceDirection * 5));
+
+        if (panicRoutine != null || IsPanicked())
+            return;
+
+        panicRoutine = StartCoroutine(PanicReactionRoutine(reactionTime / 2f, panicSourceDirection * 5));
     }
 
     public IEnumerator PanicReactionRoutine(float reactionTime, Vector3 panicSource)
     {
         yield return new WaitForSeconds(reactionTime);
-        BecomePanicked(panicSource);
-        sightPanicRoutine = null;
+
+        if (!IsPanicked())
+            BecomePanicked(panicSource);
+
+        panicRoutine = null;
     }
 
     public void BecomeAlert()
@@ -162,12 +163,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
     public void BecomePanicked(Vector3 panicSource)
     {
-        // Check panic cooldown PANIC COOLDOWN MOVED TO HERD, EXPERIMENTING!
-        // if (Time.time < lastPanicTime + panicCooldown)
-        //     return;
-
-        // lastPanicTime = Time.time;
-
         if (herd != null)
         {
             herd.HerdFleeTo(ChooseEscapePositions(panicSource), this);
@@ -178,6 +173,33 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         }
     }
 
+    // Called by herd
+    public void SetFleeingWithReactionTime(List<Vector3> targetList)
+    {
+        if (panicRoutine != null)
+        {
+            StopCoroutine(panicRoutine);
+            panicRoutine = null;
+        }
+        if (IsPanicked())
+        {
+            // No reaction time if already panicked
+            SetFleeing(targetList);
+        }
+        else
+        {
+            StartCoroutine(DelayedSetFleeing(targetList));
+        }
+    }
+
+    public IEnumerator DelayedSetFleeing(List<Vector3> targetList)
+    {
+        yield return new WaitForSeconds(reactionTime);
+
+        Debug.Log("Set fleeing after delay");
+        SetFleeing(targetList);
+    }
+
     public void SetFleeing(List<Vector3> targetList)
     {
         if (animal.IsDead())
@@ -185,14 +207,6 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         fsm.FleeingState.ClearTargets();
         fsm.FleeingState.AddTargets(targetList);
         fsm.ChangeState(fsm.FleeingState);
-    }
-
-    public IEnumerator DelayedSetFleeing(List<Vector3> targetList)
-    {
-        yield return new WaitForSeconds(herdReactionTime);
-
-        Debug.Log("Set fleeing after delay");
-        SetFleeing(targetList);
     }
 
     public void SetMoving(List<Vector3> target_list)
@@ -206,7 +220,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
     public IEnumerator DelayedSetMoving(List<Vector3> targetList)
     {
-        yield return new WaitForSeconds(herdReactionTime * herdReactionTimeNonFleeFactor);
+        yield return new WaitForSeconds(reactionTime * reactionTimeNonFleeFactor);
 
         SetMoving(targetList);
     }

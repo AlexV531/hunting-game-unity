@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3525937885
+  GlobalObjectIdHash: 2034573511
   InScenePlacedSourceGlobalObjectIdHash: 3525937885
   DeferredDespawnTick: 0
   Ownership: 1
@@ -728,7 +728,8 @@ MonoBehaviour:
   sightAngle: 160
   alertSightFactor: 2
   panicCooldown: 3
-  onHitReactionTime: 1
+  alertCooldown: 1
+  onHitReactionTime: 0.5
   sightReactionTime: 1.5
   herdReactionTimeMin: 0.3
   herdReactionTimeMax: 1.8
@@ -914,6 +915,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   rend: {fileID: 6845581437615129266}
   antler: {fileID: 2789237748827086075}
+  internalContainer: {fileID: 6805021877742488793}
   albinoChance: 0.005
   pelt:
     Color: {r: 0, g: 0, b: 0, a: 0}
@@ -987,6 +989,11 @@ MonoBehaviour:
         byte0061: 0
   male: 0
   age: 0
+  averageAge: 7
+  scaleFactor: 0
+  minScale: 0.9
+  maxScale: 1.15
+  scaleRandomness: 0.1
 --- !u!82 &2580321422776480406
 AudioSource:
   m_ObjectHideFlags: 0

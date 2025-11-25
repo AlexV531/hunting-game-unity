@@ -155,21 +155,25 @@ public class Herd : MonoBehaviour
 
     public void HerdFleeTo(List<Vector3> target_list, AnimalAI noticingAnimalAI)
     {
-        if (Time.time < lastPanicTime + panicCooldown)
-            return;
+        // if (Time.time < lastPanicTime + panicCooldown)
+        // {
+        //     Debug.Log("Panic ignored due to panic cooldown");
+        //     return;
+        // }
 
-        lastPanicTime = Time.time;
+        // lastPanicTime = Time.time;
 
         transform.position = target_list[^1];
         for (int i = 0; i < animalsInHerd.Count; i++)
         {
             if (animalsInHerd[i] == noticingAnimalAI)
             {
+                Debug.Log("noticing animal fleeing");
                 animalsInHerd[i].SetFleeing(GetRandomPointsInRadiusForArray(target_list));
             }
             else
             {
-                StartCoroutine(animalsInHerd[i].DelayedSetFleeing(GetRandomPointsInRadiusForArray(target_list)));
+                animalsInHerd[i].SetFleeingWithReactionTime(GetRandomPointsInRadiusForArray(target_list));
             }
             
         }
