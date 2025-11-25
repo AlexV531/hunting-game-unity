@@ -359,7 +359,7 @@ public class Animal : NetworkBehaviour
 
     private void EmitAnimalHitNoise()
     {
-        if (animalAI != null)
+        if (animalAI == null)
             return;
 
         if (animalAI.IsPanicked())

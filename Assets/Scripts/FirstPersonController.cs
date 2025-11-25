@@ -1009,8 +1009,7 @@ public class FirstPersonController : NetworkBehaviour
 		Debug.Log("Received animal info from server: " + hitData);
 		if (currentInteractable != null && currentInteractable is Corpse)
 		{
-			// Debug.Log("Going to open inspect UI");
-			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData);
+			_inspectUI.OpenInspectScreen(((Corpse)currentInteractable).animal.internalContainer.gameObject, hitData, ((Corpse)currentInteractable).animal.GetComponent<AnimalVariator>());
 		}
 	}
 

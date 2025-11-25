@@ -187,9 +187,9 @@ public class Weapon : NetworkBehaviour
         {
             if (currentAmmo <= 0)
                 return;
-
-            CreateBulletServerRpc();
+            
             EmitNoiseServerRpc(transform.position, loudness, "gunshot");
+            CreateBulletServerRpc();
 
             if (recoilEnabled)
                 _recoil.AddRecoil(recoilPitch, recoilYaw);
