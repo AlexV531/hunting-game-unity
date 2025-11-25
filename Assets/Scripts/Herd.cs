@@ -21,7 +21,7 @@ public class Herd : MonoBehaviour
 
     [Header("Panic Cooldown Settings")]
     public float panicCooldown = 3f;
-    float lastPanicTime = -Mathf.Infinity;
+    // float lastPanicTime = -Mathf.Infinity;
 
     void ManuallyInitialize()
     {

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class UIMenu : MonoBehaviour
 {
     public GameObject menuScreen;
+    public GameObject nonMenuUIElements;
     private bool menuOpen = true;
     
     protected virtual void Start()
@@ -15,6 +16,8 @@ public class UIMenu : MonoBehaviour
     public virtual void OpenMenu()
     {
         menuScreen.SetActive(true);
+        if (nonMenuUIElements != null)
+            nonMenuUIElements.SetActive(false);
         CursorManager.SetCursorActive(true);
         menuOpen = true;
     }
@@ -22,6 +25,8 @@ public class UIMenu : MonoBehaviour
     public virtual void CloseMenu()
     {
         menuScreen.SetActive(false);
+        if (nonMenuUIElements != null)
+            nonMenuUIElements.SetActive(true);
         CursorManager.SetCursorActive(false);
         menuOpen = false;
     }
