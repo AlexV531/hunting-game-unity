@@ -63,7 +63,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         if (animal.IsDead())
             return;
         
-        Debug.Log(name + " is in state " + fsm.GetCurrentState().GetType().ToString());
+        // Debug.Log(name + " is in state " + fsm.GetCurrentState().GetType().ToString());
 
         animator.SetFloat("speed", GetCurrentVelocity());
 

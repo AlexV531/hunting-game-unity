@@ -8,6 +8,10 @@ public class AnimalReward : NetworkBehaviour
     public AnimalVariator animalVariator;
     public ItemSpawner itemSpawner;
 
+    [Header("Meat Settings")]
+    public int minMeat = 2;
+    public int maxMeat = 4;
+
     [ServerRpc(RequireOwnership = false)]
     public void ButcherServerRpc(ulong clientId)
     {
@@ -25,7 +29,6 @@ public class AnimalReward : NetworkBehaviour
 
     private void SkinAnimal()
     {
-        Debug.Log("Making item " + animalVariator);
         // Create pelt item instance
         ItemInstance pelt = new ItemInstance
         {
@@ -38,10 +41,9 @@ public class AnimalReward : NetworkBehaviour
                 description = animalVariator.GetPelt().Description
             }
         };
-        Debug.Log("Dropping item");
         itemSpawner.DropItem(pelt, transform.position, Vector3.zero);
     }
-    
+
     private void ButcherAnimal(ulong clientId)
     {
         var netObj = GetComponent<NetworkObject>();
@@ -64,6 +66,21 @@ public class AnimalReward : NetworkBehaviour
             Destroy(gameObject); // fallback safety
         }
 
+        // Calculate meat amount based on scale factor
+        int meatAmount = CalculateMeatAmount();
+
+        // Create meat item instance
+        ItemInstance meat = new ItemInstance
+        {
+            key = 25,
+            stackSize = meatAmount,
+            customData = new ItemCustomData
+            {
+                quality = 1f
+            }
+        };
+        itemSpawner.DropItem(meat, transform.position, Vector3.zero);
+
         // Reward the player who did the butchering
         if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
         {
@@ -71,6 +88,32 @@ public class AnimalReward : NetworkBehaviour
             player.Money += 5;
         }
 
-        Debug.Log($"Animal butchered by client {clientId}");
+        Debug.Log($"Animal butchered by client {clientId}, meat dropped: {meatAmount}");
+    }
+
+    private int CalculateMeatAmount()
+    {
+        if (animalVariator == null)
+        {
+            Debug.LogWarning("AnimalVariator is null, using minimum meat amount");
+            return minMeat;
+        }
+
+        float scaleFactor = animalVariator.scaleFactor;
+        float minScale = animalVariator.minScale;
+        float maxScale = animalVariator.maxScale;
+
+        // Normalize the scale factor between 0 and 1 based on min/max scale
+        float normalizedScale = Mathf.InverseLerp(minScale, maxScale, scaleFactor);
+
+        // Interpolate between minMeat and maxMeat
+        float meatFloat = Mathf.Lerp(minMeat, maxMeat, normalizedScale);
+
+        // Round to nearest integer
+        int meatAmount = Mathf.RoundToInt(meatFloat);
+
+        Debug.Log($"Scale: {scaleFactor:F2}, Normalized: {normalizedScale:F2}, Meat: {meatAmount}");
+
+        return meatAmount;
     }
 }
