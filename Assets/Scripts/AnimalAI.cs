@@ -30,7 +30,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     public float onHitReactionTime = 0.6f;
     public float sightReactionTime = 1.5f;
     public float herdReactionTimeMin = 0.3f;
-    public float herdReactionTimeMax = 1.8f;
+    public float herdReactionTimeMax = 1.2f;
     public float herdReactionTime = 1.0f;
     public float herdReactionTimeNonFleeFactor = 1.4f;
     private float lastPanicTime = -Mathf.Infinity;
@@ -150,11 +150,11 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
         if (IsPanicked())
             return;
 
-        // Check panic cooldown
-        if (Time.time < lastAlertTime + alertCooldown)
-            return;
+        // Check alert cooldown
+        // if (Time.time < lastAlertTime + alertCooldown)
+        //     return;
 
-        lastAlertTime = Time.time;
+        // lastAlertTime = Time.time;
 
         Debug.Log("Animal Listening");
         fsm.ChangeState(fsm.ListeningState);
@@ -162,11 +162,12 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
 
     public void BecomePanicked(Vector3 panicSource)
     {
-        // Check panic cooldown
-        if (Time.time < lastPanicTime + panicCooldown)
-            return;
+        // Check panic cooldown PANIC COOLDOWN MOVED TO HERD, EXPERIMENTING!
+        // if (Time.time < lastPanicTime + panicCooldown)
+        //     return;
 
-        lastPanicTime = Time.time;
+        // lastPanicTime = Time.time;
+
         if (herd != null)
         {
             herd.HerdFleeTo(ChooseEscapePositions(panicSource), this);
@@ -190,6 +191,7 @@ public class AnimalAI : NetworkBehaviour, INoiseListener
     {
         yield return new WaitForSeconds(herdReactionTime);
 
+        Debug.Log("Set fleeing after delay");
         SetFleeing(targetList);
     }
 

@@ -19,11 +19,15 @@ public class Herd : MonoBehaviour
     private float deactivationOffset = 100f;
     private bool herdIsActive = false;
 
+    [Header("Panic Cooldown Settings")]
+    public float panicCooldown = 3f;
+    float lastPanicTime = -Mathf.Infinity;
+
     void ManuallyInitialize()
     {
         if (animalPrefab != null)
         {
-            InitializeAnimals(2, animalPrefab);
+            InitializeAnimals(5, animalPrefab);
         }
     }
 
@@ -151,6 +155,11 @@ public class Herd : MonoBehaviour
 
     public void HerdFleeTo(List<Vector3> target_list, AnimalAI noticingAnimalAI)
     {
+        if (Time.time < lastPanicTime + panicCooldown)
+            return;
+
+        lastPanicTime = Time.time;
+
         transform.position = target_list[^1];
         for (int i = 0; i < animalsInHerd.Count; i++)
         {
@@ -293,7 +302,7 @@ public class Herd : MonoBehaviour
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        TryRepopulate();
+        // TryRepopulate();
 
         herdIsActive = true;
 
