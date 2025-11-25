@@ -9,6 +9,7 @@ Butcher knife sometimes disappears when taken off the rack (reproduction unknown
 Balloons sometimes do not move after being spawned (reproduction unknown)
 Partridge needs to be looked at again
 Hand cart is a little jittery due to player not being moved by physics and the cart is joined to the player by physics
+I think the deer moving during grazing can interupt the deer being told to flee somehow, and can cause them to stay behind after being told to flee
 
 IN PROGRESS:
 Animal corpse inspection screen
