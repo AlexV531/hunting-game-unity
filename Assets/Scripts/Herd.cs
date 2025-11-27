@@ -184,7 +184,8 @@ public class Herd : MonoBehaviour
         transform.position = target_list[^1];
         for (int i = 0; i < animalsInHerd.Count; i++)
         {
-            StartCoroutine(animalsInHerd[i].DelayedSetMoving(GetRandomPointsInRadiusForArray(target_list)));
+            // StartCoroutine(animalsInHerd[i].DelayedSetMoving(GetRandomPointsInRadiusForArray(target_list)));
+            animalsInHerd[i].SetMoving(GetRandomPointsInRadiusForArray(target_list));
         }
     }
 
